@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\DAL\Memoriae.DAL.PostgreSQL.EF\Memoriae.DAL.PostgreSQL.EF.csproj" />
+    <ProjectReference Include="..\Memoriae.BAL.Core\Memoriae.BAL.Core.csproj" />
+  </ItemGroup>
+
+</Project>

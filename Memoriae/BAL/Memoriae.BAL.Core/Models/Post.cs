@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
-#nullable disable
-
-namespace Memoriae.DAL.PostgreSQL.EF.Models
+namespace Memoriae.BAL.Core.Models
 {
-    public partial class Post
+    public class Post
     {
         public Guid Id { get; set; }
 
