@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Memoriae.BAL.Core.Models
 {
@@ -13,5 +12,7 @@ namespace Memoriae.BAL.Core.Models
         public string Text { get; set; }
 
         public DateTime CreateDateTime { get; set; }
+
+        public IEnumerable<Tag> Tags { get; set; }
     }
 }

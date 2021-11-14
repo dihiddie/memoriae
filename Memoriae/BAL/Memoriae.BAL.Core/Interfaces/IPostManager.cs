@@ -17,6 +17,6 @@ namespace Memoriae.BAL.Core.Interfaces
 
         Task<IEnumerable<Post>> Get();
 
-        Task<IEnumerable<Post>> Get(Guid id);
+        Task<Post> Get(Guid id);        
     }
 }
