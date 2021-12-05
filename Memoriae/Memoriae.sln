@@ -13,9 +13,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Memoriae.BAL.Core", "BAL\Me
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebService", "WebService", "{0AAF4799-0799-44F9-92BF-11C12B3FAE00}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Memoriae.WebApi", "WebService\Memoriae.WebApi\Memoriae.WebApi.csproj", "{FEBB293C-4F5E-47AD-9289-2454C23D7FA3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Memoriae.WebApi", "WebService\Memoriae.WebApi\Memoriae.WebApi.csproj", "{FEBB293C-4F5E-47AD-9289-2454C23D7FA3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Memoriae.BAL.PostgreSQL", "BAL\Memoriae.BAL.PostgreSQL\Memoriae.BAL.PostgreSQL.csproj", "{BD2B96D8-CA26-4800-AC7A-0A9FA8D1314F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Memoriae.BAL.PostgreSQL", "BAL\Memoriae.BAL.PostgreSQL\Memoriae.BAL.PostgreSQL.csproj", "{BD2B96D8-CA26-4800-AC7A-0A9FA8D1314F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Helpers", "Helpers", "{41C76CC7-A69B-4470-95EB-81FACFA18DF0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Memoriae.Helpers.Swagger", "Helpers\Memoriae.Helpers.Swagger\Memoriae.Helpers.Swagger.csproj", "{6D633C17-B999-4FF0-ADCC-11A644CAE0EF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +43,10 @@ Global
 		{BD2B96D8-CA26-4800-AC7A-0A9FA8D1314F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BD2B96D8-CA26-4800-AC7A-0A9FA8D1314F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BD2B96D8-CA26-4800-AC7A-0A9FA8D1314F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D633C17-B999-4FF0-ADCC-11A644CAE0EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D633C17-B999-4FF0-ADCC-11A644CAE0EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D633C17-B999-4FF0-ADCC-11A644CAE0EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D633C17-B999-4FF0-ADCC-11A644CAE0EF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -48,6 +56,7 @@ Global
 		{0C5FC851-AB36-4C4F-826F-C0D14AE34983} = {4403CE46-04EB-4ED9-B48D-BB31E1DD604A}
 		{FEBB293C-4F5E-47AD-9289-2454C23D7FA3} = {0AAF4799-0799-44F9-92BF-11C12B3FAE00}
 		{BD2B96D8-CA26-4800-AC7A-0A9FA8D1314F} = {4403CE46-04EB-4ED9-B48D-BB31E1DD604A}
+		{6D633C17-B999-4FF0-ADCC-11A644CAE0EF} = {41C76CC7-A69B-4470-95EB-81FACFA18DF0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C221E633-185F-4E76-B1D2-71F1788FBC4E}

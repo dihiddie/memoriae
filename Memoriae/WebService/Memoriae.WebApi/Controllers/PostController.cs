@@ -22,14 +22,14 @@ namespace Memoriae.WebApi.Controllers
         /// <returns>Созданный пост</returns>
         [HttpPost]
         public Task<Post> CreateAsync(Post post) => postManager.CreateAsync(post);
-
-        /// <summary>
-        /// Создание или обновление связей между постом и тегами
-        /// </summary>
-        /// <param name="postId">Идентификатор поста</param>
-        /// <param name="newTags">Новые теги</param>
-        /// <param name="existingTags">Существующие теги</param>
-        /// <returns></returns>
+        
+        ///// <summary>
+        ///// Создание или обновление связей между постом и тегами
+        ///// </summary>
+        ///// <param name="postId">Идентификатор поста</param>
+        ///// <param name="newTags">Новые теги</param>
+        ///// <param name="existingTags">Существующие теги</param>
+        ///// <returns></returns>
         //[HttpPost]
         //public Task CreateOrUpdatePostTagLinkAsync(Guid postId, IEnumerable<Tag> newTags, IEnumerable<Guid> existingTags)
         //    => postManager.CreateOrUpdatePostTagLinkAsync(postId, newTags, existingTags);

@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Memoriae.WebApi</name>
+    </assembly>
+    <members>
+        <member name="M:Memoriae.WebApi.Controllers.PostController.CreateAsync(Memoriae.BAL.Core.Models.Post)">
+            <summary>
+            Создание поста
+            </summary>
+            <param name="post">Создаваемый пост</param>
+            <returns>Созданный пост</returns>
+        </member>
+        <member name="M:Memoriae.WebApi.Controllers.PostController.Get">
+            <summary>
+            Получение списка постов
+            </summary>
+            <returns>Список постов</returns>
+        </member>
+        <member name="M:Memoriae.WebApi.Controllers.PostController.Get(System.Guid)">
+            <summary>
+            Получение поста по идентификатору
+            </summary>
+            <param name="id">Идентификатор поста</param>
+            <returns>Запрашиваемый пост</returns>
+        </member>
+        <member name="M:Memoriae.WebApi.Controllers.PostController.GetByTags(System.Collections.Generic.IEnumerable{System.Guid})">
+            <summary>
+            Получение списка постов по тэгам
+            </summary>
+            <param name="tagIds">Идентификаторы тегов</param>
+            <returns>Список постов по тэгам</returns>
+        </member>
+        <member name="M:Memoriae.WebApi.Controllers.PostController.UpdateAsync(Memoriae.BAL.Core.Models.Post)">
+            <summary>
+            Обновление поста
+            </summary>
+            <param name="post">Модель обновляемого поста</param>
+            <returns>Обновляемый пост</returns>
+        </member>
+        <member name="M:Memoriae.WebApi.Controllers.TagController.GetAsync">
+            <summary>
+            Получение списка тегов
+            </summary>
+            <returns>Список тегов</returns>
+        </member>
+        <member name="M:Memoriae.WebApi.Controllers.TagController.CreateOrUpdateAsync(Memoriae.BAL.Core.Models.Tag)">
+            <summary>
+            Создание или обновление тега
+            </summary>
+            <param name="tag"></param>
+            <returns>Созданный или обновленный тег</returns>
+        </member>
+    </members>
+</doc>

@@ -3,6 +3,7 @@ using Memoriae.BAL.Core.Interfaces;
 using Memoriae.BAL.PostgreSQL;
 using Memoriae.BAL.PostgreSQL.Mapper;
 using Memoriae.DAL.PostgreSQL.EF.Models;
+using Memoriae.Helpers.Swagger;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 using System;
 
 namespace Memoriae.WebApi
@@ -31,12 +33,21 @@ namespace Memoriae.WebApi
             ConfigureMapper(services);
             ConfigureLogger(services);
             ConfigureContext(services);
+            ConfigureSwagger(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
+
+            var prefix = "swagger";
+           app.UseSwagger(c => c.RouteTemplate = "/" + prefix + "/{documentName}/swagger.json");
+            app.UseSwaggerUI(c =>
+            {
+                c.RoutePrefix = prefix;
+                c.SwaggerEndpoint($"/{prefix}/v1/swagger.json", "IntegrationGateway");
+            });
 
             app.UseHttpsRedirection();
             app.UseRouting();
@@ -65,6 +76,12 @@ namespace Memoriae.WebApi
             services.AddSingleton(typeof(ILogger), logger);
         }
 
+        private void ConfigureSwagger(IServiceCollection services)
+        {
+            services.AddSwaggerGen(c => c.SetDoc(new OpenApiInfo { Title = "Memoriae Api", Version = "v1" }));
+            services.AddRouting(x => x.LowercaseUrls = true);
+        }
+
         private void ConfigureContext(IServiceCollection services)
         {           
 
@@ -75,7 +92,7 @@ namespace Memoriae.WebApi
                 options => options.UseNpgsql(
                     connection ?? throw new ArgumentNullException(nameof(connection), " has a null connection string."),
                     c => c.MigrationsHistoryTable("__EFMigrationsHistory", schemaName)));
-        }           
+        }     
 
     }
 }
