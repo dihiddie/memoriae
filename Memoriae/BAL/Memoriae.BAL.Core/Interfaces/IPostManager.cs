@@ -11,9 +11,9 @@ namespace Memoriae.BAL.Core.Interfaces
 
         Task<Post> UpdateAsync(Post post);
 
-        Task CreateOrUpdatePostTagLinkAsync(Guid postId, IEnumerable<Tag> newTags, IEnumerable<Guid> existingTags);
+        Task CreateOrUpdatePostTagLinkAsync(Guid postId, IEnumerable<string> newTags, IEnumerable<Guid> existingTags);
 
-        Task<IEnumerable<Post>> GetByTags(IEnumerable<Guid> tagIds);
+        Task<IEnumerable<Post>> GetByTags(HashSet<Guid> tagIds);
 
         Task<IEnumerable<Post>> Get();
 

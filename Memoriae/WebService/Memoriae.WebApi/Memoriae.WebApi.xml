@@ -11,6 +11,13 @@
             <param name="post">Создаваемый пост</param>
             <returns>Созданный пост</returns>
         </member>
+        <member name="M:Memoriae.WebApi.Controllers.PostController.CreateOrUpdatePostTagLinkAsync(Memoriae.WebApi.Models.PostTagsView)">
+            <summary>
+            Создание или обновление связей между постом и тегами
+            </summary>
+            <param name="postTagsView">Модель со связью поста и тегов</param>      
+            <returns>Нет возвращаемого значения</returns>
+        </member>
         <member name="M:Memoriae.WebApi.Controllers.PostController.Get">
             <summary>
             Получение списка постов
@@ -24,7 +31,7 @@
             <param name="id">Идентификатор поста</param>
             <returns>Запрашиваемый пост</returns>
         </member>
-        <member name="M:Memoriae.WebApi.Controllers.PostController.GetByTags(System.Collections.Generic.IEnumerable{System.Guid})">
+        <member name="M:Memoriae.WebApi.Controllers.PostController.GetByTags(System.Collections.Generic.HashSet{System.Guid})">
             <summary>
             Получение списка постов по тэгам
             </summary>

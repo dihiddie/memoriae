@@ -40,7 +40,7 @@ namespace Memoriae.DAL.PostgreSQL.EF.Models
 
                 entity.Property(e => e.Title)
                     .IsRequired()
-                    .HasMaxLength(512);
+                    .HasMaxLength(512);                
             });
 
             modelBuilder.Entity<PostTagLink>(entity =>

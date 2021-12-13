@@ -1,5 +1,6 @@
 ﻿using Memoriae.BAL.Core.Interfaces;
 using Memoriae.BAL.Core.Models;
+using Memoriae.WebApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -22,17 +23,15 @@ namespace Memoriae.WebApi.Controllers
         /// <returns>Созданный пост</returns>
         [HttpPost]
         public Task<Post> CreateAsync(Post post) => postManager.CreateAsync(post);
-        
-        ///// <summary>
-        ///// Создание или обновление связей между постом и тегами
-        ///// </summary>
-        ///// <param name="postId">Идентификатор поста</param>
-        ///// <param name="newTags">Новые теги</param>
-        ///// <param name="existingTags">Существующие теги</param>
-        ///// <returns></returns>
-        //[HttpPost]
-        //public Task CreateOrUpdatePostTagLinkAsync(Guid postId, IEnumerable<Tag> newTags, IEnumerable<Guid> existingTags)
-        //    => postManager.CreateOrUpdatePostTagLinkAsync(postId, newTags, existingTags);
+
+        /// <summary>
+        /// Создание или обновление связей между постом и тегами
+        /// </summary>
+        /// <param name="postTagsView">Модель со связью поста и тегов</param>      
+        /// <returns>Нет возвращаемого значения</returns>
+        [HttpPost("postTagLink")]
+        public Task CreateOrUpdatePostTagLinkAsync(PostTagsView postTagsView)
+            => postManager.CreateOrUpdatePostTagLinkAsync(postTagsView.PostId, postTagsView.NewTags, postTagsView.ExistingTags);
 
         /// <summary>
         /// Получение списка постов
@@ -54,8 +53,8 @@ namespace Memoriae.WebApi.Controllers
         /// </summary>
         /// <param name="tagIds">Идентификаторы тегов</param>
         /// <returns>Список постов по тэгам</returns>
-        [HttpGet("tags")]
-        public Task<IEnumerable<Post>> GetByTags(IEnumerable<Guid> tagIds) => postManager.GetByTags(tagIds);
+        [HttpPost("tags")]
+        public Task<IEnumerable<Post>> GetByTags(HashSet<Guid> tagIds) => postManager.GetByTags(tagIds);
 
         /// <summary>
         /// Обновление поста

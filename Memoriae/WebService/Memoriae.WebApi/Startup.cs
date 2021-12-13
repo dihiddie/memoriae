@@ -46,7 +46,7 @@ namespace Memoriae.WebApi
             app.UseSwaggerUI(c =>
             {
                 c.RoutePrefix = prefix;
-                c.SwaggerEndpoint($"/{prefix}/v1/swagger.json", "IntegrationGateway");
+                c.SwaggerEndpoint($"/{prefix}/v1/swagger.json", "MemoriaeGateway");
             });
 
             app.UseHttpsRedirection();
