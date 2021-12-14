@@ -34,13 +34,15 @@ namespace Memoriae.BAL.PostgreSQL
         {
             var chapterNumber = await ChapterNumberAsync().ConfigureAwait(false);
 
-            logger.LogInformation($"Попытка создания поста с главой = {chapterNumber}");
+            logger.LogInformation($"Попытка создания поста с главой = {chapterNumber}");            
 
             var mapped = mapper.Map<DbPost>(post);
-            mapped.Title = $"Глава {chapterNumber}. {mapped.Title}";
-
+            mapped.Title = $"Глава {chapterNumber}. {mapped.Title}";          
             await context.AddAsync(mapped).ConfigureAwait(false);
             await context.SaveChangesAsync().ConfigureAwait(false);
+
+            var newTags = post.Tags.Where(x => x.Id == null).Select(x => x.Name);
+            await CreateOrUpdatePostTagLinkAsync(mapped.Id, newTags, null);            
 
             return mapper.Map<Post>(mapped);
 
@@ -59,7 +61,7 @@ namespace Memoriae.BAL.PostgreSQL
                 await context.AddRangeAsync(newTagsInDb.Select(x => new PostTagLink { PostId = postId, TagId = x.Id }));
             }
 
-            if (existingTags.Any())
+            if (existingTags?.Any() == true)
             {                
                 await context.AddRangeAsync(existingTags.Select(x => new PostTagLink { PostId = postId, TagId = x }));
             }
@@ -79,7 +81,8 @@ namespace Memoriae.BAL.PostgreSQL
                 Id = x.Id,
                 Text = x.Text,
                 Title = x.Title,
-                CreateDateTime = x.CreateDateTime,                
+                CreateDateTime = x.CreateDateTime,  
+                Tags = x.PostTagLink.Select(t => new Tag { Id = t.Tag.Id, Name = t.Tag.Name })
 
             }).ToListAsync().ConfigureAwait(false);
 
