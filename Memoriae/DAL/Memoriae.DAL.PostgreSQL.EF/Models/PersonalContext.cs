@@ -30,9 +30,11 @@ namespace Memoriae.DAL.PostgreSQL.EF.Models
 
             modelBuilder.Entity<Post>(entity =>
             {
+                entity.HasKey(e => e.Id);
+
                 entity.ToTable("Post", "memoriae");
 
-                entity.Property(e => e.Id).HasDefaultValueSql("gen_random_uuid()");
+                entity.Property(e => e.Id).IsRequired().HasDefaultValueSql("gen_random_uuid()");
 
                 entity.Property(e => e.Text)
                     .IsRequired()
@@ -45,11 +47,11 @@ namespace Memoriae.DAL.PostgreSQL.EF.Models
 
             modelBuilder.Entity<PostTagLink>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(e => e.Id);
 
                 entity.ToTable("PostTagLink", "memoriae");
 
-                entity.Property(e => e.Id).HasDefaultValueSql("gen_random_uuid()");
+                entity.Property(e => e.Id).IsRequired().HasDefaultValueSql("gen_random_uuid()");
 
                 entity.HasOne(d => d.Post)
                     .WithMany()
@@ -66,9 +68,11 @@ namespace Memoriae.DAL.PostgreSQL.EF.Models
 
             modelBuilder.Entity<Tag>(entity =>
             {
-                entity.ToTable("Tag", "memoriae");
+                entity.HasKey(e => e.Id);
 
-                entity.Property(e => e.Id).HasDefaultValueSql("gen_random_uuid()");
+                entity.ToTable("Tag", "memoriae");                
+
+                entity.Property(e => e.Id).IsRequired().HasDefaultValueSql("gen_random_uuid()");
 
                 entity.Property(e => e.Name)
                     .IsRequired()

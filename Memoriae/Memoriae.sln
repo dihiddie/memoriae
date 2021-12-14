@@ -19,7 +19,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Memoriae.BAL.PostgreSQL", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Helpers", "Helpers", "{41C76CC7-A69B-4470-95EB-81FACFA18DF0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Memoriae.Helpers.Swagger", "Helpers\Memoriae.Helpers.Swagger\Memoriae.Helpers.Swagger.csproj", "{6D633C17-B999-4FF0-ADCC-11A644CAE0EF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Memoriae.Helpers.Swagger", "Helpers\Memoriae.Helpers.Swagger\Memoriae.Helpers.Swagger.csproj", "{6D633C17-B999-4FF0-ADCC-11A644CAE0EF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{A544A4D5-2F5E-404B-98F0-F5605C8816BF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
