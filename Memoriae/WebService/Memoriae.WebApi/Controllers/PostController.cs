@@ -38,7 +38,7 @@ namespace Memoriae.WebApi.Controllers
         /// </summary>
         /// <returns>Список постов</returns>
         [HttpGet]
-        public Task<IEnumerable<Post>> Get() => postManager.Get();
+        public Task<IEnumerable<Post>> GetAsync() => postManager.GetAsync();
 
         /// <summary>
         /// Получение поста по идентификатору
@@ -46,7 +46,7 @@ namespace Memoriae.WebApi.Controllers
         /// <param name="id">Идентификатор поста</param>
         /// <returns>Запрашиваемый пост</returns>
         [HttpGet("id")]
-        public Task<Post> Get(Guid id) => postManager.Get(id);
+        public Task<Post> GetAsync(Guid id) => postManager.GetAsync(id);
 
         /// <summary>
         /// Получение списка постов по тэгам
@@ -54,7 +54,7 @@ namespace Memoriae.WebApi.Controllers
         /// <param name="tagIds">Идентификаторы тегов</param>
         /// <returns>Список постов по тэгам</returns>
         [HttpPost("tags")]
-        public Task<IEnumerable<Post>> GetByTags(HashSet<Guid> tagIds) => postManager.GetByTags(tagIds);
+        public Task<IEnumerable<Post>> GetByTagsAsync(HashSet<Guid> tagIds) => postManager.GetByTagsAsync(tagIds);
 
         /// <summary>
         /// Обновление поста

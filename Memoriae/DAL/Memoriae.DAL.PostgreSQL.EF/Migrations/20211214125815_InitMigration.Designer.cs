@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Memoriae.DAL.PostgreSQL.EF.Migrations
 {
     [DbContext(typeof(PersonalContext))]
-    [Migration("20211214084049_InitMigration")]
+    [Migration("20211214125815_InitMigration")]
     partial class InitMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -57,24 +57,14 @@ namespace Memoriae.DAL.PostgreSQL.EF.Migrations
                     b.Property<Guid>("PostId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("PostId1")
-                        .HasColumnType("uuid");
-
                     b.Property<Guid>("TagId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("TagId1")
                         .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
                     b.HasIndex("PostId");
 
-                    b.HasIndex("PostId1");
-
                     b.HasIndex("TagId");
-
-                    b.HasIndex("TagId1");
 
                     b.ToTable("PostTagLink", "memoriae");
                 });
@@ -99,24 +89,16 @@ namespace Memoriae.DAL.PostgreSQL.EF.Migrations
             modelBuilder.Entity("Memoriae.DAL.PostgreSQL.EF.Models.PostTagLink", b =>
                 {
                     b.HasOne("Memoriae.DAL.PostgreSQL.EF.Models.Post", "Post")
-                        .WithMany()
-                        .HasForeignKey("PostId")
-                        .HasConstraintName("PostTagLink_PostId_fkey")
-                        .IsRequired();
-
-                    b.HasOne("Memoriae.DAL.PostgreSQL.EF.Models.Post", null)
                         .WithMany("PostTagLink")
-                        .HasForeignKey("PostId1");
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Memoriae.DAL.PostgreSQL.EF.Models.Tag", "Tag")
-                        .WithMany()
-                        .HasForeignKey("TagId")
-                        .HasConstraintName("PostTagLink_TagId_fkey")
-                        .IsRequired();
-
-                    b.HasOne("Memoriae.DAL.PostgreSQL.EF.Models.Tag", null)
                         .WithMany("PostTagLink")
-                        .HasForeignKey("TagId1");
+                        .HasForeignKey("TagId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Post");
 

@@ -8,6 +8,8 @@ namespace Memoriae.BAL.Core.Interfaces
     {
         Task<Tag> CreateOrUpdateAsync(Tag tag);
 
+        Task<bool> CreateAsync(IEnumerable<string> tags);
+
         Task<IEnumerable<Tag>> GetAsync();
     }
 }

@@ -48,41 +48,25 @@ namespace Memoriae.DAL.PostgreSQL.EF.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false, defaultValueSql: "gen_random_uuid()"),
                     PostId = table.Column<Guid>(type: "uuid", nullable: false),
-                    TagId = table.Column<Guid>(type: "uuid", nullable: false),
-                    PostId1 = table.Column<Guid>(type: "uuid", nullable: true),
-                    TagId1 = table.Column<Guid>(type: "uuid", nullable: true)
+                    TagId = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_PostTagLink", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_PostTagLink_Post_PostId1",
-                        column: x => x.PostId1,
-                        principalSchema: "memoriae",
-                        principalTable: "Post",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_PostTagLink_Tag_TagId1",
-                        column: x => x.TagId1,
-                        principalSchema: "memoriae",
-                        principalTable: "Tag",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "PostTagLink_PostId_fkey",
+                        name: "FK_PostTagLink_Post_PostId",
                         column: x => x.PostId,
                         principalSchema: "memoriae",
                         principalTable: "Post",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "PostTagLink_TagId_fkey",
+                        name: "FK_PostTagLink_Tag_TagId",
                         column: x => x.TagId,
                         principalSchema: "memoriae",
                         principalTable: "Tag",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -92,22 +76,10 @@ namespace Memoriae.DAL.PostgreSQL.EF.Migrations
                 column: "PostId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PostTagLink_PostId1",
-                schema: "memoriae",
-                table: "PostTagLink",
-                column: "PostId1");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_PostTagLink_TagId",
                 schema: "memoriae",
                 table: "PostTagLink",
                 column: "TagId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PostTagLink_TagId1",
-                schema: "memoriae",
-                table: "PostTagLink",
-                column: "TagId1");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

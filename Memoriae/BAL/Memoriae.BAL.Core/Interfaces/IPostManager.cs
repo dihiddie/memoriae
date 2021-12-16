@@ -13,10 +13,10 @@ namespace Memoriae.BAL.Core.Interfaces
 
         Task CreateOrUpdatePostTagLinkAsync(Guid postId, IEnumerable<string> newTags, IEnumerable<Guid> existingTags);
 
-        Task<IEnumerable<Post>> GetByTags(HashSet<Guid> tagIds);
+        Task<IEnumerable<Post>> GetByTagsAsync(HashSet<Guid> tagIds);
 
-        Task<IEnumerable<Post>> Get();
+        Task<IEnumerable<Post>> GetAsync();
 
-        Task<Post> Get(Guid id);        
+        Task<Post> GetAsync(Guid id);        
     }
 }

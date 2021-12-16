@@ -26,6 +26,15 @@ namespace Memoriae.BAL.PostgreSQL
             this.mapper = mapper;
         }
 
+        public async Task<bool> CreateAsync(IEnumerable<string> tags)
+        {         
+            var tagsInDb = new List<DbTag>();
+            foreach (var tagName in tags) tagsInDb.Add(new DbTag { Name = tagName });
+            await context.Tags.AddRangeAsync(tagsInDb).ConfigureAwait(false);
+            await context.SaveChangesAsync().ConfigureAwait(false);
+            return true;
+        }
+
         public async Task<Tag> CreateOrUpdateAsync(Tag tag)
         {
             logger.LogInformation($"Создаем или обновляем тэг с названием = {tag.Name}");

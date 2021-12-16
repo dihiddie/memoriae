@@ -51,19 +51,7 @@ namespace Memoriae.DAL.PostgreSQL.EF.Models
 
                 entity.ToTable("PostTagLink", "memoriae");
 
-                entity.Property(e => e.Id).IsRequired().HasDefaultValueSql("gen_random_uuid()");
-
-                entity.HasOne(d => d.Post)
-                    .WithMany()
-                    .HasForeignKey(d => d.PostId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("PostTagLink_PostId_fkey");
-
-                entity.HasOne(d => d.Tag)
-                    .WithMany()
-                    .HasForeignKey(d => d.TagId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("PostTagLink_TagId_fkey");
+                entity.Property(e => e.Id).IsRequired().HasDefaultValueSql("gen_random_uuid()");                
             });
 
             modelBuilder.Entity<Tag>(entity =>

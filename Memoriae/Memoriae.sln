@@ -22,6 +22,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Memoriae.Helpers.Swagger", "Helpers\Memoriae.Helpers.Swagger\Memoriae.Helpers.Swagger.csproj", "{6D633C17-B999-4FF0-ADCC-11A644CAE0EF}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{A544A4D5-2F5E-404B-98F0-F5605C8816BF}"
+	ProjectSection(SolutionItems) = preProject
+		Scripts\createTables.sql = Scripts\createTables.sql
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

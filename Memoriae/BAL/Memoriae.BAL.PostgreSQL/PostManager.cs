@@ -40,43 +40,26 @@ namespace Memoriae.BAL.PostgreSQL
             mapped.Title = $"Глава {chapterNumber}. {mapped.Title}";          
             await context.AddAsync(mapped).ConfigureAwait(false);
             await context.SaveChangesAsync().ConfigureAwait(false);
+            
+            await CreateOrUpdatePostTagLinkAsync(mapped.Id, post.Tags?.Where(x => x.Id == null).Select(x => x.Name), null);            
 
-            var newTags = post.Tags.Where(x => x.Id == null).Select(x => x.Name);
-            await CreateOrUpdatePostTagLinkAsync(mapped.Id, newTags, null);            
-
-            return mapper.Map<Post>(mapped);
+            return await GetAsync(mapped.Id).ConfigureAwait(false);
 
         }
 
         public async Task CreateOrUpdatePostTagLinkAsync(Guid postId, IEnumerable<string> newTags, IEnumerable<Guid> existingTags)
-        {
-            var forRemove = await context.PostTagLinks.Where(x => x.Id == postId).ToListAsync().ConfigureAwait(false);
-            context.PostTagLinks.RemoveRange(forRemove);
+        {            
+            await SavePostWithExistingTags(postId, existingTags).ConfigureAwait(false);
+            await SaveNewTagsAndLinksAsync(postId, newTags).ConfigureAwait(false);            
 
-            if (newTags.Any())
-            {
-                var newTagsInDb = newTags.Select(x => new DbTag { Name = x });
-                await context.AddRangeAsync(newTagsInDb).ConfigureAwait(false);
-                logger.LogInformation($"Сохранение новых тегов с названиями {string.Join(", ", newTags)} успешно");
-                await context.AddRangeAsync(newTagsInDb.Select(x => new PostTagLink { PostId = postId, TagId = x.Id }));
-            }
-
-            if (existingTags?.Any() == true)
-            {                
-                await context.AddRangeAsync(existingTags.Select(x => new PostTagLink { PostId = postId, TagId = x }));
-            }
-
-            await context.SaveChangesAsync().ConfigureAwait(false);
-
-            logger.LogInformation($"Сохранение поста с Id = {postId} с тегами произведено успешно");
-            
+            logger.LogInformation($"Сохранение поста с Id = {postId} с тегами произведено успешно");            
         }
 
-        public async Task<IEnumerable<Post>> Get()
+        public async Task<IEnumerable<Post>> GetAsync()
         {
             logger.LogInformation("Получаем список постов");
 
-            var posts = await context.Posts.AsNoTracking().Select(x => new Post()
+            return await context.Posts.AsNoTracking().Select(x => new Post()
             {
                 Id = x.Id,
                 Text = x.Text,
@@ -84,19 +67,12 @@ namespace Memoriae.BAL.PostgreSQL
                 CreateDateTime = x.CreateDateTime,  
                 Tags = x.PostTagLink.Select(t => new Tag { Id = t.Tag.Id, Name = t.Tag.Name })
 
-            }).ToListAsync().ConfigureAwait(false);
-
-            foreach(var post in posts)
-                post.Tags = await context.PostTagLinks.Where(x => x.PostId == post.Id).Select(t => new Tag { Id = t.Tag.Id, Name = t.Tag.Name }).ToListAsync().ConfigureAwait(false);
-
-            return posts;         
+            }).ToListAsync().ConfigureAwait(false);                             
         }
 
-        public async Task<Post> Get(Guid id)
+        public async Task<Post> GetAsync(Guid id)
         {
-            logger.LogInformation($"Получение поста с id = {id}");
-
-            var tagposts = await context.PostTagLinks.Where(x => x.PostId == id).Select(t => new Tag { Id = t.Tag.Id, Name = t.Tag.Name }).ToListAsync().ConfigureAwait(false);
+            logger.LogInformation($"Получение поста с id = {id}");            
 
             return await context.Posts.Select(x => new Post()
             {
@@ -104,26 +80,18 @@ namespace Memoriae.BAL.PostgreSQL
                 Text = x.Text,
                 Title = x.Title,
                 CreateDateTime = x.CreateDateTime,
-                Tags = tagposts
+                Tags = x.PostTagLink.Select(t => new Tag { Id = t.Tag.Id, Name = t.Tag.Name })
 
             }).FirstOrDefaultAsync(x => x.Id == id).ConfigureAwait(false);           
 
         }
 
-        public async Task<IEnumerable<Post>> GetByTags(HashSet<Guid> tagIds)
+        public async Task<IEnumerable<Post>> GetByTagsAsync(HashSet<Guid> tagIds)
         {
             logger.LogInformation($"Получение списка постов, у которых идентификаторы тэгов входят в {string.Join(", ", tagIds)}");
-            var posts = await context.PostTagLinks.Where(x => tagIds.Contains(x.TagId)).Select(p => new Post
-            {
-                Id = p.Post.Id,
-                Text = p.Post.Text,
-                Title = p.Post.Title,
-                CreateDateTime = p.Post.CreateDateTime
-            }).ToListAsync().ConfigureAwait(false);
 
-            foreach (var post in posts)
-                post.Tags = await context.PostTagLinks.Where(x => x.PostId == post.Id).Select(t => new Tag { Id = t.Tag.Id, Name = t.Tag.Name }).ToListAsync().ConfigureAwait(false);
-            return posts;
+            var postsByTagIds = context.PostTagLinks.Where(x => tagIds.Contains(x.TagId)).Select(x => x.PostId).ToHashSet(); 
+            return await GetAsync(postsByTagIds).ConfigureAwait(false);
         }
 
         public async Task<Post> UpdateAsync(Post post)
@@ -133,13 +101,61 @@ namespace Memoriae.BAL.PostgreSQL
             mapper.Map(post, postInDb);
             context.Update(postInDb);
             await context.SaveChangesAsync(false);
+            
+            await CreateOrUpdatePostTagLinkAsync(post.Id, post.Tags?.Where(x => x.Id == null).Select(x => x.Name), null);
 
-            var newTags = post.Tags.Where(x => x.Id == null).Select(x => x.Name);
-            await CreateOrUpdatePostTagLinkAsync(post.Id, newTags, null);
-
-            return post;
+            return await GetAsync(post.Id).ConfigureAwait(false);
         }
 
         private async Task<int> ChapterNumberAsync() => await context.Posts.CountAsync().ConfigureAwait(false) + 1;
+
+        private async Task RemoveExistingPostTagLinks(Guid postId)
+        {
+            var forRemove = await context.PostTagLinks.Where(x => x.Id == postId).ToListAsync().ConfigureAwait(false);
+            context.PostTagLinks.RemoveRange(forRemove);
+            await context.SaveChangesAsync().ConfigureAwait(false);
+        }
+
+        private async Task SaveNewTagsAndLinksAsync(Guid postId, IEnumerable<string> newTags)
+        {
+
+            if (newTags?.Any() == true)
+            {
+                var newTagsInDb = new List<DbTag>();
+
+                foreach (var tagName in newTags) newTagsInDb.Add(new DbTag { Name = tagName });                
+                await context.AddRangeAsync(newTagsInDb).ConfigureAwait(false);
+                await context.SaveChangesAsync().ConfigureAwait(false);
+                logger.LogInformation($"Сохранение новых тегов с названиями {string.Join(", ", newTags)} успешно");
+
+                await context.AddRangeAsync(newTagsInDb.Select(x => new PostTagLink { PostId = postId, TagId = x.Id }));
+                await context.SaveChangesAsync().ConfigureAwait(false);
+            }
+        }
+
+        private async Task SavePostWithExistingTags(Guid postId, IEnumerable<Guid> existingTags)
+        {
+            if (existingTags?.Any() == true)
+            {
+                await RemoveExistingPostTagLinks(postId).ConfigureAwait(false);
+
+                await context.AddRangeAsync(existingTags.Select(x => new PostTagLink { PostId = postId, TagId = x }));
+                await context.SaveChangesAsync().ConfigureAwait(false);
+            }
+        }
+
+        private async Task<IEnumerable<Post>> GetAsync(IEnumerable<Guid> ids)
+        {            
+            return await context.Posts.Select(x => new Post()
+            {
+                Id = x.Id,
+                Text = x.Text,
+                Title = x.Title,
+                CreateDateTime = x.CreateDateTime,
+                Tags = x.PostTagLink.Select(t => new Tag { Id = t.Tag.Id, Name = t.Tag.Name })
+
+            }).Where(x => ids.Contains(x.Id)).ToListAsync().ConfigureAwait(false);
+
+        }
     }
 }
