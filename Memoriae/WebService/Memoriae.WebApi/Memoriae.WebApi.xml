@@ -4,7 +4,7 @@
         <name>Memoriae.WebApi</name>
     </assembly>
     <members>
-        <member name="M:Memoriae.WebApi.Controllers.PostController.CreateAsync(Memoriae.BAL.Core.Models.Post)">
+        <member name="M:Memoriae.WebApi.Controllers.PostController.CreateAsync(Memoriae.WebApi.Models.PostView)">
             <summary>
             Создание поста
             </summary>

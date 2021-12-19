@@ -41,7 +41,7 @@ namespace Memoriae.BAL.PostgreSQL
             await context.AddAsync(mapped).ConfigureAwait(false);
             await context.SaveChangesAsync().ConfigureAwait(false);
             
-            await CreateOrUpdatePostTagLinkAsync(mapped.Id, post.Tags?.Where(x => x.Id == null).Select(x => x.Name), null);            
+            await CreateOrUpdatePostTagLinkAsync(mapped.Id, post.Tags?.Where(x => x.Id == null).Select(x => x.Name), post.Tags?.Where(x => x.Id != null).Select(x => x.Id.Value));            
 
             return await GetAsync(mapped.Id).ConfigureAwait(false);
 
@@ -102,7 +102,7 @@ namespace Memoriae.BAL.PostgreSQL
             context.Update(postInDb);
             await context.SaveChangesAsync(false);
             
-            await CreateOrUpdatePostTagLinkAsync(post.Id, post.Tags?.Where(x => x.Id == null).Select(x => x.Name), null);
+            await CreateOrUpdatePostTagLinkAsync(post.Id, post.Tags?.Where(x => x.Id == null).Select(x => x.Name), post.Tags?.Where(x => x.Id != null).Select(x => x.Id.Value));
 
             return await GetAsync(post.Id).ConfigureAwait(false);
         }
@@ -111,7 +111,7 @@ namespace Memoriae.BAL.PostgreSQL
 
         private async Task RemoveExistingPostTagLinks(Guid postId)
         {
-            var forRemove = await context.PostTagLinks.Where(x => x.Id == postId).ToListAsync().ConfigureAwait(false);
+            var forRemove = await context.PostTagLinks.Where(x => x.PostId == postId).ToListAsync().ConfigureAwait(false);
             context.PostTagLinks.RemoveRange(forRemove);
             await context.SaveChangesAsync().ConfigureAwait(false);
         }

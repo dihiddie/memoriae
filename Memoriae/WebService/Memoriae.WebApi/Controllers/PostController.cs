@@ -22,7 +22,7 @@ namespace Memoriae.WebApi.Controllers
         /// <param name="post">Создаваемый пост</param>
         /// <returns>Созданный пост</returns>
         [HttpPost]
-        public Task<Post> CreateAsync(Post post) => postManager.CreateAsync(post);
+        public Task<Post> CreateAsync(PostView post) => postManager.CreateAsync(new Post { Title = post.Title, Text = post.Text, Tags = post.Tags });
 
         /// <summary>
         /// Создание или обновление связей между постом и тегами
