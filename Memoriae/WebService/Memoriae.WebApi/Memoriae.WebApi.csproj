@@ -12,6 +12,7 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.1.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.22" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.10">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
@@ -22,6 +23,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\BAL\Memoriae.BAL.PostgreSQL\Memoriae.BAL.PostgreSQL.csproj" />
+    <ProjectReference Include="..\..\BAL\Memoriae.BAL.User.Core\Memoriae.BAL.User.Core.csproj" />
+    <ProjectReference Include="..\..\DAL\Memoriae.DAL.Users.PostgreSQL.EF\Memoriae.DAL.Users.PostgreSQL.EF.csproj" />
     <ProjectReference Include="..\..\Helpers\Memoriae.Helpers.Swagger\Memoriae.Helpers.Swagger.csproj" />
   </ItemGroup>
 
