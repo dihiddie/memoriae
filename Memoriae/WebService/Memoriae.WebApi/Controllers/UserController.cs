@@ -1,5 +1,4 @@
 ﻿using Memoriae.BAL.User.Core;
-using Memoriae.WebApi.Models.IdentityResponse;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;

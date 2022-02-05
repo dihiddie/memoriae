@@ -33,7 +33,9 @@ namespace Memoriae.WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();            
+            services.AddControllers();
+
+            ConfigureCors(services);
             ConfigureMainComponents(services);
             ConfigureMapper(services);
             ConfigureLogger(services);
@@ -56,10 +58,23 @@ namespace Memoriae.WebApi
             });
 
             app.UseHttpsRedirection();
+            app.UseCors("CorsPolicy");
             app.UseRouting();
-            app.UseAuthorization();            
+            app.UseAuthentication();
             app.UseAuthorization();
             app.UseEndpoints(endpoints => endpoints.MapControllers());
+        }
+
+        private void ConfigureCors(IServiceCollection services)
+        {
+            services.AddCors(policy =>
+            {
+                policy.AddPolicy("CorsPolicy", opt => opt
+                .AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .WithExposedHeaders("X-Pagination"));
+            });
         }
 
         private void ConfigureMapper(IServiceCollection services)

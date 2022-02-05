@@ -1,4 +1,4 @@
-﻿namespace Memoriae.WebApi.Models.IdentityResponse
+﻿namespace Memoriae.BAL.User.Core
 {
     public class AuthResponse
     {

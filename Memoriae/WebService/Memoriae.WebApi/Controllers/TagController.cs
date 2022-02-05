@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Memoriae.WebApi.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class TagController : ControllerBase
     {
         private readonly ITagManager tagManager;

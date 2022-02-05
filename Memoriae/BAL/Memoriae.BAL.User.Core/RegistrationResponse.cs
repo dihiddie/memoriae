@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Memoriae.WebApi.Models.IdentityResponse
+namespace Memoriae.BAL.User.Core
 {
     public class RegistrationResponse
     {
