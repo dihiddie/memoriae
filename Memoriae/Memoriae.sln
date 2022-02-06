@@ -34,9 +34,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{11A40AB4-9910-
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "HttpClients", "HttpClients", "{5230C9A2-9FB5-4007-A030-B2180A331005}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Memoriae.Http.AuthentificationService", "HttpClients\Memoriae.Http.AuthentificationService\Memoriae.Http.AuthentificationService.csproj", "{F111D38B-FC6B-4BAD-BA67-537412E05F24}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Memoriae.Http.AuthentificationService", "HttpClients\Memoriae.Http.AuthentificationService\Memoriae.Http.AuthentificationService.csproj", "{F111D38B-FC6B-4BAD-BA67-537412E05F24}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Memoriae.UI.Blazor", "UI\Memoriae.UI.Blazor\Memoriae.UI.Blazor.csproj", "{4157B708-AD3D-4224-92DA-A37B900735F2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Memoriae.UI.Blazor", "UI\Memoriae.UI.Blazor\Memoriae.UI.Blazor.csproj", "{4157B708-AD3D-4224-92DA-A37B900735F2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

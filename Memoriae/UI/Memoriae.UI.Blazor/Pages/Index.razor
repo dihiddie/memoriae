@@ -1,0 +1,14 @@
+﻿@page "/"
+@page "/index"
+@using System.Security.Claims
+
+<h1>Index page</h1>
+
+<AuthorizeView>
+    <Authorized>
+        The user: @context.User.FindFirst(ClaimTypes.Name).Value is authorized
+    </Authorized>
+    <NotAuthorized>        
+        <Login></Login>
+    </NotAuthorized>
+</AuthorizeView>

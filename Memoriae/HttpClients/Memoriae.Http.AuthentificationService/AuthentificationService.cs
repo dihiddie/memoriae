@@ -1,5 +1,6 @@
 ﻿using Blazored.LocalStorage;
 using Memoriae.BAL.User.Core;
+using Memoriae.Http.AuthentificationService.Providers;
 using Microsoft.AspNetCore.Components.Authorization;
 using Newtonsoft.Json;
 using System;
@@ -12,8 +13,7 @@ namespace Memoriae.Http.AuthentificationService
 {
     public class AuthentificationService : IAuthentificationService
     {
-        private readonly HttpClient httpClient;
-        // private readonly JsonSerializerOptions options;
+        private readonly HttpClient httpClient;        
         private readonly AuthenticationStateProvider authStateProvider;
         private readonly ILocalStorageService localStorage;
 
@@ -44,7 +44,7 @@ namespace Memoriae.Http.AuthentificationService
             if (!responseMessage.IsSuccessStatusCode) return result;
 
             await localStorage.SetItemAsync("authToken", result.Token);
-            // ((AuthStateProvider)_authStateProvider).NotifyUserAuthentication(userForAuthentication.Email);
+            ((AuthStateProvider)authStateProvider).NotifyUserAuthentication(user.Login);
             httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("bearer", result.Token);
 
             return result;
@@ -53,7 +53,7 @@ namespace Memoriae.Http.AuthentificationService
         public async Task Logout()
         {
             await localStorage.RemoveItemAsync("authToken");
-            // ((AuthStateProvider)_authStateProvider).NotifyUserLogout();
+            ((AuthStateProvider)authStateProvider).NotifyUserLogout();
             httpClient.DefaultRequestHeaders.Authorization = null;
         }       
     }

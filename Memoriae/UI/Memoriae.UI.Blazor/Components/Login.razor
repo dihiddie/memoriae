@@ -1,0 +1,29 @@
+﻿<p>Errors: @errors</p>
+
+<EditForm Model="user" OnValidSubmit="DoLogin" class="card card-body bg-light mt-5">
+    <DataAnnotationsValidator />
+    <div class="form-group row">
+        <label for="login" class="col-md-2 col-form-label">Login:</label>
+        <div class="col-md-10">
+            <InputText id="login" class="form-control" @bind-Value="user.Login" />
+            <ValidationMessage For="@(() => user.Login)" />
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label for="password" class="col-md-2 col-form-label">Password:</label>
+        <div class="col-md-10">
+            <InputText type="password" id="password" class="form-control" @bind-Value="user.Password" />
+            <ValidationMessage For="@(() => user.Password)" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 text-right">
+            <button type="submit" class="btn btn-success">Login</button>
+        </div>
+    </div>
+</EditForm>
+
+<button class="btn btn-primary" @onclick="Register">Register</button>
+
