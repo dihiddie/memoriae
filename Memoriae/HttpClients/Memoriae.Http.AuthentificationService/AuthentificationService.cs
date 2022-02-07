@@ -55,6 +55,6 @@ namespace Memoriae.Http.AuthentificationService
             await localStorage.RemoveItemAsync("authToken");
             ((AuthStateProvider)authStateProvider).NotifyUserLogout();
             httpClient.DefaultRequestHeaders.Authorization = null;
-        }       
+        }      
     }
 }

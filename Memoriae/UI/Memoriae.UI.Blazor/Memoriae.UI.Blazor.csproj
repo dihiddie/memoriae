@@ -5,6 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Components\Logo.razor.css" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Components\Logo.razor.css" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Blazored.LocalStorage" Version="4.1.5" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="3.1.22" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.13" />
