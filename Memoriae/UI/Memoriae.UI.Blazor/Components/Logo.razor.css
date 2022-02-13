@@ -14,3 +14,12 @@
         margin-left: -30px;
         margin-right: -30px;
     }
+
+#inner {
+    display: table;
+    margin: 0 auto;    
+}
+
+#outer {    
+    width: 100%
+}

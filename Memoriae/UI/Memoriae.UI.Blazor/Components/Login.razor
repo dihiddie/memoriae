@@ -1,69 +1,29 @@
-﻿<p>Errors: @errors</p>
+﻿@using Memoriae.UI.Blazor.Enums;
 
-<Logo></Logo>
+<Logo Aligment=@Aligment.Top></Logo>
 
-<EditForm Model="user" OnValidSubmit="DoLogin" class="card card-body bg-light mt-5">
-    <DataAnnotationsValidator />
-    <div class="form-group row">
-        <label for="login" class="col-md-2 col-form-label">Login:</label>
-        <div class="col-md-10">
-            <InputText id="login" class="form-control" @bind-Value="user.Login" />
-            <ValidationMessage For="@(() => user.Login)" />
-        </div>
+<div class="control-section d-flex p-2">
+    <div class="col-11 col-md-8 col-lg-4 m-auto">
+        <p class="title" style="text-align:center">Добро пожаловать!</p>
+
+        <EditForm EditContext="@editContext" OnValidSubmit="ExecuteLogin">
+            <DataAnnotationsValidator />
+            <div class="form-row">
+                <div class="form-group col">
+                    <InputText placeholder="Логин" @bind-Value="user.Login" class="form-control" />
+                    <ValidationMessage For="@(() => user.Login)" />
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col">
+                    <InputText placeholder="Пароль" @bind-Value="user.Password" type="password" class="form-control" />
+                    <ValidationMessage For="@(() => user.Password)" />
+                </div>
+            </div>            
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary mr-1" style="width: 240px; background-color: white; border: 3px solid #FA6E59; color: #FA6E59; font-size: 14px; font-weight:bolder; border-radius: 6px">Войти с помощью Google</button>
+                <button type="submit" class="btn btn-primary mr-1" style="width: 240px; background-color: #FA6E59; border: 3px solid #FA6E59; font-size: 14px; font-weight: bolder; border-radius: 6px ">Войти</button>
+            </div>
+        </EditForm>
     </div>
-
-    <div class="form-group row">
-        <label for="password" class="col-md-2 col-form-label">Password:</label>
-        <div class="col-md-10">
-            <InputText type="password" id="password" class="form-control" @bind-Value="user.Password" />
-            <ValidationMessage For="@(() => user.Password)" />
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-md-12 text-right">
-            <button type="submit" class="btn btn-success">Login</button>
-        </div>
-    </div>
-</EditForm>
-
-<button class="btn btn-primary" @onclick="Register">Register</button>
-
-/* title */
-
-position: absolute;
-width: 235px;
-height: 47px;
-left: 842px;
-top: 29px;
-
-
-
-/* memoriae */
-
-position: absolute;
-width: 160px;
-height: 37px;
-left: 881px;
-top: 29px;
-
-font-family: Montserrat;
-font-style: normal;
-font-weight: 600;
-font-size: 30px;
-line-height: 37px;
-/* identical to box height */
-
-color: #000000;
-
-
-
-/* Line 1 */
-
-position: absolute;
-width: 235px;
-height: 0px;
-left: 842px;
-top: 76px;
-
-border: 1px solid #000000;
+</div>

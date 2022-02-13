@@ -5,10 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Components\Login.razor.css" />
     <None Remove="Components\Logo.razor.css" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Components\Login.razor.css" />
     <Content Include="Components\Logo.razor.css" />
   </ItemGroup>
 

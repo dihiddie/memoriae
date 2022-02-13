@@ -1,6 +1,7 @@
-﻿using Memoriae.BAL.User.Core;
-using Memoriae.Http.AuthentificationService;
+﻿using Memoriae.Http.AuthentificationService;
+using Memoriae.UI.Blazor.Models;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
 using System;
 using System.Threading.Tasks;
 
@@ -10,17 +11,25 @@ namespace Memoriae.UI.Blazor.Components
     {
         private User user = new User();
 
+        private EditContext editContext;
+
         [Inject]
         public IAuthentificationService AuthentificationService { get; set; }
 
-        private string errors = "Пока нет ошибок";
+        protected override void OnInitialized()
+        {
+            editContext = new EditContext(user);
+        }   
+     
+
+        private string errors;
 
 
-        private async Task DoLogin()
+        private async Task ExecuteLogin()
         {
             try
             {
-                var result = await AuthentificationService.Login(user);
+                var result = await AuthentificationService.Login(new BAL.User.Core.User { Login = user.Login, Password = user.Password });
                 errors = result.Success.ToString();
             }
             catch (Exception ex)
@@ -30,11 +39,11 @@ namespace Memoriae.UI.Blazor.Components
 
         }
 
-        private async Task Register()
+        private async Task ExecuteRegister()
         {
             try
             {
-                var result = await AuthentificationService.Register(user);
+                var result = await AuthentificationService.Register(new BAL.User.Core.User { Login = user.Login, Password = user.Password });
                 errors = result.Success.ToString();
             }
             catch (Exception ex)

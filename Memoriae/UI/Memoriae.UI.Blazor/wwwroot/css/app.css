@@ -4,6 +4,10 @@ html, body {
     font-family: 'Montserrat',  Arial, sans-serif;
 }
 
+* {
+    font-family: 'Montserrat', Arial, sans-serif;
+}
+
 a, .btn-link {
     color: #0366d6;
 }
@@ -27,7 +31,10 @@ a, .btn-link {
 }
 
 .validation-message {
-    color: red;
+    font-size: 80%;
+    color: #bd1616;
+    width: 100%;
+    margin-top: 0.25rem;
 }
 
 #blazor-error-ui {
@@ -48,3 +55,21 @@ a, .btn-link {
         right: 0.75rem;
         top: 0.5rem;
     }
+
+.title {
+    font-style: normal;
+    font-weight: bold;
+    font-size: 22px;
+    line-height: 27px;
+    color: #000000;
+}
+
+.form-control {
+    border: 1px solid #9A9EAB;
+    height: 45px;
+}
+
+.control-section {
+    min-height: 90vh;    
+    /*height: 100%;*/
+}

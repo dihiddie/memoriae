@@ -1,9 +1,20 @@
-﻿@*<div class="container">
-    <div class="row text-center">
-        <p class="hr">memoriae</p>
-    </div>
-</div>*@
+﻿@using Memoriae.UI.Blazor.Enums;
 
-<div class="row text-center">
+@if (Aligment == Aligment.Left)
+{
+<div>
     <p class="hr">memoriae</p>
 </div>
+}
+
+@if (Aligment == Aligment.Top)
+{
+<div id="outer">
+    <div id="inner"> <p class="hr">memoriae</p></div>
+</div>
+}
+
+@code{
+    [Parameter]
+    public Aligment Aligment { get; set; }
+}
