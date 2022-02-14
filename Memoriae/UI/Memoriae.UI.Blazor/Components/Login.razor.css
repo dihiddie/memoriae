@@ -2,6 +2,10 @@
     display: block;
 }
 
+.form-control {
+    border-color: #bd1616;
+    padding-right: calc(1.5em + 0.75rem);
+}
 
 .form-control.invalid {
     border-color: #bd1616;

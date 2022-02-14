@@ -16,25 +16,22 @@ namespace Memoriae.UI.Blazor.Components
         [Inject]
         public IAuthentificationService AuthentificationService { get; set; }
 
+        public bool RegistrationIsOn { get; set; }
+
         protected override void OnInitialized()
         {
             editContext = new EditContext(user);
-        }   
-     
-
-        private string errors;
-
+        }      
 
         private async Task ExecuteLogin()
         {
             try
             {
-                var result = await AuthentificationService.Login(new BAL.User.Core.User { Login = user.Login, Password = user.Password });
-                errors = result.Success.ToString();
+                var result = await AuthentificationService.Login(new BAL.User.Core.User { Login = user.Login, Password = user.Password });                
             }
             catch (Exception ex)
             {
-                errors = ex.Message;
+                
             }
 
         }
@@ -43,14 +40,37 @@ namespace Memoriae.UI.Blazor.Components
         {
             try
             {
-                var result = await AuthentificationService.Register(new BAL.User.Core.User { Login = user.Login, Password = user.Password });
-                errors = result.Success.ToString();
+                var result = await AuthentificationService.Register(new BAL.User.Core.User { Login = user.Login, Password = user.Password });                
+                
+                RegistrationIsOn = false;
+                user = new User();
             }
             catch (Exception ex)
             {
-                errors = ex.Message;
             }
 
         }
+
+        protected async Task ExecuteLogin(EditContext formContext)
+        {
+            bool formIsValid = formContext.Validate();
+            if (formIsValid == false)
+                return;
+
+            await ExecuteLogin().ConfigureAwait(false);
+            
+        }
+
+        protected async Task ExecuteRegister(EditContext formContext)
+        {
+            bool formIsValid = formContext.Validate();
+            if (formIsValid == false)
+                return;
+
+            await ExecuteRegister().ConfigureAwait(false);
+
+        }
+
+        protected void ChangeView() => RegistrationIsOn = !RegistrationIsOn;
     }
 }

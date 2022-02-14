@@ -8,9 +8,6 @@ html, body {
     font-family: 'Montserrat', Arial, sans-serif;
 }
 
-a, .btn-link {
-    color: #0366d6;
-}
 
 .btn-primary {
     color: #fff;
@@ -56,6 +53,8 @@ a, .btn-link {
         top: 0.5rem;
     }
 
+/* Login */
+
 .title {
     font-style: normal;
     font-weight: bold;
@@ -66,10 +65,75 @@ a, .btn-link {
 
 .form-control {
     border: 1px solid #9A9EAB;
-    height: 45px;
+    height: 45px;    
 }
 
 .control-section {
-    min-height: 90vh;    
-    /*height: 100%;*/
+    min-height: 90vh;        
 }
+
+.buttonsContainer {
+    display: flex;
+    justify-content: space-between;
+}
+
+.borderedButton {
+    width: 280px;
+    height: 43px;
+    background-color: white;
+    border: 2px solid #FA6E59;
+    color: #FA6E59;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 6px;
+    align-content: end;
+}
+
+    .borderedButton:focus {
+        border: 2px solid #FA6E59;
+    }
+
+    .filledButton {
+        width: 280px;
+        height: 43px;
+        background-color: #FA6E59;
+        border: 2px solid #FA6E59;
+        color: white;
+        font-size: 14px;
+        font-weight: 600;
+        border-radius: 6px;        
+    }
+
+    .filledButton:focus {
+        border: 2px solid #FA6E59;
+    }
+
+#registerButton {    
+    width: 100%;
+    height: 43px;
+    background-color: #FA6E59;
+    border: 2px solid #FA6E59;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 6px;
+    flex:auto;
+}
+
+.registerLink {    
+    font-weight: 700;
+    font-size: 12px;
+    line-height: 27px;
+    cursor: pointer;
+}
+
+filledButton:hover,
+filledButton:focus {
+    background: #0053ba;
+}
+
+filledButton:focus {
+    outline: 1px solid #fff;
+    outline-offset: -4px;
+}
+
