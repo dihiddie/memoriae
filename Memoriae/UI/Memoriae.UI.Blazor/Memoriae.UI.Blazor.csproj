@@ -26,4 +26,8 @@
     <ProjectReference Include="..\..\HttpClients\Memoriae.Http.AuthentificationService\Memoriae.Http.AuthentificationService.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\icons\" />
+  </ItemGroup>
+
 </Project>

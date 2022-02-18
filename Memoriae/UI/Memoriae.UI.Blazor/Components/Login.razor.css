@@ -7,15 +7,18 @@
     padding-right: calc(1.5em + 0.75rem);
 }
 
-.form-control.invalid {
-    border-color: #bd1616;
-    padding-right: calc(1.5em + 0.75rem);
-}
-
-    .form-control.invalid:focus {
+    .form-control.invalid {
         border-color: #bd1616;
-        box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+        padding-right: calc(1.5em + 0.75rem);
     }
+
+
+
+
+        .form-control.invalid:focus {
+            border-color: #bd1616;
+            box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+        }
 
 textarea.form-control.invalid {
     padding-right: calc(1.5em + 0.75rem);

@@ -137,3 +137,10 @@ filledButton:focus {
     outline-offset: -4px;
 }
 
+.form-control.valid {
+    border-color: aquamarine;
+}
+
+.invalid ~ .validation-message {
+    display: block;
+}
