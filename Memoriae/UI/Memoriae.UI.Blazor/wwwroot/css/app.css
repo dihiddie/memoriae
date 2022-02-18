@@ -1,8 +1,8 @@
 ﻿@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
-html, body {
+/*html, body {
     font-family: 'Montserrat',  Arial, sans-serif;
-}
+}*/
 
 * {
     font-family: 'Montserrat', Arial, sans-serif;
@@ -19,17 +19,19 @@ html, body {
     padding-top: 1.1rem;
 }
 
-.valid.modified:not([type=checkbox]) {
-    outline: 1px solid #26b050;
+/*.valid.modified:not([type=checkbox]) {*/
+    /*outline: 5px solid blue;*/
+    /*border: 1px solid #9A9EAB;
+}*/
+
+.form-control.invalid {
+    border: 1px solid #CC0000;
 }
 
-.invalid {
-    outline: 1px solid red;
-}
 
 .validation-message {
     font-size: 80%;
-    color: #bd1616;
+    color: #CC0000;
     width: 100%;
     margin-top: 0.25rem;
 }
@@ -104,9 +106,13 @@ html, body {
         border-radius: 6px;        
     }
 
-    .filledButton:focus {
+   /* .filledButton:focus {
         border: 2px solid #FA6E59;
-    }
+    }*/
+
+.filledButton:focus, [type="submit"]:focus {
+    outline: none;
+}
 
 #registerButton {    
     width: 100%;
@@ -125,20 +131,6 @@ html, body {
     font-size: 12px;
     line-height: 27px;
     cursor: pointer;
-}
-
-filledButton:hover,
-filledButton:focus {
-    background: #0053ba;
-}
-
-filledButton:focus {
-    outline: 1px solid #fff;
-    outline-offset: -4px;
-}
-
-.form-control.valid {
-    border-color: aquamarine;
 }
 
 .invalid ~ .validation-message {
