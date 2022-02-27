@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Blazored.LocalStorage" Version="4.1.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="3.1.22" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\BAL\Memoriae.BAL.User.Core\Memoriae.BAL.User.Core.csproj" />
+  </ItemGroup>
+
+</Project>

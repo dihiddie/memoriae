@@ -1,0 +1,58 @@
+﻿
+@if (LoaderVisible)
+{
+    <Loader></Loader>
+
+}
+else
+{
+    <Logo Aligment=@Aligment.Top></Logo>
+
+    <div class="control-section d-flex p-2">
+        <div class="col-11 col-md-8 col-lg-4 m-auto">
+
+            <p class="title" style="text-align:center">Добро пожаловать!</p>
+
+            <EditForm EditContext="@editContext">
+                <DataAnnotationsValidator />
+                <div class="form-row">
+                    <div class="form-group col">
+                        <InputText placeholder="Логин" @bind-Value="user.Login" class="form-control" />
+                        <ValidationMessage For="@(() => user.Login)" />
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col">
+                        <InputText placeholder="Пароль" @bind-Value="user.Password" type="password" class="form-control" />
+                        <ValidationMessage For="@(() => user.Password)" />
+                    </div>
+                </div>
+                @if (!string.IsNullOrEmpty(Error))
+                {
+                    // TODO modal box https://stackoverflow.com/questions/59256798/how-to-use-bootstrap-modal-in-blazor-client-app
+                    <p id="error">@Error</p>
+
+                }
+                @if (!RegistrationIsOn)
+                {
+                    <div class="buttonsContainer">
+                        <button type="submit" class="borderedButton" @onclick="@(() => ExecuteGoogleLogin(editContext))">Войти с помощью Google</button>
+                        <button type="submit" class="filledButton" @onclick="@(() => ExecuteLogin(editContext))">Войти</button>
+                    </div>
+                    <a @onclick="@ChangeView" class="registerLink" style="color: #9A9EAB; text-decoration-line: underline;">Не зарегистрированы?</a>
+                }
+                else
+                {
+                    <div class="text-center">
+                        <button type="submit" id="registerButton" @onclick="@(() => ExecuteRegister(editContext))">Зарегистрироваться</button>
+                    </div>
+
+                    <div class="text-center">
+                        <a @onclick="@ChangeView" class="registerLink" style="color: #9A9EAB; text-decoration-line: underline;">Уже зарегистрированы?</a>
+                    </div>
+
+                }
+            </EditForm>
+        </div>
+    </div>
+}

@@ -26,6 +26,23 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{A544
 		Scripts\createTables.sql = Scripts\createTables.sql
 	EndProjectSection
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Memoriae.DAL.Users.PostgreSQL.EF", "DAL\Memoriae.DAL.Users.PostgreSQL.EF\Memoriae.DAL.Users.PostgreSQL.EF.csproj", "{F01A9BF1-DC86-4E2F-84E9-65B12C18CDA7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Memoriae.BAL.User.Core", "BAL\Memoriae.BAL.User.Core\Memoriae.BAL.User.Core.csproj", "{9BC1CEE2-6596-4EC4-9589-B7C795E1DA34}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{11A40AB4-9910-466B-BB69-4598505CC999}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "HttpClients", "HttpClients", "{5230C9A2-9FB5-4007-A030-B2180A331005}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Memoriae.Http.AuthentificationService", "HttpClients\Memoriae.Http.AuthentificationService\Memoriae.Http.AuthentificationService.csproj", "{F111D38B-FC6B-4BAD-BA67-537412E05F24}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Memoriae.UI.Blazor", "UI\Memoriae.UI.Blazor\Memoriae.UI.Blazor.csproj", "{4157B708-AD3D-4224-92DA-A37B900735F2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Anlytics", "Anlytics", "{8219338D-839B-425A-8265-CF3F5EC3E578}"
+	ProjectSection(SolutionItems) = preProject
+		errors.txt = errors.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -52,6 +69,22 @@ Global
 		{6D633C17-B999-4FF0-ADCC-11A644CAE0EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D633C17-B999-4FF0-ADCC-11A644CAE0EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D633C17-B999-4FF0-ADCC-11A644CAE0EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F01A9BF1-DC86-4E2F-84E9-65B12C18CDA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F01A9BF1-DC86-4E2F-84E9-65B12C18CDA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F01A9BF1-DC86-4E2F-84E9-65B12C18CDA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F01A9BF1-DC86-4E2F-84E9-65B12C18CDA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9BC1CEE2-6596-4EC4-9589-B7C795E1DA34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9BC1CEE2-6596-4EC4-9589-B7C795E1DA34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9BC1CEE2-6596-4EC4-9589-B7C795E1DA34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9BC1CEE2-6596-4EC4-9589-B7C795E1DA34}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F111D38B-FC6B-4BAD-BA67-537412E05F24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F111D38B-FC6B-4BAD-BA67-537412E05F24}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F111D38B-FC6B-4BAD-BA67-537412E05F24}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F111D38B-FC6B-4BAD-BA67-537412E05F24}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4157B708-AD3D-4224-92DA-A37B900735F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4157B708-AD3D-4224-92DA-A37B900735F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4157B708-AD3D-4224-92DA-A37B900735F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4157B708-AD3D-4224-92DA-A37B900735F2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -62,6 +95,10 @@ Global
 		{FEBB293C-4F5E-47AD-9289-2454C23D7FA3} = {0AAF4799-0799-44F9-92BF-11C12B3FAE00}
 		{BD2B96D8-CA26-4800-AC7A-0A9FA8D1314F} = {4403CE46-04EB-4ED9-B48D-BB31E1DD604A}
 		{6D633C17-B999-4FF0-ADCC-11A644CAE0EF} = {41C76CC7-A69B-4470-95EB-81FACFA18DF0}
+		{F01A9BF1-DC86-4E2F-84E9-65B12C18CDA7} = {C8AE9DCB-4554-4AB6-9771-01A0F2B7F485}
+		{9BC1CEE2-6596-4EC4-9589-B7C795E1DA34} = {4403CE46-04EB-4ED9-B48D-BB31E1DD604A}
+		{F111D38B-FC6B-4BAD-BA67-537412E05F24} = {5230C9A2-9FB5-4007-A030-B2180A331005}
+		{4157B708-AD3D-4224-92DA-A37B900735F2} = {11A40AB4-9910-466B-BB69-4598505CC999}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C221E633-185F-4E76-B1D2-71F1788FBC4E}

@@ -65,5 +65,19 @@
             <param name="tags">Список тегов</param>
             <returns>Созданный или обновленный тег</returns>
         </member>
+        <member name="M:Memoriae.WebApi.Controllers.UserController.Register(Memoriae.BAL.User.Core.User)">
+            <summary>
+            Регистрация пользователя
+            </summary>
+            <param name="user">Модель пользователя</param>
+            <returns>Результат регистрации</returns>
+        </member>
+        <member name="M:Memoriae.WebApi.Controllers.UserController.Login(Memoriae.BAL.User.Core.User)">
+            <summary>
+            Вход пользователя в систему
+            </summary>
+            <param name="user">Модель пользователя</param>
+            <returns>Результат входа в систему</returns>
+        </member>
     </members>
 </doc>
