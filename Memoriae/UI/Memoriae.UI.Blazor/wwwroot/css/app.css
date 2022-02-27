@@ -80,8 +80,8 @@
 }
 
 .borderedButton {
-    width: 280px;
-    height: 43px;
+    width: 50%;
+    height: 45px;
     background-color: white;
     border: 2px solid #FA6E59;
     color: #FA6E59;
@@ -89,22 +89,24 @@
     font-weight: 600;
     border-radius: 6px;
     align-content: end;
+    margin-right: 5px;
 }
 
     .borderedButton:focus {
         border: 2px solid #FA6E59;
     }
 
-    .filledButton {
-        width: 280px;
-        height: 43px;
-        background-color: #FA6E59;
-        border: 2px solid #FA6E59;
-        color: white;
-        font-size: 14px;
-        font-weight: 600;
-        border-radius: 6px;        
-    }
+.filledButton {
+    width: 50%;
+    height: 45px;
+    background-color: #FA6E59;
+    border: 2px solid #FA6E59;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 6px;
+    margin-left: 5px;
+}
 
    /* .filledButton:focus {
         border: 2px solid #FA6E59;
@@ -135,4 +137,65 @@
 
 .invalid ~ .validation-message {
     display: block;
+}
+
+
+/* LOADER */
+.cssloader {
+    padding-top: calc(45vh - 25px);
+}
+
+.sh1 {
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 50px 50px 0 0;
+    border-color: #9A9EAB transparent transparent transparent;
+    margin: 0 auto;
+    animation: shk1 1s ease-in-out infinite normal;
+}
+
+.sh2 {
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 0 0 50px 50px;
+    border-color: transparent transparent #FA6E59 transparent;
+    margin: -50px auto 0;
+    animation: shk2 1s ease-in-out infinite alternate;
+}
+
+/** animation starts here **/
+@keyframes shk1 {
+    0% {
+        transform: rotate(-360deg);
+    }
+
+    100% {
+    }
+}
+
+@keyframes shk2 {
+    0% {
+        transform: rotate(360deg);
+    }
+
+    100% {
+    }
+}
+
+.lt {
+    color: black;    
+    margin: 30px auto;
+    text-align: center;
+    font-weight: 500;
+    font-size: 16px;
+    letter-spacing: 7px;
+}
+
+#error {
+    font-size: 80%;
+    color: #CC0000;
+    font-weight: 600;
+    width: 100%;   
 }

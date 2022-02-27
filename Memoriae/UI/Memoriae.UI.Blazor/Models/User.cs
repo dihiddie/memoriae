@@ -9,7 +9,7 @@
 
 
         [Required(ErrorMessage = "* Поле обязательно")]
-        [MinLength(6, ErrorMessage = "* Пароль должен содержать минимум 7 символов")]
+        [MinLength(5, ErrorMessage = "* Пароль должен содержать минимум 5 символов")]
         public string Password { get; set; }
     }
 }

@@ -56,8 +56,11 @@ namespace Memoriae.WebApi.Controllers
         {
             var identityUser = await userManager.FindByNameAsync(user.Login);
 
-            if (identityUser == null || !await userManager.CheckPasswordAsync(identityUser, user.Password).ConfigureAwait(false))                
-                return Unauthorized(new AuthResponse { Success = false, PasswordCheckFailed = true });           
+            if (identityUser == null)
+                return Unauthorized(new AuthResponse { Success = false, Error = "Пользователь с таким логином не найден!" });
+
+            if (!await userManager.CheckPasswordAsync(identityUser, user.Password).ConfigureAwait(false))                
+                return Unauthorized(new AuthResponse { Success = false, Error = "Неверный пароль!" });           
             
             return Ok(GetAuthResponse(identityUser));
         }       

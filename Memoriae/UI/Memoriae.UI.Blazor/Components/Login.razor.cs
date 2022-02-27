@@ -3,6 +3,7 @@ using Memoriae.UI.Blazor.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Memoriae.UI.Blazor.Components
@@ -11,66 +12,76 @@ namespace Memoriae.UI.Blazor.Components
     {
         private User user = new User();
 
-        private EditContext editContext;
+        private EditContext editContext;        
 
         [Inject]
         public IAuthentificationService AuthentificationService { get; set; }
 
         public bool RegistrationIsOn { get; set; }
 
+        public bool LoaderVisible { get; set; } = false;
+
+        public string Error { get; set; }
+
         protected override void OnInitialized()
         {
             editContext = new EditContext(user);
-        }      
+        }           
+
+        protected async Task ExecuteLogin(EditContext formContext)
+        {
+            if(!ValidateForm(formContext)) return;            
+            await ExecuteLogin().ConfigureAwait(false);            
+        }
+
+        protected void ExecuteGoogleLogin(EditContext formContext)
+        {
+            if (!ValidateForm(formContext)) return;
+        }
+
+        protected async Task ExecuteRegister(EditContext formContext)
+        {
+            if (!ValidateForm(formContext)) return;
+            await ExecuteRegister().ConfigureAwait(false);
+        }
 
         private async Task ExecuteLogin()
         {
-            try
-            {
-                var result = await AuthentificationService.Login(new BAL.User.Core.User { Login = user.Login, Password = user.Password });                
-            }
-            catch (Exception ex)
-            {
-                
-            }
+            SetLoader();
+            var result = await AuthentificationService.Login(new BAL.User.Core.User { Login = user.Login, Password = user.Password });
+            if (!result.Success) Error = string.IsNullOrEmpty(result.Error) ? "Ошибка входа" : result.Error;
+            user.Password = null;
+            CancelLoader();
 
         }
 
         private async Task ExecuteRegister()
         {
-            try
-            {
-                var result = await AuthentificationService.Register(new BAL.User.Core.User { Login = user.Login, Password = user.Password });                
-                
-                RegistrationIsOn = false;
-                user = new User();
-            }
-            catch (Exception ex)
-            {
-            }
+            SetLoader();
+            var result = await AuthentificationService.Register(new BAL.User.Core.User { Login = user.Login, Password = user.Password });
+            if (!result.Success) Error = result.Errors.Any() ? string.Join(", ", result.Errors) : "Произошла ошибка при регистрации";
 
+            RegistrationIsOn = false;
+            user.Password = null;
+            CancelLoader();
         }
 
-        protected async Task ExecuteLogin(EditContext formContext)
+        private bool ValidateForm(EditContext formContext)
         {
-            bool formIsValid = formContext.Validate();
-            if (formIsValid == false)
-                return;
-
-            await ExecuteLogin().ConfigureAwait(false);
-            
+            Error = null;
+            return formContext.Validate();            
         }
 
-        protected async Task ExecuteRegister(EditContext formContext)
+        protected void ChangeView()
         {
-            bool formIsValid = formContext.Validate();
-            if (formIsValid == false)
-                return;
-
-            await ExecuteRegister().ConfigureAwait(false);
-
+            RegistrationIsOn = !RegistrationIsOn;
+            Error = null;
         }
 
-        protected void ChangeView() => RegistrationIsOn = !RegistrationIsOn;
+        protected void SetLoader() => LoaderVisible = true;
+
+        protected void CancelLoader() => LoaderVisible = false;
+
+
     }
 }

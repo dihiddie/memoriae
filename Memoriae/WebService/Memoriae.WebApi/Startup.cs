@@ -122,7 +122,7 @@ namespace Memoriae.WebApi
 
             services.AddIdentity<IdentityUser, IdentityRole>(opts =>
             {
-                opts.Password.RequiredLength = 7;   // минимальная длина
+                opts.Password.RequiredLength = 5;   // минимальная длина
                 opts.Password.RequireNonAlphanumeric = false;   // требуются ли не алфавитно-цифровые символы
                 opts.Password.RequireLowercase = false; // требуются ли символы в нижнем регистре
                 opts.Password.RequireUppercase = false; // требуются ли символы в верхнем регистре
