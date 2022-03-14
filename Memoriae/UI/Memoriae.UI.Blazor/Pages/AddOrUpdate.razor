@@ -2,18 +2,19 @@
 
 <Logo Aligment=@Aligment.Top></Logo>
 
-<div class="control-section d-flex p-2">
-    <div class="col-11 col-md-8 col-lg-4 m-auto">
-        @*@bind-Value="user.Login"*@
-        <div class="form-row">
-            <div class="form-group col">
-                <InputText placeholder="Введите заголовок" class="form-control" />
-            </div>
+
+<div class="addContainer">
+    <p>
+        <input type="text" placeholder="Введите заголовок" @bind="post.Title" class="transparentInputTitle" />
+    </p>
+    <p>
+        <textarea type="text" rows="30" placeholder="Введите текст" @bind="post.Text" class="reading" />
+    </p>
+    <div class="addFooter">
+        <hr />
+        <p>Добавьте теги</p>
+        <div class="text-right">
+            <button type="submit" class="filledButton">Сохранить</button>
         </div>
-        <div class="form-row">
-            <div class="form-group col">
-                <InputText placeholder="Введите текст" class="form-control" />
-            </div>
-        </div>        
     </div>
-        </div>
+</div>
