@@ -1,9 +1,13 @@
-﻿@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
+@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
 @import url(https://fonts.googleapis.com/css?family=Montserrat);
 
 * {
     font-family: 'Montserrat', Arial, sans-serif;
+}
+
+body {    
+    margin-top: 15px;    
 }
 
 
@@ -201,7 +205,7 @@
     border-color: transparent;
     font-weight: 600;
     font-style: normal;
-    font-size: 22px;
+    font-size: 20px;
     line-height: 30px;
     color: #000000;
     width: 100%;
@@ -209,7 +213,7 @@
 
 .transparentInputTitle::placeholder {
     font-weight: 400;
-    font-size: 22px;
+    font-size: 20px;
     line-height: 30px;
     color: #C0C0C0;
 }
@@ -235,14 +239,16 @@
 
 .addContainer {
     margin-left: 15%;
-    margin-right: 15%;
+    margin-right: 15%;      
 }
+
 
 .addFooter {
     position: fixed;
     bottom: 0;
-    width: 100%;    
+    width: 100%;
 }
+
 
 textarea {
      width: 100%;

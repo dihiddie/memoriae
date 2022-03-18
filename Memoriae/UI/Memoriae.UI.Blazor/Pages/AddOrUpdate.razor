@@ -4,17 +4,19 @@
 
 
 <div class="addContainer">
-    <p>
-        <input type="text" placeholder="Введите заголовок" @bind="post.Title" class="transparentInputTitle" />
-    </p>
-    <p>
-        <textarea type="text" rows="30" placeholder="Введите текст" @bind="post.Text" class="reading" />
-    </p>
+        <p>
+            <input type="text" placeholder="Введите заголовок" @bind="post.Title" class="transparentInputTitle" />
+        </p>
+        <p>
+            <textarea type="text" rows="30" placeholder="Введите текст" @bind="post.Text" class="reading" />
+        </p>
+    </div>
     <div class="addFooter">
-        <hr />
-        <p>Добавьте теги</p>
-        <div class="text-right">
-            <button type="submit" class="filledButton">Сохранить</button>
+        <div class="addContainer">
+            <hr />
+            <div style="display: flex; justify-content: space-between">
+                <p>Добавьте теги</p>
+                <button type="submit" class="saveButton" style="float: right; width: 150px; height: 30px;">Сохранить</button>
+            </div>
         </div>
     </div>
-</div>
