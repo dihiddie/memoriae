@@ -230,12 +230,12 @@ body {
     text-align: justify;
 }
 
-    .reading::placeholder {
+/*    .reading::placeholder {
         font-weight: 400;
         font-size: 16px;
         line-height: 20px;
         color: #C0C0C0;
-    }
+    }*/
 
 .addContainer {
     margin-left: 15%;
@@ -265,4 +265,29 @@ textarea {
     font-weight: 600;
     border-radius: 6px;
     margin-left: 5px;
+}
+
+.ql-editor {
+    text-align: justify;
+    padding: 0px;
+    padding-top: 10px;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    color: #000000;
+    text-align: justify;    
+    word-wrap: break-word;
+}
+
+.ql-container.ql-snow {
+    border-color: transparent;
+}
+
+.ql-editor.ql-blank::before {
+    left: 0px;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20px;
+    color: #C0C0C0;
+    font-style: normal;
 }

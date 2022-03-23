@@ -1,22 +1,79 @@
 ﻿@page "/addorupdate"
+@using Blazored.TextEditor
 
 <Logo Aligment=@Aligment.Top></Logo>
 
 
 <div class="addContainer">
-        <p>
-            <input type="text" placeholder="Введите заголовок" @bind="post.Title" class="transparentInputTitle" />
-        </p>
-        <p>
-            <textarea type="text" rows="30" placeholder="Введите текст" @bind="post.Text" class="reading" />
-        </p>
-    </div>
-    <div class="addFooter">
-        <div class="addContainer">
-            <hr />
-            <div style="display: flex; justify-content: space-between">
-                <p>Добавьте теги</p>
-                <button type="submit" class="saveButton" style="float: right; width: 150px; height: 30px;">Сохранить</button>
-            </div>
+    <p>
+        <input type="text" placeholder="Введите заголовок" @bind="post.Title" class="transparentInputTitle" />
+    </p>
+    @*<p>
+        <textarea type="text" rows="30" placeholder="Введите текст" @bind="post.Text" class="reading" />
+    </p>*@
+    <BlazoredTextEditor @ref="@QuillHtml" Placeholder="Введите текст">
+        <ToolbarContent>
+            <select class="ql-header">
+                <option selected=""></option>
+                <option value="1"></option>
+                <option value="2"></option>
+                <option value="3"></option>
+                <option value="4"></option>
+                <option value="5"></option>
+            </select>
+            <span class="ql-formats">
+                <button class="ql-bold"></button>
+                <button class="ql-italic"></button>
+                <button class="ql-underline"></button>
+                <button class="ql-strike"></button>
+            </span>            
+            <span class="ql-formats">
+                <button class="ql-list" value="ordered"></button>
+                <button class="ql-list" value="bullet"></button>
+            </span>            
+        </ToolbarContent>
+        <EditorContent>
+        </EditorContent>
+    </BlazoredTextEditor>
+</div>
+<div class="addFooter">
+    <div class="addContainer">
+        <hr />
+        <div style="display: flex; justify-content: space-between">
+            <p>Добавьте теги</p>
+            <button type="submit" class="saveButton" style="float: right; width: 150px; height: 30px;">Сохранить</button>
         </div>
     </div>
+</div>
+
+@code { 
+    BlazoredTextEditor QuillHtml;
+    BlazoredTextEditor QuillNative;
+    BlazoredTextEditor QuillReadOnly;
+
+    string QuillHTMLContent;
+    string QuillContent;
+    
+
+    public async void GetHTML()
+    {
+        QuillHTMLContent = await this.QuillHtml.GetHTML();
+        StateHasChanged();
+    }
+
+    public async void SetHTML()
+    {
+        string QuillContent =
+            @"<p><strong><em><u>большие банки</u></em></strong></p>";
+
+        await this.QuillHtml.LoadHTMLContent(QuillContent);
+        StateHasChanged();
+    }
+
+    public async void GetContent()
+    {
+        QuillContent = await this.QuillNative.GetContent();
+        StateHasChanged();
+    }
+   
+ }
