@@ -275,8 +275,13 @@ textarea {
     font-size: 14px;
     line-height: 20px;
     color: #000000;
-    text-align: justify;    
+    text-align: justify;
     word-wrap: break-word;
+
+    /*height: 100%;
+    flex: 1;
+    overflow-y: auto;
+    width: 100%;*/
 }
 
 .ql-container.ql-snow {
@@ -290,4 +295,23 @@ textarea {
     line-height: 20px;
     color: #C0C0C0;
     font-style: normal;
+}
+
+.ql-toolbar {
+    overflow: hidden;
+    background-color: white;    
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    z-index: 1;
+    margin-bottom: 2px;        
+}
+
+    .ql-toolbar.ql-snow {
+        border-color: transparent;
+        padding-left: 0px;
+    }
+
+.ql-snow .ql-picker-label {
+    padding-left: 0px;
 }

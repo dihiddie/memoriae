@@ -14,5 +14,9 @@ namespace Memoriae.UI.Blazor.Pages
         {
             editContext = new EditContext(post);
         }
+
+        protected void Save()
+        {            
+        }
     }
 }
