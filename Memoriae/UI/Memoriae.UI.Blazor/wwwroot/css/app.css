@@ -297,7 +297,7 @@ textarea {
     font-style: normal;
 }
 
-.ql-toolbar {
+/*.ql-toolbar {
     overflow: hidden;
     background-color: white;    
     position: fixed;
@@ -306,12 +306,12 @@ textarea {
     z-index: 1;
     margin-bottom: 2px;        
 }
-
+*/
     .ql-toolbar.ql-snow {
         border-color: transparent;
         padding-left: 0px;
     }
 
-.ql-snow .ql-picker-label {
+/*.ql-snow .ql-picker-label {
     padding-left: 0px;
-}
+}*/
