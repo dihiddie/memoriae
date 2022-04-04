@@ -3,13 +3,10 @@
 
 <Logo Aligment=@Aligment.Top></Logo>
 
-
 <div class="addContainer">
     <p>
         <input type="text" placeholder="Введите заголовок" @bind="post.Title" class="transparentInputTitle" />
-    </p>    
-</div>
-<div class="addContainer">
+    </p>
     <BlazoredTextEditor @ref="@QuillHtml" Placeholder="Введите текст">
         <ToolbarContent>
             <select class="ql-header">
@@ -29,34 +26,29 @@
             <span class="ql-formats">
                 <button class="ql-list" value="ordered"></button>
                 <button class="ql-list" value="bullet"></button>
-            </span>               
+            </span>
         </ToolbarContent>
         <EditorContent>
         </EditorContent>
     </BlazoredTextEditor>
 </div>
 
-<div class="addFooter">
-    <button type="submit" class="saveButton" style="margin-right: 20px; margin-bottom: 40px; width: 150px; height: 30px; float: right">Тэги</button>
-    <button type="submit" class="saveButton" style="margin-right: 20px; margin-bottom: 20px; width: 150px; height: 30px; float: right">Сохранить</button>
-
-    @*<div class="addContainer">
-            <hr />
-            <div style="display: flex; justify-content: space-between">
-                <p>Добавьте теги</p>
-                <button type="submit" class="saveButton" style="float: right; width: 150px; height: 30px;">Сохранить</button>
-            </div>
-        </div>*@
+<div class="sidePanel">
+    @*<button type="submit" class="saveBorderedButton" style="margin-right: 20px; margin-bottom: 20px; float: right" @onclick="SaveAsync">Сохранить</button>*@
+    <button type="submit" class="saveButton" style="margin-right: 20px; margin-bottom: 20px; float: right" @onclick="SaveAsync">Сохранить</button>
+</div>
+<div class="sidePanel">
+    <button type="submit" class="saveButton" style="margin-right: 20px; margin-bottom: 70px; float: right" @onclick="SaveAsync">Тэги</button>
 </div>
 
-@code { 
-    BlazoredTextEditor QuillHtml;
+@*@code { 
+    // BlazoredTextEditor QuillHtml;
     BlazoredTextEditor QuillNative;
     BlazoredTextEditor QuillReadOnly;
 
     string QuillHTMLContent;
     string QuillContent;
-    
+
 
     public async void GetHTML()
     {
@@ -78,5 +70,11 @@
         QuillContent = await this.QuillNative.GetContent();
         StateHasChanged();
     }
-   
- }
+
+    private void ReportPointerLocation(MouseEventArgs e)
+    {
+        Console.WriteLine("My debug output.");
+        // mousePointerMessage = $"Mouse coordinates: {e.ScreenX}:{e.ScreenY}";
+    }
+
+ }*@

@@ -12,6 +12,7 @@ using DbTag = Memoriae.DAL.PostgreSQL.EF.Models.Tag;
 
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using Memoriae.BAL.Core.Models;
 
 namespace Memoriae.BAL.PostgreSQL
 {
@@ -40,19 +41,25 @@ namespace Memoriae.BAL.PostgreSQL
             mapped.Title = $"Глава {chapterNumber}. {mapped.Title}";          
             await context.AddAsync(mapped).ConfigureAwait(false);
             await context.SaveChangesAsync().ConfigureAwait(false);
-            
-            await CreateOrUpdatePostTagLinkAsync(mapped.Id, post.Tags?.Where(x => x.Id == null).Select(x => x.Name), post.Tags?.Where(x => x.Id != null).Select(x => x.Id.Value));            
+
+            var postTags = new PostTags
+            {
+                PostId = mapped.Id,
+                NewTags = post.Tags?.Where(x => x.Id == null).Select(x => x.Name),
+                ExistingTags = post.Tags?.Where(x => x.Id != null).Select(x => x.Id.Value)
+            };
+            await CreateOrUpdatePostTagLinkAsync(postTags);            
 
             return await GetAsync(mapped.Id).ConfigureAwait(false);
 
         }
 
-        public async Task CreateOrUpdatePostTagLinkAsync(Guid postId, IEnumerable<string> newTags, IEnumerable<Guid> existingTags)
+        public async Task CreateOrUpdatePostTagLinkAsync(PostTags postTags)
         {            
-            await SavePostWithExistingTags(postId, existingTags).ConfigureAwait(false);
-            await SaveNewTagsAndLinksAsync(postId, newTags).ConfigureAwait(false);            
+            await SavePostWithExistingTags(postTags.PostId, postTags.ExistingTags).ConfigureAwait(false);
+            await SaveNewTagsAndLinksAsync(postTags.PostId, postTags.NewTags).ConfigureAwait(false);            
 
-            logger.LogInformation($"Сохранение поста с Id = {postId} с тегами произведено успешно");            
+            logger.LogInformation($"Сохранение поста с Id = {postTags.PostId} с тегами произведено успешно");            
         }
 
         public async Task<IEnumerable<Post>> GetAsync()
@@ -101,8 +108,14 @@ namespace Memoriae.BAL.PostgreSQL
             mapper.Map(post, postInDb);
             context.Update(postInDb);
             await context.SaveChangesAsync(false);
-            
-            await CreateOrUpdatePostTagLinkAsync(post.Id, post.Tags?.Where(x => x.Id == null).Select(x => x.Name), post.Tags?.Where(x => x.Id != null).Select(x => x.Id.Value));
+
+            var postTags = new PostTags
+            {
+                PostId = post.Id,
+                NewTags = post.Tags?.Where(x => x.Id == null).Select(x => x.Name),
+                ExistingTags = post.Tags?.Where(x => x.Id != null).Select(x => x.Id.Value)
+            };
+            await CreateOrUpdatePostTagLinkAsync(postTags);
 
             return await GetAsync(post.Id).ConfigureAwait(false);
         }

@@ -21,11 +21,6 @@ body {
     padding-top: 1.1rem;
 }
 
-/*.valid.modified:not([type=checkbox]) {*/
-    /*outline: 5px solid blue;*/
-    /*border: 1px solid #9A9EAB;
-}*/
-
 .form-control.invalid {
     border: 1px solid #CC0000;
 }
@@ -138,7 +133,12 @@ body {
 }
 
 
-/* LOADER */
+/* ============================================= */
+
+
+
+/* ==================== LOADER ==================== */
+
 .cssloader {
     padding-top: calc(45vh - 25px);
 }
@@ -198,6 +198,8 @@ body {
     width: 100%;   
 }
 
+/* ============================================= */
+
 /* ==================== AddOrUpdate ==================== */
 
 .transparentInputTitle {
@@ -243,7 +245,7 @@ body {
 }
 
 
-.addFooter {
+.sidePanel {
     position: fixed;
     bottom: 0;
     width: 100%;
@@ -267,6 +269,19 @@ textarea {
     margin-left: 5px;
 }
 
+.saveBorderedButton {
+    width: 112px;
+    height: 45px;
+    background-color: white;
+    border: 2px solid #FA6E59;
+    color: #FA6E59;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: 6px;
+    align-content: end;
+    margin-left: 5px;
+}
+
 .ql-editor {
     text-align: justify;
     padding: 0px;
@@ -277,11 +292,15 @@ textarea {
     color: #000000;
     text-align: justify;
     word-wrap: break-word;
+}
 
-    /*height: 100%;
+.ql-container {
+    min-height: 10rem;
+    height: 100%;
     flex: 1;
-    overflow-y: auto;
-    width: 100%;*/
+    display: flex;
+    flex-direction: column;
+
 }
 
 .ql-container.ql-snow {
@@ -305,8 +324,8 @@ textarea {
     width: 100%;
     z-index: 1;
     margin-bottom: 2px;        
-}
-*/
+}*/
+
     .ql-toolbar.ql-snow {
         border-color: transparent;
         padding-left: 0px;

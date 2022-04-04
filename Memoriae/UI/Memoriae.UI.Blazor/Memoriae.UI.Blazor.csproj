@@ -23,7 +23,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\BAL\Memoriae.BAL.Core\Memoriae.BAL.Core.csproj" />
     <ProjectReference Include="..\..\HttpClients\Memoriae.Http.AuthentificationService\Memoriae.Http.AuthentificationService.csproj" />
+    <ProjectReference Include="..\..\HttpClients\Memoriae.Http\Memoriae.Http.Managers.csproj" />
   </ItemGroup>
 
   <ItemGroup>
