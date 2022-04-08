@@ -1,0 +1,50 @@
+﻿@page "/read"
+
+@if (LoaderVisible)
+{
+    <Loader></Loader>
+
+}
+else
+{
+    <Logo Aligment=@Aligment.Top></Logo>
+
+    <div class="addContainer">
+        <p id="inputTitle">@post.Title</p>
+        <p>тут будут тэги</p>
+        <p style="text-align: justify; font-size: 14px">
+            @((MarkupString)post.Text)
+        </p>
+
+    </div>
+}
+
+
+@code{
+
+    [Inject]
+    public IPostManager PostManager { get; set; }
+
+    [Parameter]
+    public Guid PostId { get; set; }
+
+    public bool LoaderVisible { get; set; } = true;
+
+    private PostRead post = new PostRead();
+
+    protected override async Task OnInitializedAsync()
+    {
+        PostId = new Guid("6a332554-0fc2-4dfe-85f7-888631f27419");
+        var postInDb = await PostManager.GetAsync(PostId).ConfigureAwait(false);
+        post = new PostRead
+        {
+            Title = postInDb.Title,
+            Text = postInDb.Text,
+            CreateDateTime = postInDb.CreateDateTime.GetValueOrDefault(),
+            Tags = postInDb.Tags.Select(x => new Tag { Id = x.Id, Name = x.Name })
+        };
+        CancelLoader();
+    }    
+
+    protected void CancelLoader() => LoaderVisible = false;
+}

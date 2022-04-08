@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
-namespace Memoriae.WebApi.Models
+namespace Memoriae.BAL.Core.Models
 {
-    public class PostTagsView
+    public class PostTags
     {
-       public Guid PostId { get; set; }
+        public Guid PostId { get; set; }
 
         public IEnumerable<string> NewTags { get; set; }
-        
+
         public IEnumerable<Guid> ExistingTags { get; set; }
     }
 }

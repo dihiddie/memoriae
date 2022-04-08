@@ -4,18 +4,18 @@
         <name>Memoriae.WebApi</name>
     </assembly>
     <members>
-        <member name="M:Memoriae.WebApi.Controllers.PostController.CreateAsync(Memoriae.WebApi.Models.PostView)">
+        <member name="M:Memoriae.WebApi.Controllers.PostController.CreateAsync(Memoriae.BAL.Core.Models.Post)">
             <summary>
             Создание поста
             </summary>
             <param name="post">Создаваемый пост</param>
             <returns>Созданный пост</returns>
         </member>
-        <member name="M:Memoriae.WebApi.Controllers.PostController.CreateOrUpdatePostTagLinkAsync(Memoriae.WebApi.Models.PostTagsView)">
+        <member name="M:Memoriae.WebApi.Controllers.PostController.CreateOrUpdatePostTagLinkAsync(Memoriae.BAL.Core.Models.PostTags)">
             <summary>
             Создание или обновление связей между постом и тегами
             </summary>
-            <param name="postTagsView">Модель со связью поста и тегов</param>      
+            <param name="postTags">Модель со связью поста и тегов</param>      
             <returns>Нет возвращаемого значения</returns>
         </member>
         <member name="M:Memoriae.WebApi.Controllers.PostController.GetAsync">

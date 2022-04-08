@@ -1,6 +1,5 @@
 ﻿using Memoriae.BAL.Core.Interfaces;
 using Memoriae.BAL.Core.Models;
-using Memoriae.WebApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -22,16 +21,16 @@ namespace Memoriae.WebApi.Controllers
         /// <param name="post">Создаваемый пост</param>
         /// <returns>Созданный пост</returns>
         [HttpPost]
-        public Task<Post> CreateAsync(PostView post) => postManager.CreateAsync(new Post { Title = post.Title, Text = post.Text, Tags = post.Tags });
+        public Task<Post> CreateAsync(Post post) => postManager.CreateAsync(post);
 
         /// <summary>
         /// Создание или обновление связей между постом и тегами
         /// </summary>
-        /// <param name="postTagsView">Модель со связью поста и тегов</param>      
+        /// <param name="postTags">Модель со связью поста и тегов</param>      
         /// <returns>Нет возвращаемого значения</returns>
         [HttpPost("postTagLink")]
-        public Task CreateOrUpdatePostTagLinkAsync(PostTagsView postTagsView)
-            => postManager.CreateOrUpdatePostTagLinkAsync(postTagsView.PostId, postTagsView.NewTags, postTagsView.ExistingTags);
+        public Task CreateOrUpdatePostTagLinkAsync(PostTags postTags)
+            => postManager.CreateOrUpdatePostTagLinkAsync(postTags);
 
         /// <summary>
         /// Получение списка постов
@@ -45,7 +44,7 @@ namespace Memoriae.WebApi.Controllers
         /// </summary>
         /// <param name="id">Идентификатор поста</param>
         /// <returns>Запрашиваемый пост</returns>
-        [HttpGet("id")]
+        [HttpGet("{id}")]
         public Task<Post> GetAsync(Guid id) => postManager.GetAsync(id);
 
         /// <summary>
