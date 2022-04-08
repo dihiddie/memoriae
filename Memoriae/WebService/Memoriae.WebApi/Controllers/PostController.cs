@@ -44,7 +44,7 @@ namespace Memoriae.WebApi.Controllers
         /// </summary>
         /// <param name="id">Идентификатор поста</param>
         /// <returns>Запрашиваемый пост</returns>
-        [HttpGet("id")]
+        [HttpGet("{id}")]
         public Task<Post> GetAsync(Guid id) => postManager.GetAsync(id);
 
         /// <summary>

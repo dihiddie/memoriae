@@ -202,6 +202,18 @@ body {
 
 /* ==================== AddOrUpdate ==================== */
 
+#inputTitle {    
+    font-weight: 600;
+    font-style: normal;
+    font-size: 20px;
+    line-height: 30px;
+    color: #000000;
+    width: 100%;
+    padding-left: 0px;
+    border-left-width: 0px;
+    text-align: center;    
+}
+
 .transparentInputTitle {
     outline: none;
     border-color: transparent;
@@ -211,6 +223,8 @@ body {
     line-height: 30px;
     color: #000000;
     width: 100%;
+    padding-left: 0px;
+    border-left-width: 0px;
 }
 
 .transparentInputTitle::placeholder {
@@ -232,13 +246,6 @@ body {
     text-align: justify;
 }
 
-/*    .reading::placeholder {
-        font-weight: 400;
-        font-size: 16px;
-        line-height: 20px;
-        color: #C0C0C0;
-    }*/
-
 .addContainer {
     margin-left: 15%;
     margin-right: 15%;      
@@ -247,8 +254,9 @@ body {
 
 .sidePanel {
     position: fixed;
-    bottom: 0;
+    right: 0;
     width: 100%;
+    z-index: -1;
 }
 
 
@@ -259,7 +267,7 @@ textarea {
 
 .saveButton {
     width: 112px;
-    height: 45px;
+    height: 35px;
     background-color: #4897D8;
     border: 2px solid #4897D8;
     color: white;
@@ -271,7 +279,7 @@ textarea {
 
 .saveBorderedButton {
     width: 112px;
-    height: 45px;
+    height: 35px;
     background-color: white;
     border: 2px solid #FA6E59;
     color: #FA6E59;
@@ -282,8 +290,7 @@ textarea {
     margin-left: 5px;
 }
 
-.ql-editor {
-    text-align: justify;
+.ql-editor {    
     padding: 0px;
     padding-top: 10px;
     font-weight: 400;
@@ -316,21 +323,11 @@ textarea {
     font-style: normal;
 }
 
-/*.ql-toolbar {
-    overflow: hidden;
-    background-color: white;    
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    z-index: 1;
-    margin-bottom: 2px;        
-}*/
-
-    .ql-toolbar.ql-snow {
-        border-color: transparent;
-        padding-left: 0px;
-    }
-
-/*.ql-snow .ql-picker-label {
+.ql-toolbar.ql-snow {
+    border-color: transparent;
     padding-left: 0px;
-}*/
+}
+
+.ql-toolbar.ql-snow .ql-picker-label {
+padding-left: 0px;
+}

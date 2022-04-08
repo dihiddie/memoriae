@@ -1,80 +1,65 @@
 ﻿@page "/addorupdate"
 @using Blazored.TextEditor
 
-<Logo Aligment=@Aligment.Top></Logo>
+<AuthorizeView>
+    <Authorized>
+        <Logo Aligment=@Aligment.Top></Logo>
 
-<div class="addContainer">
-    <p>
-        <input type="text" placeholder="Введите заголовок" @bind="post.Title" class="transparentInputTitle" />
-    </p>
-    <BlazoredTextEditor @ref="@QuillHtml" Placeholder="Введите текст">
-        <ToolbarContent>
-            <select class="ql-header">
-                <option selected=""></option>
-                <option value="1"></option>
-                <option value="2"></option>
-                <option value="3"></option>
-                <option value="4"></option>
-                <option value="5"></option>
-            </select>
-            <span class="ql-formats">
-                <button class="ql-bold"></button>
-                <button class="ql-italic"></button>
-                <button class="ql-underline"></button>
-                <button class="ql-strike"></button>
-            </span>
-            <span class="ql-formats">
-                <button class="ql-list" value="ordered"></button>
-                <button class="ql-list" value="bullet"></button>
-            </span>
-        </ToolbarContent>
-        <EditorContent>
-        </EditorContent>
-    </BlazoredTextEditor>
-</div>
+        <div class="addContainer">
+            <input type="text" placeholder="Введите заголовок" @bind="post.Title" class="transparentInputTitle" />
+            <BlazoredTextEditor @ref="@post.Text" Placeholder="Введите текст">
+                <ToolbarContent>
+                    <select class="ql-header">
+                        <option selected=""></option>
+                        <option value="1"></option>
+                        <option value="2"></option>
+                        <option value="3"></option>
+                        <option value="4"></option>
+                        <option value="5"></option>
+                    </select>
+                    <span class="ql-formats">
+                        <button class="ql-bold"></button>
+                        <button class="ql-italic"></button>
+                        <button class="ql-underline"></button>
+                        <button class="ql-strike"></button>
+                    </span>
+                    <span class="ql-formats">
+                        <button class="ql-list" value="ordered"></button>
+                        <button class="ql-list" value="bullet"></button>
+                    </span>
+                </ToolbarContent>
+                <EditorContent>
+                </EditorContent>
+            </BlazoredTextEditor>
+        </div>
 
-<div class="sidePanel">
-    @*<button type="submit" class="saveBorderedButton" style="margin-right: 20px; margin-bottom: 20px; float: right" @onclick="SaveAsync">Сохранить</button>*@
-    <button type="submit" class="saveButton" style="margin-right: 20px; margin-bottom: 20px; float: right" @onclick="SaveAsync">Сохранить</button>
-</div>
-<div class="sidePanel">
-    <button type="submit" class="saveButton" style="margin-right: 20px; margin-bottom: 70px; float: right" @onclick="SaveAsync">Тэги</button>
-</div>
+        <button type="submit" class="saveBorderedButton" style="position: fixed; right:0; bottom:0; margin-bottom: 10px; margin-right: 10px; float: right" @onclick="SaveAsync">Сохранить</button>
+    </Authorized>
+    <Authorizing>
+        Входим в систему
+    </Authorizing>
+    <NotAuthorized>
+        <Login></Login>
+    </NotAuthorized>
+</AuthorizeView>
 
-@*@code { 
-    // BlazoredTextEditor QuillHtml;
-    BlazoredTextEditor QuillNative;
-    BlazoredTextEditor QuillReadOnly;
+<!--<div class="sidePanel">
+    <button type="submit" class="saveBorderedButton" style="position: fixed; margin-bottom: 10px; margin-right: 10px; float: right" @onclick="SaveAsync">Сохранить</button>-->
+    @*<button type="submit" class="saveButton" style="float: right">Тэги</button>*@
+<!--</div>-->
 
-    string QuillHTMLContent;
-    string QuillContent;
+@code{
+    [Inject]
+    public IPostManager PostManager { get; set; }
 
+    private PostCreate post = new PostCreate();
 
-    public async void GetHTML()
+    protected async Task SaveAsync()
     {
-        QuillHTMLContent = await this.QuillHtml.GetHTML();
-        StateHasChanged();
+        await PostManager.CreateAsync(new BAL.Core.Models.Post
+        {
+            Text = await post.Text.GetHTML().ConfigureAwait(false),
+            Title = post.Title
+        }).ConfigureAwait(false);
     }
-
-    public async void SetHTML()
-    {
-        string QuillContent =
-            @"<p><strong><em><u>большие банки</u></em></strong></p>";
-
-        await this.QuillHtml.LoadHTMLContent(QuillContent);
-        StateHasChanged();
-    }
-
-    public async void GetContent()
-    {
-        QuillContent = await this.QuillNative.GetContent();
-        StateHasChanged();
-    }
-
-    private void ReportPointerLocation(MouseEventArgs e)
-    {
-        Console.WriteLine("My debug output.");
-        // mousePointerMessage = $"Mouse coordinates: {e.ScreenX}:{e.ScreenY}";
-    }
-
- }*@
+}
