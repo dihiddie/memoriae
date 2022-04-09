@@ -1,0 +1,16 @@
+﻿<div class="dateTimeLine">
+    <div class="divider"></div>
+    <div class="dateTimeLineText">
+        <p style="font-size: 11px; text-align: center; margin-left: 20px; margin-right: 20px; margin-bottom: 0px">
+            @DateTimeValue.ToString("dddd, dd MMMM yyyy")
+        </p>
+    </div>
+    <div class="divider"></div>
+</div>
+
+
+
+@code{
+    [Parameter]
+    public DateTime DateTimeValue { get; set; }
+}

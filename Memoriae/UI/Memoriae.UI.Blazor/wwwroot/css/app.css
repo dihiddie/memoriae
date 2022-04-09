@@ -202,18 +202,6 @@ body {
 
 /* ==================== AddOrUpdate ==================== */
 
-#inputTitle {    
-    font-weight: 600;
-    font-style: normal;
-    font-size: 20px;
-    line-height: 30px;
-    color: #000000;
-    width: 100%;
-    padding-left: 0px;
-    border-left-width: 0px;
-    text-align: center;    
-}
-
 .transparentInputTitle {
     outline: none;
     border-color: transparent;
@@ -330,4 +318,60 @@ textarea {
 
 .ql-toolbar.ql-snow .ql-picker-label {
 padding-left: 0px;
+}
+
+/* ============================================= */
+
+/* ==================== Read ==================== */
+
+#inputTitle {
+    font-weight: 600;
+    font-style: normal;
+    font-size: 20px;
+    line-height: 30px;
+    color: #000000;
+    width: 100%;
+    padding-left: 0px;
+    border-left-width: 0px;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 0px;
+}
+
+
+/* ============================================= */
+
+/* ==================== DateTimeLine ==================== */
+
+.dateTimeLine {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.dateTimeLineText {
+    flex-grow: 0;
+}
+
+.divider {
+    flex-grow: 1;
+    height: 1px;
+    background-color: #9A9EAB;
+}
+
+/* ============================================= */
+
+/* ==================== TagLine ==================== */
+
+.tagContainer {    
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+#tag {
+    font-style: normal;
+    font-weight: 600;
+    font-size: 12px;
+    line-height: 15px;
+    color: #FA6E59;    
 }
