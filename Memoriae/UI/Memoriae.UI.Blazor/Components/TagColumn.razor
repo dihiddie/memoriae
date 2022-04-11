@@ -1,0 +1,11 @@
+﻿<div style=" text-align: right;">
+    @foreach (var tag in Tags)
+    {
+        <a id="tag" href="">@($"{tag.Name} ")</a>
+    }
+</div>
+
+@code{
+    [Parameter]
+    public IEnumerable<Tag> Tags { get; set; }
+}

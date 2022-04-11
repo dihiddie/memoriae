@@ -1,0 +1,28 @@
+﻿
+<div style="display: flex; margin-bottom: 10px;">
+    <div style="width: 15%">
+        <p class="dateTimeFormat" style="margin-bottom: 10px">
+            @Post.CreateDateTime.ToString("ddd, dd MMMM yyyy")
+        </p>
+        <TagColumn Tags="@Post.Tags"></TagColumn>
+    </div> 
+    @*<div style="border-left:1px solid #000;height:15px"></div>*@
+    <div style="width: 85%">
+        <p class="inputTitle previewInputTile" style="margin-bottom: 10px">@Post.Title</p>
+        <p style="text-align: justify; font-size: 14px; font-style: normal; font-weight: 400; line-height: 20px; color: #000000; ">
+            @((MarkupString)GetPreview(Post.Text))
+        </p>
+    </div>
+</div>
+
+
+@code {
+    [Parameter]
+    public PostRead Post { get; set; }
+
+    private string GetPreview(string text)
+    {
+        var split = text.Split('.');
+        return string.Join(". ", split.Take(4));
+    }
+}

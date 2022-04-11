@@ -1,7 +1,4 @@
-﻿@page "/read"
-
-
-<AuthorizeView>
+﻿<AuthorizeView>
     <Authorized>
         @if (LoaderVisible)
         {
@@ -10,13 +7,12 @@
         else
         {
             <div class="addContainer">
-                <DateTimeLine DateTimeValue="@post.CreateDateTime"></DateTimeLine>
-                <p class="inputTitle">@post.Title</p>
-                <TagLine Tags="@post.Tags"></TagLine>
-                <p style="text-align: justify; font-size: 14px">
-                    @((MarkupString)post.Text)
-                </p>
+                @foreach (var post in postList)
+                {
+                    <PostPreview Post="post"></PostPreview>
+                }
             </div>
+
         }
     </Authorized>    
     <NotAuthorized>
@@ -30,24 +26,20 @@
     [Inject]
     public IPostManager PostManager { get; set; }
 
-    [Parameter]
-    public Guid PostId { get; set; }
-
     public bool LoaderVisible { get; set; } = true;
 
-    private PostRead post = new PostRead();
+    private IEnumerable<PostRead> postList = new List<PostRead>();
 
     protected override async Task OnInitializedAsync()
     {
-        PostId = new Guid("6a332554-0fc2-4dfe-85f7-888631f27419");
-        var postInDb = await PostManager.GetAsync(PostId).ConfigureAwait(false);
-        post = new PostRead
+        var postsInDb = await PostManager.GetAsync().ConfigureAwait(false);
+        postList = postsInDb.Select(postInDb => new PostRead
         {
             Title = postInDb.Title,
             Text = postInDb.Text,
             CreateDateTime = postInDb.CreateDateTime.GetValueOrDefault(),
             Tags = postInDb.Tags.Select(x => new Tag { Id = x.Id, Name = x.Name })
-        };
+        });
         CancelLoader();
     }
 

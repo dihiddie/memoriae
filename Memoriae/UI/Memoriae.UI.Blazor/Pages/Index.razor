@@ -4,10 +4,7 @@
 
 <AuthorizeView>
     <Authorized>
-        The user: @context.User.FindFirst(ClaimTypes.Name).Value is authorized
-
-        <button class="btn btn-primary" @onclick="DoLogout">Logout</button>
-
+        <MainPage></MainPage>        
     </Authorized>
     <Authorizing>
         Входим в систему

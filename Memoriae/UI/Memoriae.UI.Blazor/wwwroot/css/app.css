@@ -324,7 +324,7 @@ padding-left: 0px;
 
 /* ==================== Read ==================== */
 
-#inputTitle {
+.inputTitle {
     font-weight: 600;
     font-style: normal;
     font-size: 20px;
@@ -336,6 +336,11 @@ padding-left: 0px;
     text-align: center;
     margin-top: 20px;
     margin-bottom: 0px;
+}
+
+.previewInputTile {
+    text-align: left;
+    margin-top: 0px;
 }
 
 
@@ -351,6 +356,14 @@ padding-left: 0px;
 
 .dateTimeLineText {
     flex-grow: 0;
+}
+
+.dateTimeFormat {
+    font-size: 11px;
+    text-align: center;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 0px
 }
 
 .divider {
