@@ -341,6 +341,7 @@ padding-left: 0px;
 .previewInputTile {
     text-align: left;
     margin-top: 0px;
+    margin-left: 10px;
 }
 
 
@@ -387,4 +388,51 @@ padding-left: 0px;
     font-size: 12px;
     line-height: 15px;
     color: #FA6E59;    
+}
+
+/* ============================================= */
+
+/* ==================== PostPreview ==================== */
+
+.dateTimeOnMain {
+    font-style: normal;
+    font-size: 10px;
+    line-height: 30px;
+    width: 100%;        
+    text-align: right;   
+    margin-bottom: 0px;
+    margin-top: 0px;
+    color: #000000;
+    padding-right: 10px;
+}
+
+.mainContainer {
+    margin-left: 20%;
+    margin-right: 20%;
+}
+
+.clickablePost {
+    text-decoration: none;
+}
+    .clickablePost:hover {
+        text-decoration: none;
+    }
+
+.verticalHr {
+    border: none;
+    margin-top: 0px;
+    border-left: 1px solid #C0C0C0;
+    /*height: 10vh;*/
+    width: 1px;
+    height: 100%;
+    /*left: 50%;*/
+    position: relative;
+}
+
+#remaining-height {
+    background-color: #C0C0C0;
+    position: absolute;
+    height: 8%;
+    width: 1px;
+    margin-top: 2px;
 }

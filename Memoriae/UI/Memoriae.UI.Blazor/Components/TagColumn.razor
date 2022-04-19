@@ -1,7 +1,9 @@
-﻿<div style=" text-align: right;">
+﻿@*<div style=" text-align: right;">
+    </div>*@
+<div style="text-align: right; margin-right: 10px;">
     @foreach (var tag in Tags)
     {
-        <a id="tag" href="">@($"{tag.Name} ")</a>
+        <div><a id="tag" href="" style=" text-align: right;">@($"{tag.Name}")</a></div>
     }
 </div>
 

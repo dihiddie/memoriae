@@ -6,12 +6,12 @@
         }
         else
         {
-            <div class="addContainer">
-                @foreach (var post in postList)
-                {
-                    <PostPreview Post="post"></PostPreview>
-                }
-            </div>
+    <div class="mainContainer">
+        @foreach (var post in postList)
+        {
+            <a href="" class="clickablePost"><PostPreview Post="post"></PostPreview></a>            
+        }
+    </div>
 
         }
     </Authorized>    

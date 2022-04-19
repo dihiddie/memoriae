@@ -66,7 +66,7 @@ namespace Memoriae.BAL.PostgreSQL
         {
             logger.LogInformation("Получаем список постов");
 
-            return await context.Posts.AsNoTracking().Select(x => new Post()
+            return await context.Posts.AsNoTracking().OrderByDescending(x => x.CreateDateTime).Select(x => new Post()
             {
                 Id = x.Id,
                 Text = x.Text,
