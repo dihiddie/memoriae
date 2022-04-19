@@ -413,9 +413,11 @@ padding-left: 0px;
 
 .clickablePost {
     text-decoration: none;
+    cursor: pointer;
 }
     .clickablePost:hover {
         text-decoration: none;
+        cursor: pointer;
     }
 
 .verticalHr {
@@ -429,10 +431,40 @@ padding-left: 0px;
     position: relative;
 }
 
-#remaining-height {
+#vertical-hr {
     background-color: #C0C0C0;
     position: absolute;
     height: 8%;
     width: 1px;
     margin-top: 2px;
+}
+
+/* ============================================= */
+
+/* ==================== MainPage ==================== */
+.mainpagecontainer {
+    width: 100%;
+    height: 100%;
+}
+
+.leftpane {
+    width: 20%;
+    height: 100%;
+    float: left;    
+    border-collapse: collapse;
+}
+
+.middlepane {
+    width: 60%;
+    height: 100%;
+    float: left;    
+    border-collapse: collapse;
+}
+
+.rightpane {
+    width: 20%;
+    height: 100%;
+    position: relative;
+    float: right;    
+    border-collapse: collapse;
 }

@@ -1,4 +1,7 @@
-﻿<AuthorizeView>
+﻿@using Microsoft.AspNetCore.Components;
+@inject Microsoft.AspNetCore.Components.NavigationManager nav
+
+<AuthorizeView>
     <Authorized>
         @if (LoaderVisible)
         {
@@ -6,15 +9,29 @@
         }
         else
         {
-    <div class="mainContainer">
-        @foreach (var post in postList)
-        {
-            <a href="" class="clickablePost"><PostPreview Post="post"></PostPreview></a>            
-        }
-    </div>
+            <div class="mainpagecontainer">
+                <div class="leftpane">
+                    <Logo Aligment=@Aligment.Top></Logo>
+                </div>
+                <div class="middlepane">
+                    @foreach (var post in postList)
+                    {
+                        <a class="clickablePost" @onclick="() => Navigate(post.Id)"><PostPreview Post="post"></PostPreview></a>
+                    }
+                </div>
+                <div class="rightpane">
+                    <h1>Test Page</h1>
+                </div>
+            </div>
+            @*<div class="mainContainer">
+                @foreach (var post in postList)
+                {
+                    <a class="clickablePost" @onclick="() => Navigate(post.Id)"><PostPreview Post="post"></PostPreview></a>
+                }
+            </div>*@
 
         }
-    </Authorized>    
+    </Authorized>
     <NotAuthorized>
         <Login></Login>
     </NotAuthorized>
@@ -35,6 +52,7 @@
         var postsInDb = await PostManager.GetAsync().ConfigureAwait(false);
         postList = postsInDb.Select(postInDb => new PostRead
         {
+            Id = postInDb.Id,
             Title = postInDb.Title,
             Text = postInDb.Text,
             CreateDateTime = postInDb.CreateDateTime.GetValueOrDefault(),
@@ -44,4 +62,9 @@
     }
 
     protected void CancelLoader() => LoaderVisible = false;
+
+    private void Navigate(Guid postId)
+    {
+        nav.NavigateTo("/read/" + postId);
+    }
 }

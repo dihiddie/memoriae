@@ -9,13 +9,13 @@
         <p class="inputTitle previewInputTile" style="margin-bottom: 10px">@Post.Title</p>       
     </div>
 </div>
-<div style="display: flex; margin-bottom: 5px;">
+<div style="display: flex; margin-bottom: 20px;">
     <div style="width: 10%;">
         <TagColumn Tags="@Post.Tags"></TagColumn>
     </div>
     @*<hr class="verticalHr" />*@    
 <div style="width: 90%;">
-    <div id="remaining-height"></div>
+    @*<div id="vertical-hr"></div>*@
     <p style="text-align: justify; font-size: 14px; font-style: normal; font-weight: 400; line-height: 20px; color: #000000; margin-left: 10px; ">
         @((MarkupString)GetPreview(Post.Text))
     </p>
@@ -30,5 +30,5 @@
         {
             var split = text.Split('.');
             return string.Join(". ", split.Take(2));
-        }
+        }        
     }

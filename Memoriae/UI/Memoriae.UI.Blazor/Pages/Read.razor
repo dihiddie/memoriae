@@ -1,4 +1,4 @@
-﻿@page "/read"
+﻿@page "/read/{PostId}"
 
 
 <AuthorizeView>
@@ -31,16 +31,15 @@
     public IPostManager PostManager { get; set; }
 
     [Parameter]
-    public Guid PostId { get; set; }
+    public string PostId { get; set; }
 
     public bool LoaderVisible { get; set; } = true;
 
     private PostRead post = new PostRead();
 
     protected override async Task OnInitializedAsync()
-    {
-        PostId = new Guid("6a332554-0fc2-4dfe-85f7-888631f27419");
-        var postInDb = await PostManager.GetAsync(PostId).ConfigureAwait(false);
+    {        
+        var postInDb = await PostManager.GetAsync(Guid.Parse(PostId)).ConfigureAwait(false);
         post = new PostRead
         {
             Title = postInDb.Title,
