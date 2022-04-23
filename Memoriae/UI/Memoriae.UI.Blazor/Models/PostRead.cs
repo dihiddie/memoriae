@@ -13,6 +13,8 @@ namespace Memoriae.UI.Blazor.Models
 
         public DateTime CreateDateTime { get; set; }
 
+        public string PreviewText { get; set; }
+
         public IEnumerable<Tag> Tags { get; set; }
     }
 }

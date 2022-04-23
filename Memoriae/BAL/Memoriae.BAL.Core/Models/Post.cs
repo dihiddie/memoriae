@@ -11,6 +11,8 @@ namespace Memoriae.BAL.Core.Models
 
         public string Text { get; set; }
 
+        public string PreviewText { get; set; }
+
         public DateTime? CreateDateTime { get; set; }
 
         public IEnumerable<Tag> Tags { get; set; }

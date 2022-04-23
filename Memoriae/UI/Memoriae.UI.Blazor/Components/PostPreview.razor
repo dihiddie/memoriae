@@ -17,18 +17,12 @@
 <div style="width: 90%;">
     @*<div id="vertical-hr"></div>*@
     <p style="text-align: justify; font-size: 14px; font-style: normal; font-weight: 400; line-height: 20px; color: #000000; margin-left: 10px; ">
-        @((MarkupString)GetPreview(Post.Text))
+        @((MarkupString)Post.PreviewText)
     </p>
 </div>
 </div>
 
     @code {
         [Parameter]
-        public PostRead Post { get; set; }
-
-        private string GetPreview(string text)
-        {
-            var split = text.Split('.');
-            return string.Join(". ", split.Take(2));
-        }        
+        public PostRead Post { get; set; }          
     }

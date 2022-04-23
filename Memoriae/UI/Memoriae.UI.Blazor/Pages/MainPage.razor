@@ -55,6 +55,7 @@
             Id = postInDb.Id,
             Title = postInDb.Title,
             Text = postInDb.Text,
+            PreviewText = postInDb.PreviewText,
             CreateDateTime = postInDb.CreateDateTime.GetValueOrDefault(),
             Tags = postInDb.Tags.Select(x => new Tag { Id = x.Id, Name = x.Name })
         });
