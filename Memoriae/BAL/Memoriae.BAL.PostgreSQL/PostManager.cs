@@ -38,8 +38,7 @@ namespace Memoriae.BAL.PostgreSQL
             logger.LogInformation($"Попытка создания поста с главой = {chapterNumber}");            
 
             var mapped = mapper.Map<DbPost>(post);
-            mapped.Title = $"Глава {chapterNumber}. {mapped.Title}";
-            mapped.PreviewText = GetPreview(post.Text);
+            mapped.Title = $"Глава {chapterNumber}. {mapped.Title}";            
             await context.AddAsync(mapped).ConfigureAwait(false);
             await context.SaveChangesAsync().ConfigureAwait(false);
 
@@ -70,7 +69,7 @@ namespace Memoriae.BAL.PostgreSQL
             return await context.Posts.AsNoTracking().OrderByDescending(x => x.CreateDateTime).Select(x => new Post()
             {
                 Id = x.Id,
-                Text = x.Text,
+                //Text = x.Text,
                 Title = x.Title,
                 PreviewText = x.PreviewText,
                 CreateDateTime = x.CreateDateTime,  
@@ -172,12 +171,6 @@ namespace Memoriae.BAL.PostgreSQL
 
             }).Where(x => ids.Contains(x.Id)).ToListAsync().ConfigureAwait(false);
 
-        }
-
-        private string GetPreview(string text)
-        {
-            var split = text.Split('.');
-            return string.Join(". ", split.Take(2));
-        }
+        }     
     }
 }

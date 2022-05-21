@@ -1,0 +1,42 @@
+﻿<AuthorizeView>
+    <Authorized>
+        <div>
+            <a class="@mainMenuItemClassName" href="" @onclick="@(() => SaveState(1))">Главная</a>
+            <a class="@adminMenuItemClassName" href="" @onclick="@(() => SaveState(2))">Админка</a>
+            <a class=" menuItem" href="" @onclick="@DoLogout">Выйти</a>
+        </div>
+    </Authorized>
+</AuthorizeView>
+
+
+@code{
+
+    [Inject]
+    public IAuthentificationService AuthentificationService { get; set; }
+
+    private string menuItem = "menuItem";
+
+    private string mainMenuItemClassName = "menuItem";
+
+    private string adminMenuItemClassName = "menuItem";
+
+    private async Task DoLogout()
+    {
+        await AuthentificationService.Logout();
+    }
+
+    private void SaveState(int order)
+    {
+        if (order == 1)
+        {
+            mainMenuItemClassName = $"{mainMenuItemClassName} menuItemWithUnderline";
+            adminMenuItemClassName = menuItem;
+        }
+        if (order == 2)
+        {
+            adminMenuItemClassName = $"{adminMenuItemClassName} menuItemWithUnderline";
+            mainMenuItemClassName = menuItem;
+        }
+    }
+
+}

@@ -13,14 +13,3 @@
         <Login></Login>
     </NotAuthorized>
 </AuthorizeView>
-
-@code{
-
-    [Inject]
-    public IAuthentificationService AuthentificationService { get; set; }
-
-    private async Task DoLogout()
-    {
-        await AuthentificationService.Logout();
-    }
-}

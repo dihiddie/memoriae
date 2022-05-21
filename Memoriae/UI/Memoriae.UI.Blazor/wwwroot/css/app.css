@@ -122,7 +122,7 @@ body {
 }
 
 .registerLink {
-    font-weight: 600;
+    font-weight: 400;
     font-size: 12px;
     line-height: 30px;
     cursor: pointer;    
@@ -439,6 +439,23 @@ padding-left: 0px;
     margin-top: 2px;
 }
 
+/*.previewHr {
+    display: inline-block;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 26px;
+    line-height: 30px;
+}
+
+    .previewHr:after {
+        content: '';*/
+        /*display: block;*/
+        /*border-right: 1px solid black;
+        margin-top: 0.3em;
+        margin-left: -20px;
+        margin-right: -20px;
+    }*/
+
 /* ============================================= */
 
 /* ==================== MainPage ==================== */
@@ -447,24 +464,85 @@ padding-left: 0px;
     height: 100%;
 }
 
-.leftpane {
+.leftpanel {
     width: 20%;
     height: 100%;
     float: left;    
     border-collapse: collapse;
 }
 
-.middlepane {
+.middlepanel {
     width: 60%;
     height: 100%;
     float: left;    
     border-collapse: collapse;
 }
 
-.rightpane {
+.rightpanel {
     width: 20%;
     height: 100%;
     position: relative;
     float: right;    
     border-collapse: collapse;
+    text-align: right;
+}
+/* ============================================= */
+
+/* ==================== Menu ==================== */
+#circle {
+    background: lightblue;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+}
+
+.numberCircle {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;    
+    background: #fff;
+    border: 2px solid #666;
+    color: #666;
+    text-align: center;
+    font: 32px Arial, sans-serif;
+}
+
+.circle {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    text-align: center;
+    font-size: 14px;
+    /*border: 1px solid #000;*/
+    background: #EC96A4;
+}
+
+.menuItem {
+    font-size: 14px;
+    font-weight: 600;
+    color: #000000;
+    margin-right: 20px;
+    text-align: center;
+}
+    .menuItem:hover {
+         text-decoration: none;
+        /*   text-underline-offset: 2px;
+        text-decoration-color: #FA6E59;*/
+        cursor: pointer;
+        color: #000000;
+        padding-bottom: 10px;
+        border-bottom-style: solid;
+        border-bottom-width: 3px;
+        border-bottom-color: #FA6E59;
+        width: fit-content;
+    }
+
+.menuItemWithUnderline {
+    cursor: pointer;
+    color: #000000;
+    padding-bottom: 10px;
+    border-bottom-style: solid;
+    border-bottom-width: 3px;
+    border-bottom-color: #FA6E59;
+    width: fit-content;
 }

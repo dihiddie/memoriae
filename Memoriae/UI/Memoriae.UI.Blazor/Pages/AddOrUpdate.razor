@@ -1,5 +1,6 @@
 ﻿@page "/addorupdate"
 @using Blazored.TextEditor
+@inject Microsoft.AspNetCore.Components.NavigationManager nav
 
 <AuthorizeView>
     <Authorized>
@@ -51,7 +52,16 @@
         await PostManager.CreateAsync(new BAL.Core.Models.Post
         {
             Text = await post.Text.GetHTML().ConfigureAwait(false),
+            PreviewText = GetPreview(await post.Text.GetText().ConfigureAwait(false)),
             Title = post.Title
         }).ConfigureAwait(false);
+
+        nav.NavigateTo("");
+    }
+
+    private string GetPreview(string text)
+    {
+        var split = text.Split('.');
+        return string.Join(". ", split.Take(5));
     }
 }

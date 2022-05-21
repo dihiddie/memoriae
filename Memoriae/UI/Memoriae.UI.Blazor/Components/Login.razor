@@ -29,8 +29,8 @@ else
                 </div>
                 @if (!string.IsNullOrEmpty(Error))
                 {
-                    // TODO modal box https://stackoverflow.com/questions/59256798/how-to-use-bootstrap-modal-in-blazor-client-app
-                    <p id="error">@Error</p>
+                    // TODO modal box https://stackoverflow.com/questions/59256798/how-to-use-bootstrap-modal-in-blazor-client-app                   
+                    <p class="validation-message">@Error</p>
 
                 }
                 @if (!RegistrationIsOn)
