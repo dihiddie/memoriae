@@ -45,6 +45,12 @@
             <param name="post">Модель обновляемого поста</param>
             <returns>Обновляемый пост</returns>
         </member>
+        <member name="M:Memoriae.WebApi.Controllers.PostController.GetBySearchAsync(System.String)">
+            <summary>
+            Получение списка постов по искомой фразе
+            </summary>
+            <returns>Список постов</returns>
+        </member>
         <member name="M:Memoriae.WebApi.Controllers.TagController.GetAsync">
             <summary>
             Получение списка тегов

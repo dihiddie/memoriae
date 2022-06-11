@@ -8,20 +8,36 @@
             <Loader></Loader>
         }
         else
-        {            
+        {
             <div class="leftpanel">
                 <Logo Aligment=@Aligment.Top></Logo>
             </div>
             <div class="middlepanel">
-                @*@bind="post.Title" class="transparentInputTitle"*@
-                <input type="text" placeholder="Введите заголовок" style="margin-bottom: 15px" />
-                @foreach (var post in postList)
-                {
-                    <a class="clickablePost" href="read/@post.Id"><PostPreview Post="post"></PostPreview></a>
-                }
+                <div class="inputWithIcon">
+                    <input type="text" placeholder="Для поиска по тегам, текстам и заголовкам введите их через пробел" class="searchTextBox"
+                            value="@SearchText" @oninput="@OnInput" @onkeydown="@DoSearchAsync" />
+                    <i class="material-icons" style="margin-top: -10px; margin-left: -10px; ">search</i>
+                </div>                
             </div>
             <div class="rightpanel">
                 <Menu></Menu>
+            </div>
+            <div class="leftpanel">                
+            </div>
+            <div class="middlepanel">
+                @if (!postList.Any())
+                {
+                    <i class="nothingToSee">Пока ничего нет</i>
+                }
+                else
+                {
+                    @foreach (var post in postList)
+                    {
+                        <a class="clickablePost" href="read/@post.Id"><PostPreview Post="post"></PostPreview></a>
+                    }
+                }
+            </div>
+            <div class="rightpanel">                
             </div>
 
         }
@@ -37,6 +53,8 @@
     [Inject]
     public IPostManager PostManager { get; set; }
 
+    public string SearchText { get; set; }
+
     public bool LoaderVisible { get; set; } = true;
 
     private IEnumerable<PostRead> postList = new List<PostRead>();
@@ -48,7 +66,6 @@
         {
             Id = postInDb.Id,
             Title = postInDb.Title,
-            Text = postInDb.Text,
             PreviewText = postInDb.PreviewText,
             CreateDateTime = postInDb.CreateDateTime.GetValueOrDefault(),
             Tags = postInDb.Tags.Select(x => new Tag { Id = x.Id, Name = x.Name })
@@ -58,8 +75,33 @@
 
     protected void CancelLoader() => LoaderVisible = false;
 
+    protected void StartLoader() => LoaderVisible = true;
+
     private void Navigate(Guid postId)
     {
         nav.NavigateTo("/read/" + postId);
+    }
+
+    private void OnInput(ChangeEventArgs args)
+    {
+        SearchText = args.Value.ToString();
+    }
+
+    public async Task DoSearchAsync(KeyboardEventArgs e)
+    {
+        if (e.Code == "Enter" || e.Code == "NumpadEnter")
+        {
+            StartLoader();
+            var foundedPosts = await PostManager.SearchAsync(SearchText).ConfigureAwait(false);
+            postList = foundedPosts.Select(postInDb => new PostRead
+            {
+                Id = postInDb.Id,
+                Title = postInDb.Title,
+                PreviewText = postInDb.PreviewText,
+                CreateDateTime = postInDb.CreateDateTime.GetValueOrDefault(),
+                Tags = postInDb.Tags.Select(x => new Tag { Id = x.Id, Name = x.Name })
+            });
+            CancelLoader();
+        }
     }
 }

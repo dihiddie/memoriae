@@ -1,5 +1,6 @@
 ﻿<AuthorizeView>
     <Authorized>
+        @*style="display: flex"*@
         <div>
             <a class="@mainMenuItemClassName" href="" @onclick="@(() => SaveState(1))">Главная</a>
             <a class="@adminMenuItemClassName" href="" @onclick="@(() => SaveState(2))">Админка</a>

@@ -17,6 +17,8 @@ namespace Memoriae.BAL.Core.Interfaces
 
         Task<IEnumerable<Post>> GetAsync();
 
-        Task<Post> GetAsync(Guid id);        
+        Task<Post> GetAsync(Guid id);
+
+        Task<IEnumerable<Post>> SearchAsync(string searchText);
     }
 }

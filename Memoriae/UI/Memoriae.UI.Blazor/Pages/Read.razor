@@ -12,7 +12,7 @@
             <div class="addContainer">
                 <DateTimeLine DateTimeValue="@post.CreateDateTime"></DateTimeLine>
                 <p class="inputTitle">@post.Title</p>
-                <TagLine Tags="@post.Tags"></TagLine>
+                <TagLine Aligment="@Aligment.Top" Tags="@post.Tags"></TagLine>
                 <p style="text-align: justify; font-size: 14px">
                     @((MarkupString)post.Text)
                 </p>

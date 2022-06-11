@@ -22,7 +22,7 @@ namespace Memoriae.UI.Blazor
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:5001/api/") });            
             builder.Services.AddScoped<IAuthentificationService, AuthentificationService>();
             builder.Services.AddScoped<IPostManager, PostManager>();
-            builder.Services.AddScoped<ITagManager, TagManager>();
+            builder.Services.AddScoped<ITagManager, TagManager>();            
             builder.Services.AddBlazoredLocalStorage();
             builder.Services.AddAuthorizationCore();
             builder.Services.AddScoped<AuthenticationStateProvider, AuthStateProvider>();
