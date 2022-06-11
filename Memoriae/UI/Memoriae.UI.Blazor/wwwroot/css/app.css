@@ -10,6 +10,10 @@ body {
     margin-top: 15px;    
 }
 
+em {
+    font-style: italic;
+    background-color: yellow;
+}
 
 .btn-primary {
     color: #fff;
@@ -578,8 +582,6 @@ padding-left: 0px;
     }
 
 .nothingToSee {
-    color: #C0C0C0;
-    font-weight: 600;
-    font-style: normal;
+    color: #C0C0C0;    
 }
 

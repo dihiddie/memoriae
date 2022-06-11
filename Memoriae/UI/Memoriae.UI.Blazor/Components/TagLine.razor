@@ -1,8 +1,9 @@
 ﻿@if (Aligment == Aligment.Left)
 {
     @foreach (var tag in Tags)
-    {
-        <a id="tag" href="">@($"{tag.Name} ")</a>
+    {        
+        <a id="tag" href="">@((MarkupString)$"{tag.Name} ")</a>
+        
     }
 }
 
@@ -10,8 +11,8 @@
 {
 <div class="tagContainer">
     @foreach (var tag in Tags)
-    {
-        <a id="tag" href="">@($"{tag.Name} ")</a>
+    {        
+        <a id="tag" href="">@((MarkupString)$"{tag.Name} ")</a>
     }
 </div>
 }

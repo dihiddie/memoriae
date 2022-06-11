@@ -1,20 +1,19 @@
 ﻿using AutoMapper;
 using Memoriae.BAL.Core.Interfaces;
+using Memoriae.BAL.Core.Models;
+using Memoriae.BAL.PostgreSQL.Extensions;
 using Memoriae.DAL.PostgreSQL.EF.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Post = Memoriae.BAL.Core.Models.Post;
-using Tag = Memoriae.BAL.Core.Models.Tag;
 using DbPost = Memoriae.DAL.PostgreSQL.EF.Models.Post;
 using DbTag = Memoriae.DAL.PostgreSQL.EF.Models.Tag;
-
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using Memoriae.BAL.Core.Models;
-using Memoriae.BAL.PostgreSQL.Extensions;
-using System.Text.RegularExpressions;
+using Post = Memoriae.BAL.Core.Models.Post;
+using Tag = Memoriae.BAL.Core.Models.Tag;
 
 namespace Memoriae.BAL.PostgreSQL
 {
@@ -135,7 +134,6 @@ namespace Memoriae.BAL.PostgreSQL
 
         private async Task SaveNewTagsAndLinksAsync(Guid postId, IEnumerable<string> newTags)
         {
-
             if (newTags?.Any() == true)
             {
                 var newTagsInDb = new List<DbTag>();
@@ -177,80 +175,59 @@ namespace Memoriae.BAL.PostgreSQL
 
         public async Task<IEnumerable<Post>> SearchAsync(string searchText)
         {
-            List<Post> foundedPosts = new List<Post>();                      
+            List<Post> foundedPosts = new List<Post>();
 
-            if (!string.IsNullOrEmpty(searchText))
-            {
-                var splittedText = searchText.Split(" ", StringSplitOptions.RemoveEmptyEntries).ToList();
+            if (string.IsNullOrEmpty(searchText)) return await GetAsync().ConfigureAwait(false);
 
-                foreach (var searchPattern in splittedText.Select(word => $"(?=.*{word})"))
-                {
-                    // posts
-                    var postsQuery = context.Posts.WhereIf(
-                        !string.IsNullOrEmpty(searchText),
-                        i => Regex.IsMatch(i.Text, searchPattern, RegexOptions.IgnoreCase)
-                        || Regex.IsMatch(i.Title, searchPattern, RegexOptions.IgnoreCase));
-
-                    var posts = await postsQuery.Select(x => new Post()
-                    {
-                        Id = x.Id,
-                        Title = x.Title.WrapWordsInTag(splittedText),
-                        PreviewText = x.PreviewText,
-                        CreateDateTime = x.CreateDateTime,
-                        Tags = x.PostTagLink.Select(t => new Tag { Id = t.Tag.Id, Name = t.Tag.Name.WrapWordsInTag(splittedText) })
-
-                    }).AsNoTracking().ToListAsync().ConfigureAwait(false);
-
-                    var notAddedPostsIds = foundedPosts.Select(x => x.Id).Except(posts.Select(x => x.Id));
-                    foundedPosts.AddRange(posts.Where(x => notAddedPostsIds.Contains(x.Id)));
-
-                    // tags
-                    var tagsQuery = context.Tags.WhereIf(
-                        !string.IsNullOrEmpty(searchText), 
-                        i => Regex.IsMatch(i.Name, searchPattern, RegexOptions.IgnoreCase));
-
-                    var postsFromTagsQuery = tagsQuery.SelectMany(x => x.PostTagLink.Select(y => y.Post));
-                    var postsFromTags = await postsFromTagsQuery.Select(x => new Post()
-                    {
-                        Id = x.Id,
-                        Title = x.Title.WrapWordsInTag(splittedText),
-                        PreviewText = x.PreviewText,
-                        CreateDateTime = x.CreateDateTime,
-                        Tags = x.PostTagLink.Select(t => new Tag { Id = t.Tag.Id, Name = t.Tag.Name.WrapWordsInTag(splittedText) })
-
-                    }).AsNoTracking().ToListAsync().ConfigureAwait(false);
-
-                    var notAddedPostsFromTagsIds = foundedPosts.Select(x => x.Id).Except(postsFromTags.Select(x => x.Id));
-                    foundedPosts.AddRange(postsFromTags.Where(x => notAddedPostsIds.Contains(x.Id)));                    
-                }
-            }
+            var splittedText = searchText.Split(" ", StringSplitOptions.RemoveEmptyEntries).ToList();
+            await AddFoundedPosts(foundedPosts, splittedText).ConfigureAwait(false);
+            await AddFoundedPostsInTags(foundedPosts, splittedText).ConfigureAwait(false);
 
             return foundedPosts.OrderByDescending(i => i.CreateDateTime);
         }
 
-        //private async Task AddFoundedPosts(List<Post> foundedPosts, List<string> splittedText)
-        //{
-        //    foreach (var searchPattern in splittedText.Select(word => $"(?=.*{word})"))
-        //    {
-        //        // posts
-        //        var postsQuery = context.Posts.WhereIf(
-        //            !string.IsNullOrEmpty(searchText),
-        //            i => Regex.IsMatch(i.Text, searchPattern, RegexOptions.IgnoreCase)
-        //            || Regex.IsMatch(i.Title, searchPattern, RegexOptions.IgnoreCase));
+        private async Task AddFoundedPosts(List<Post> foundedPosts, List<string> splittedText)
+        {
+            foreach (var searchPattern in splittedText.Select(word => $"(?=.*{word})"))
+            {
+                var postsQuery = context.Posts.Where(
+                    i => Regex.IsMatch(i.Text, searchPattern, RegexOptions.IgnoreCase)
+                    || Regex.IsMatch(i.Title, searchPattern, RegexOptions.IgnoreCase));
 
-        //        var posts = await postsQuery.Select(x => new Post()
-        //        {
-        //            Id = x.Id,
-        //            Title = x.Title.WrapWordsInTag(splittedText),
-        //            PreviewText = x.PreviewText,
-        //            CreateDateTime = x.CreateDateTime,
-        //            Tags = x.PostTagLink.Select(t => new Tag { Id = t.Tag.Id, Name = t.Tag.Name.WrapWordsInTag(splittedText) })
+                var posts = await postsQuery.Select(x => new Post()
+                {
+                    Id = x.Id,
+                    Title = x.Title.WrapWordsInTag(splittedText),
+                    PreviewText = x.PreviewText.WrapWordsInTag(splittedText),
+                    CreateDateTime = x.CreateDateTime,
+                    Tags = x.PostTagLink.Select(t => new Tag { Id = t.Tag.Id, Name = t.Tag.Name.WrapWordsInTag(splittedText) })
 
-        //        }).AsNoTracking().ToListAsync().ConfigureAwait(false);
+                }).AsNoTracking().ToListAsync().ConfigureAwait(false);
 
-        //        var notAddedPostsIds = foundedPosts.Select(x => x.Id).Except(posts.Select(x => x.Id);
-        //        foundedPosts.AddRange(posts.Where(x => notAddedPostsIds.Contains(x.Id)));
-        //    }
-        //}
+                var notAddedPostsIds = posts.Select(x => x.Id).Except(foundedPosts.Select(x => x.Id));
+                foundedPosts.AddRange(posts.Where(x => notAddedPostsIds.Contains(x.Id)));
+            }
+        }
+
+        private async Task AddFoundedPostsInTags(List<Post> foundedPosts, List<string> splittedText)
+        {
+            foreach (var searchPattern in splittedText.Select(word => $"(?=.*{word})"))
+            {
+                var tagsQuery = context.Tags.Where(i => Regex.IsMatch(i.Name, searchPattern, RegexOptions.IgnoreCase));
+                var postsFromTagsQuery = tagsQuery.SelectMany(x => x.PostTagLink.Select(y => y.Post));
+                var postsFromTags = await postsFromTagsQuery.Select(x => new Post()
+                {
+                    Id = x.Id,
+                    Title = x.Title.WrapWordsInTag(splittedText),
+                    PreviewText = x.PreviewText.WrapWordsInTag(splittedText),
+                    CreateDateTime = x.CreateDateTime,
+                    Tags = x.PostTagLink.Select(t => new Tag { Id = t.Tag.Id, Name = t.Tag.Name.WrapWordsInTag(splittedText) })
+
+                }).AsNoTracking().ToListAsync().ConfigureAwait(false);
+
+                var notAddedPostsFromTagsIds = postsFromTags.Select(x => x.Id).Except(foundedPosts.Select(x => x.Id));
+                foundedPosts.AddRange(postsFromTags.Where(x => notAddedPostsFromTagsIds.Contains(x.Id)));
+            }
+        }
     }
 }

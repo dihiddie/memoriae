@@ -14,7 +14,7 @@
             </div>
             <div class="middlepanel">
                 <div class="inputWithIcon">
-                    <input type="text" placeholder="Для поиска по тегам, текстам и заголовкам введите их через пробел" class="searchTextBox"
+                    <input type="search" placeholder="Для поиска по тегам, текстам и заголовкам введите их через пробел" class="searchTextBox"
                             value="@SearchText" @oninput="@OnInput" @onkeydown="@DoSearchAsync" />
                     <i class="material-icons" style="margin-top: -10px; margin-left: -10px; ">search</i>
                 </div>                
@@ -82,26 +82,33 @@
         nav.NavigateTo("/read/" + postId);
     }
 
-    private void OnInput(ChangeEventArgs args)
+    private async Task OnInput(ChangeEventArgs args)
     {
         SearchText = args.Value.ToString();
+        if(string.IsNullOrEmpty(SearchText)) 
+            await SearchAsync().ConfigureAwait(false);
     }
 
     public async Task DoSearchAsync(KeyboardEventArgs e)
     {
         if (e.Code == "Enter" || e.Code == "NumpadEnter")
         {
-            StartLoader();
-            var foundedPosts = await PostManager.SearchAsync(SearchText).ConfigureAwait(false);
-            postList = foundedPosts.Select(postInDb => new PostRead
-            {
-                Id = postInDb.Id,
-                Title = postInDb.Title,
-                PreviewText = postInDb.PreviewText,
-                CreateDateTime = postInDb.CreateDateTime.GetValueOrDefault(),
-                Tags = postInDb.Tags.Select(x => new Tag { Id = x.Id, Name = x.Name })
-            });
-            CancelLoader();
+            await SearchAsync().ConfigureAwait(false);
         }
+    }
+
+    private async Task SearchAsync()
+    {
+        StartLoader();
+        var foundedPosts = await PostManager.SearchAsync(SearchText).ConfigureAwait(false);
+        postList = foundedPosts.Select(postInDb => new PostRead
+        {
+            Id = postInDb.Id,
+            Title = postInDb.Title,
+            PreviewText = postInDb.PreviewText,
+            CreateDateTime = postInDb.CreateDateTime.GetValueOrDefault(),
+            Tags = postInDb.Tags.Select(x => new Tag { Id = x.Id, Name = x.Name })
+        });
+        CancelLoader();
     }
 }
