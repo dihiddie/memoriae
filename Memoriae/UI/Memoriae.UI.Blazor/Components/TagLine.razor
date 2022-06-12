@@ -2,7 +2,7 @@
 {
     @foreach (var tag in Tags)
     {        
-        <a id="tag" href="">@((MarkupString)$"{tag.Name} ")</a>
+        <a id="tag" href="/" @onclick="@(() => OnTagClicked.InvokeAsync(tag.Name))">@((MarkupString)$"{tag.Name} ")</a>
         
     }
 }
@@ -12,7 +12,7 @@
 <div class="tagContainer">
     @foreach (var tag in Tags)
     {        
-        <a id="tag" href="">@((MarkupString)$"{tag.Name} ")</a>
+        <a id="tag" href="/" @onclick="@(() => OnTagClicked.InvokeAsync(tag.Name))">@((MarkupString)$"{tag.Name} ")</a>
     }
 </div>
 }
@@ -23,4 +23,12 @@
 
     [Parameter]
     public Aligment Aligment { get; set; }
+
+    [Parameter]
+    public EventCallback<string> OnTagClicked { get; set; }
+
+    private void InvokeEvent(string tagName)
+    {
+        OnTagClicked.InvokeAsync(tagName);
+    }
 }

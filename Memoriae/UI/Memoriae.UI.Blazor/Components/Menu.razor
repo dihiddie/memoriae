@@ -1,6 +1,5 @@
 ﻿<AuthorizeView>
-    <Authorized>
-        @*style="display: flex"*@
+    <Authorized>        
         <div>
             <a class="@mainMenuItemClassName" href="" @onclick="@(() => SaveState(1))">Главная</a>
             <a class="@adminMenuItemClassName" href="" @onclick="@(() => SaveState(2))">Админка</a>
@@ -20,6 +19,11 @@
     private string mainMenuItemClassName = "menuItem";
 
     private string adminMenuItemClassName = "menuItem";
+
+    protected override void OnInitialized()
+    {
+        SaveState(1);
+    }
 
     private async Task DoLogout()
     {

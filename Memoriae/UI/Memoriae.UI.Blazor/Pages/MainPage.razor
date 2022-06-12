@@ -14,7 +14,7 @@
             </div>
             <div class="middlepanel">
                 <div class="inputWithIcon">
-                    <input type="search" placeholder="Для поиска по тегам, текстам и заголовкам введите их через пробел" class="searchTextBox"
+                    <input type="search" placeholder="Для поиска по тегам, текстам или заголовкам введите их через пробел" class="searchTextBox"
                             value="@SearchText" @oninput="@OnInput" @onkeydown="@DoSearchAsync" />
                     <i class="material-icons" style="margin-top: -10px; margin-left: -10px; ">search</i>
                 </div>                
@@ -33,7 +33,9 @@
                 {
                     @foreach (var post in postList)
                     {
-                        <a class="clickablePost" href="read/@post.Id"><PostPreview Post="post"></PostPreview></a>
+                        <a class="clickablePost" href="read/@post.Id">
+                            <PostPreview OnTagClicked="@TriggerTagSearch" Post="post"></PostPreview>
+                        </a>
                     }
                 }
             </div>
@@ -85,7 +87,7 @@
     private async Task OnInput(ChangeEventArgs args)
     {
         SearchText = args.Value.ToString();
-        if(string.IsNullOrEmpty(SearchText)) 
+        if(string.IsNullOrEmpty(SearchText))
             await SearchAsync().ConfigureAwait(false);
     }
 
@@ -110,5 +112,11 @@
             Tags = postInDb.Tags.Select(x => new Tag { Id = x.Id, Name = x.Name })
         });
         CancelLoader();
+    }
+
+    private async Task TriggerTagSearch(string tagName)
+    {
+        SearchText = tagName;
+        await SearchAsync().ConfigureAwait(false);
     }
 }
