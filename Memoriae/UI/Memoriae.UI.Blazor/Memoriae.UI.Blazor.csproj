@@ -16,6 +16,7 @@
 
   <ItemGroup>
     <PackageReference Include="Blazored.LocalStorage" Version="4.1.5" />
+    <PackageReference Include="Blazored.Modal" Version="6.0.1" />
     <PackageReference Include="Blazored.TextEditor" Version="1.0.7" />
     <PackageReference Include="Font.Awesome" Version="5.15.4" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="3.1.22" />
@@ -28,6 +29,12 @@
     <ProjectReference Include="..\..\BAL\Memoriae.BAL.Core\Memoriae.BAL.Core.csproj" />
     <ProjectReference Include="..\..\HttpClients\Memoriae.Http.AuthentificationService\Memoriae.Http.AuthentificationService.csproj" />
     <ProjectReference Include="..\..\HttpClients\Memoriae.Http\Memoriae.Http.Managers.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Components\ChipsInput.razor">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+    </Content>
   </ItemGroup>
 
 </Project>

@@ -26,9 +26,4 @@
 
     [Parameter]
     public EventCallback<string> OnTagClicked { get; set; }
-
-    private void InvokeEvent(string tagName)
-    {
-        OnTagClicked.InvokeAsync(tagName);
-    }
 }

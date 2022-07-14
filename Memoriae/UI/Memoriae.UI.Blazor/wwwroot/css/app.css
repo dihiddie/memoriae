@@ -226,6 +226,15 @@ em {
     color: #C0C0C0;
 }
 
+.addtags {
+    font-weight: 400;
+    font-style: normal;
+    font-size: 16px;
+    line-height: 30px;
+    color: #C0C0C0;    
+    padding-left: 0px;    
+}   
+
 .reading {
     outline: none;
     border-color: transparent;

@@ -1,6 +1,7 @@
 ﻿@page "/addorupdate"
 @using Blazored.TextEditor
 @inject Microsoft.AspNetCore.Components.NavigationManager nav
+@inject IModalService modal
 
 <AuthorizeView>
     <Authorized>
@@ -8,6 +9,8 @@
 
         <div class="addContainer">
             <input type="text" placeholder="Введите заголовок" @bind="post.Title" class="transparentInputTitle" />
+            <ChipsInput EnableBackspaceRemove="false" Chips=@Tags />             
+             
             <BlazoredTextEditor @ref="@post.Text" Placeholder="Введите текст">
                 <ToolbarContent>
                     <select class="ql-header">
@@ -31,10 +34,9 @@
                 </ToolbarContent>
                 <EditorContent>
                 </EditorContent>
-            </BlazoredTextEditor>
+            </BlazoredTextEditor>            
         </div>
-
-        <button type="submit" class="saveBorderedButton" style="position: fixed; right:0; bottom:0; margin-bottom: 10px; margin-right: 10px; float: right" @onclick="SaveAsync">Сохранить</button>
+        <button type="submit" class="saveBorderedButton" style="position: fixed; right:0; bottom:0; margin-bottom: 10px; margin-right: 10px; float: right" @onclick="SaveAsync">Сохранить</button>                
     </Authorized>
     <NotAuthorized>
         <Login></Login>
@@ -44,6 +46,26 @@
 @code{
     [Inject]
     public IPostManager PostManager { get; set; }
+
+    public List<string> Tags { get; set; } = new List<string>();
+
+    public bool TagInputVisible { get; set; } = false;
+
+    public string PlaceholderVisibility 
+    { 
+        get
+        {
+            return $"{(TagInputVisible ? "collapse" : "visible")}";
+        }
+    }
+
+     public string TagsInputVisibility 
+    { 
+        get
+        {
+            return $"{(TagInputVisible ? "visible" : "collapse")}";
+        }
+    }
 
     private PostCreate post = new PostCreate();
 
@@ -63,5 +85,10 @@
     {
         var split = text.Split('.');
         return string.Join(". ", split.Take(5));
+    }
+
+    private void ChangeToTagInput()
+    {
+        TagInputVisible = !TagInputVisible;
     }
 }

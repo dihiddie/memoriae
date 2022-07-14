@@ -1,0 +1,65 @@
+﻿@page "/admin"
+
+@using Microsoft.AspNetCore.Components;
+@inject Microsoft.AspNetCore.Components.NavigationManager nav
+
+<AuthorizeView>
+    <Authorized>
+        @if (LoaderVisible)
+        {
+            <Loader></Loader>
+        }
+        else
+        {
+            <div class="leftpanel">
+                <Logo Aligment=@Aligment.Top></Logo>
+            </div>
+            <div class="middlepanel">
+                Тут админка
+            </div>
+            <div class="rightpanel">
+                <Menu></Menu>
+            </div>           
+
+        }
+    </Authorized>
+    <NotAuthorized>
+        <Login></Login>
+    </NotAuthorized>
+</AuthorizeView>
+
+
+@code{
+
+    [Inject]
+    public IPostManager PostManager { get; set; }
+
+    public string SearchText { get; set; }
+
+    public bool LoaderVisible { get; set; } = true;
+
+    private IEnumerable<PostRead> postList = new List<PostRead>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var postsInDb = await PostManager.GetAsync().ConfigureAwait(false);
+        postList = postsInDb.Select(postInDb => new PostRead
+        {
+            Id = postInDb.Id,
+            Title = postInDb.Title,
+            PreviewText = postInDb.PreviewText,
+            CreateDateTime = postInDb.CreateDateTime.GetValueOrDefault(),
+            Tags = postInDb.Tags.Select(x => new Tag { Id = x.Id, Name = x.Name })
+        });
+        CancelLoader();
+    }
+
+    protected void CancelLoader() => LoaderVisible = false;
+
+    protected void StartLoader() => LoaderVisible = true;
+
+    private void Navigate(Guid postId)
+    {
+        nav.NavigateTo("/read/" + postId);
+    }
+}

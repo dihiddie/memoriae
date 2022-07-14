@@ -2,8 +2,8 @@
     <Authorized>        
         <div>
             <a class="@mainMenuItemClassName" href="" @onclick="@(() => SaveState(1))">Главная</a>
-            <a class="@adminMenuItemClassName" href="" @onclick="@(() => SaveState(2))">Админка</a>
-            <a class=" menuItem" href="" @onclick="@DoLogout">Выйти</a>
+            <a class="@adminMenuItemClassName" href="/admin" @onclick="@(() => SaveState(2))">Админка</a>
+            <a class="@menuItem" href="" @onclick="@DoLogout">Выйти</a>
         </div>
     </Authorized>
 </AuthorizeView>
@@ -22,8 +22,8 @@
 
     protected override void OnInitialized()
     {
-        SaveState(1);
-    }
+        // SaveState(1);
+    }    
 
     private async Task DoLogout()
     {

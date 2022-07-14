@@ -1,4 +1,5 @@
 using Blazored.LocalStorage;
+using Blazored.Modal;
 using Memoriae.BAL.Core.Interfaces;
 using Memoriae.Http.AuthentificationService;
 using Memoriae.Http.AuthentificationService.Providers;
@@ -26,6 +27,7 @@ namespace Memoriae.UI.Blazor
             builder.Services.AddBlazoredLocalStorage();
             builder.Services.AddAuthorizationCore();
             builder.Services.AddScoped<AuthenticationStateProvider, AuthStateProvider>();
+            builder.Services.AddBlazoredModal();
 
             await builder.Build().RunAsync();
         }
