@@ -2,7 +2,7 @@
     <ul class="@ChipsListClass" style="display: inline-flex; flex-wrap: wrap; width: 100%; margin: 0; margin-left: -5px; padding: 5px; list-style: none;" >      
 
         <li style="display: flex; justify-content: center; align-items: center; height: 30px; line-height: 1.6; margin: 5px 5px 5px 0px; ">
-            <span style="margin: 0px 5px 0px 0px; font-size: 14px; color: #C0C0C0">Введите теги:</span>
+            <span style="margin: 0px 5px 0px 0px; font-size: 14px; color: #C0C0C0" @onclick="() => textInput.FocusAsync()">Введите теги:</span>
         </li>
 
         @foreach (string chip in Chips)
@@ -21,7 +21,12 @@
             </li>
         }
         <li style="flex-grow: 1; margin: 5px 5px 5px 0px;">
-            <input type="text" @bind-value="currentInputValue" @onkeyup="OnKeyUp" @oninput="OnInput" @onkeydown="OnKeyDown" style='border: none; width: 100%; font-size: 14px; @(ShowInputOutline ? "" : "outline: none;")' @attributes="InputAttributes" />
+            <input @ref="textInput" list="tagList" @onclick="OnTagInputInFocus" type="text" @bind-value="currentInputValue" @onkeyup="OnKeyUp" @oninput="OnInput" @onkeydown="OnKeyDown" style='border: none; width: 100%; font-size: 14px; @(ShowInputOutline ? "" : "outline: none;")' @attributes="InputAttributes" />
+            <datalist id="tagList">
+                @foreach(var tagOption in ExistedTags){
+                    <option>@tagOption.Name</option>
+                }
+            </datalist>
         </li>
     </ul>  
 </div>
@@ -46,6 +51,13 @@
 
 
 @code {
+    public IEnumerable<Tag> ExistedTags { get; set; } = new List<Tag>();
+
+    ElementReference textInput;
+
+    [Inject]
+    public ITagManager TagManager { get; set; }
+
     /// <summary>
     /// The list of the "applied" chips
     /// </summary>
@@ -208,8 +220,10 @@
 
     protected override void OnInitialized()
     {
-        if (ReadonlyChips && !InputAttributes.ContainsKey("readonly")) InputAttributes.Add("readonly", "");
-    }
+        if (ReadonlyChips && !InputAttributes.ContainsKey("readonly")) InputAttributes.Add("readonly", "");        
+       // var tags = TagManager.GetAsync().Result;
+       // ExistedTags = tags.Select(x => new Tag { Id = x.Id, Name = x.Name });
+    }   
 
     private void OnInput(ChangeEventArgs args)
     {
@@ -248,5 +262,12 @@
     {
         Chips.Remove(chip);
         OnChipsChanged.InvokeAsync(Chips);
+    }
+
+    private async Task OnTagInputInFocus()
+    {
+        // await textInput.FocusAsync();
+        if (ExistedTags.Any()) return;
+        ExistedTags = (await TagManager.GetAsync()).Select(x => new Tag { Id = x.Id, Name = x.Name });
     }
 }

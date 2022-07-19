@@ -333,6 +333,14 @@ textarea {
 padding-left: 0px;
 }
 
+datalist {
+    -webkit-appearance: none;    
+}
+
+input::-webkit-calendar-picker-indicator {
+    opacity: 0;
+}
+
 /* ============================================= */
 
 /* ==================== Read ==================== */
