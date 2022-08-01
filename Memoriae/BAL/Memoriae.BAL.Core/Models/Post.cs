@@ -16,5 +16,9 @@ namespace Memoriae.BAL.Core.Models
         public DateTime? CreateDateTime { get; set; }
 
         public IEnumerable<Tag> Tags { get; set; }
+
+        public IEnumerable<Tag> ExistedTags { get; set; }
+
+        public IEnumerable<Tag> NewTags { get; set; }
     }
 }

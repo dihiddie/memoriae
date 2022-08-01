@@ -46,8 +46,8 @@ namespace Memoriae.BAL.PostgreSQL
             var postTags = new PostTags
             {
                 PostId = mapped.Id,
-                NewTags = post.Tags?.Where(x => x.Id == null).Select(x => x.Name),
-                ExistingTags = post.Tags?.Where(x => x.Id != null).Select(x => x.Id.Value)
+                NewTags = post.NewTags?.Select(x => x.Name),
+                ExistingTags = post.ExistedTags?.Select(x => x.Id.Value)
             };
             await CreateOrUpdatePostTagLinkAsync(postTags);            
 

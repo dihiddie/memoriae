@@ -8,10 +8,10 @@
         <Logo Aligment=@Aligment.Top></Logo>
 
         <div class="addContainer">
-            <input type="text" placeholder="Введите заголовок" @bind="post.Title" class="transparentInputTitle" />
-            <ChipsInput EnableBackspaceRemove="false" Chips=@Tags />             
+            <input type="text" placeholder="Введите заголовок" @bind="Post.Title" class="transparentInputTitle" />
+            <ChipsInput EnableBackspaceRemove="false" Chips=@Tags ExistedTags=@ExistedTagsAsString />        
              
-            <BlazoredTextEditor @ref="@post.Text" Placeholder="Введите текст">
+            <BlazoredTextEditor @ref="@Post.Text" Placeholder="Введите текст">
                 <ToolbarContent>
                     <select class="ql-header">
                         <option selected=""></option>
@@ -50,36 +50,54 @@
     [Inject]
     public IPostManager PostManager { get; set; }
 
+    [Inject]
+    public ITagManager TagManager { get; set; }
+
+    [Parameter]
+    public Guid? PostId { get; set; }
+
+    public PostCreate Post { get; set; } = new PostCreate();
+
     public List<string> Tags { get; set; } = new List<string>();
+
+    public IEnumerable<string> ExistedTagsAsString => ExistedTags?.Select(x => x.Name);
+
+    public List<Tag> ExistedTags { get; set; } = new List<Tag>();
 
     public bool TagInputVisible { get; set; } = false;
 
-    public string PlaceholderVisibility 
-    { 
-        get
-        {
-            return $"{(TagInputVisible ? "collapse" : "visible")}";
-        }
-    }
+    public string PlaceholderVisibility =>  $"{(TagInputVisible ? "collapse" : "visible")}";   
 
-     public string TagsInputVisibility 
-    { 
-        get
-        {
-            return $"{(TagInputVisible ? "visible" : "collapse")}";
-        }
-    }
+    public string TagsInputVisibility => $"{(TagInputVisible ? "visible" : "collapse")}";
 
-    private PostCreate post = new PostCreate();
+    protected override async Task OnInitializedAsync()
+    {        
+        ExistedTags = (await TagManager.GetAsync()).Select(x => new Tag { Id = x.Id, Name = x.Name }).ToList();
+        //if (PostId.HasValue)
+        //{
+        //    var postInDb = await PostManager.GetAsync(PostId.Value).ConfigureAwait(false);
+        //    Post = new PostCreate
+        //        {
+        //            Text = postInDb.Text,
+        //            Title = postInDb.Title,
+        //            Tags = postInDb.Tags.Select(y => new Memoriae.UI.Blazor.Models.Tag { Id = y.Id, Name = y.Name }).ToList()
+        //        };
+        //}
+    } 
 
     protected async Task SaveAsync()
     {
+        var existedInDbTags = ExistedTags.Where(x => Tags.Contains(x.Name)).Select(x => new Memoriae.BAL.Core.Models.Tag { Id = x.Id, Name = x.Name });
+        var newTags = Tags.Except(existedInDbTags.Select(x => x.Name)).Select(x => new Memoriae.BAL.Core.Models.Tag { Name = x });
+
         await PostManager.CreateAsync(new BAL.Core.Models.Post
-        {
-            Text = await post.Text.GetHTML().ConfigureAwait(false),
-            PreviewText = GetPreview(await post.Text.GetText().ConfigureAwait(false)),
-            Title = post.Title
-        }).ConfigureAwait(false);
+            {
+                Text = await Post.Text.GetHTML().ConfigureAwait(false),
+                PreviewText = GetPreview(await Post.Text.GetText().ConfigureAwait(false)),
+                Title = Post.Title,
+                ExistedTags = existedInDbTags,
+                NewTags = newTags
+            }).ConfigureAwait(false);
 
         nav.NavigateTo("");
     }
@@ -88,10 +106,5 @@
     {
         var split = text.Split('.');
         return string.Join(". ", split.Take(5));
-    }
-
-    private void ChangeToTagInput()
-    {
-        TagInputVisible = !TagInputVisible;
     }
 }
