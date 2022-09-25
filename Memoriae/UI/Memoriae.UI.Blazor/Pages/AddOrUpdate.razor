@@ -1,4 +1,5 @@
 ﻿@page "/addorupdate"
+@page "/addorupdate/{PostId}"
 @using Blazored.TextEditor
 @inject Microsoft.AspNetCore.Components.NavigationManager nav
 @inject IModalService modal
@@ -7,39 +8,39 @@
     <Authorized>
         <Logo Aligment=@Aligment.Top></Logo>
 
-        <div class="addContainer">
-            <input type="text" placeholder="Введите заголовок" @bind="Post.Title" class="transparentInputTitle" />
-            <ChipsInput EnableBackspaceRemove="false" Chips=@Tags ExistedTags=@ExistedTagsAsString />        
+            <div class="addContainer">
+                <input type="text" placeholder="Введите заголовок" @bind="Post.Title" class="transparentInputTitle" />
+                <ChipsInput EnableBackspaceRemove="false" Chips=@Tags ExistedTags=@ExistedTagsAsString />        
              
-            <BlazoredTextEditor @ref="@Post.Text" Placeholder="Введите текст">
-                <ToolbarContent>
-                    <select class="ql-header">
-                        <option selected=""></option>
-                        <option value="1"></option>
-                        <option value="2"></option>
-                        <option value="3"></option>
-                        <option value="4"></option>
-                        <option value="5"></option>
-                    </select>
-                    <span class="ql-formats">
-                        <button class="ql-bold"></button>
-                        <button class="ql-italic"></button>
-                        <button class="ql-underline"></button>
-                        <button class="ql-strike"></button>
-                    </span>
-                    <span class="ql-formats">
-                        <button class="ql-list" value="ordered"></button>
-                        <button class="ql-list" value="bullet"></button>
-                    </span>
-                    <span class="ql-formats">
-                        <button class="ql-blockquote"></button>
-                    </span>
-                </ToolbarContent>
-                <EditorContent>
-                </EditorContent>
-            </BlazoredTextEditor>            
-        </div>
-        <button type="submit" class="saveBorderedButton" style="position: fixed; right:0; bottom:0; margin-bottom: 10px; margin-right: 10px; float: right" @onclick="SaveAsync">Сохранить</button>                
+                <BlazoredTextEditor @ref="@PostText" Placeholder="Введите текст">
+                    <ToolbarContent>
+                        <select class="ql-header">
+                            <option selected=""></option>
+                            <option value="1"></option>
+                            <option value="2"></option>
+                            <option value="3"></option>
+                            <option value="4"></option>
+                            <option value="5"></option>
+                        </select>
+                        <span class="ql-formats">
+                            <button class="ql-bold"></button>
+                            <button class="ql-italic"></button>
+                            <button class="ql-underline"></button>
+                            <button class="ql-strike"></button>
+                        </span>
+                        <span class="ql-formats">
+                            <button class="ql-list" value="ordered"></button>
+                            <button class="ql-list" value="bullet"></button>
+                        </span>
+                        <span class="ql-formats">
+                            <button class="ql-blockquote"></button>
+                        </span>
+                    </ToolbarContent>
+                    <EditorContent>
+                    </EditorContent>
+                </BlazoredTextEditor>            
+            </div>
+            <button type="submit" class="saveBorderedButton" style="position: fixed; right:0; bottom:0; margin-bottom: 10px; margin-right: 10px; float: right" @onclick="SaveAsync">Сохранить</button>                  
     </Authorized>
     <NotAuthorized>
         <Login></Login>
@@ -54,7 +55,9 @@
     public ITagManager TagManager { get; set; }
 
     [Parameter]
-    public Guid? PostId { get; set; }
+    public string PostId { get; set; }
+
+    BlazoredTextEditor PostText;
 
     public PostCreate Post { get; set; } = new PostCreate();
 
@@ -71,33 +74,43 @@
     public string TagsInputVisibility => $"{(TagInputVisible ? "visible" : "collapse")}";
 
     protected override async Task OnInitializedAsync()
-    {        
+    {
         ExistedTags = (await TagManager.GetAsync()).Select(x => new Tag { Id = x.Id, Name = x.Name }).ToList();
-        //if (PostId.HasValue)
-        //{
-        //    var postInDb = await PostManager.GetAsync(PostId.Value).ConfigureAwait(false);
-        //    Post = new PostCreate
-        //        {
-        //            Text = postInDb.Text,
-        //            Title = postInDb.Title,
-        //            Tags = postInDb.Tags.Select(y => new Memoriae.UI.Blazor.Models.Tag { Id = y.Id, Name = y.Name }).ToList()
-        //        };
-        //}
-    } 
+        if (!string.IsNullOrEmpty(PostId))
+        {            
+            var postInDb = await PostManager.GetAsync(Guid.Parse(PostId)).ConfigureAwait(false);
+            await Task.Delay(1500);
+            Post = new PostCreate { Id = postInDb.Id, Title = postInDb.Title };
+            Tags = postInDb.Tags.Select(y => y.Name).ToList();
+
+            await this.PostText.LoadHTMLContent(postInDb.Text);         
+            StateHasChanged();                        
+        }
+    }
 
     protected async Task SaveAsync()
     {
         var existedInDbTags = ExistedTags.Where(x => Tags.Contains(x.Name)).Select(x => new Memoriae.BAL.Core.Models.Tag { Id = x.Id, Name = x.Name });
-        var newTags = Tags.Except(existedInDbTags.Select(x => x.Name)).Select(x => new Memoriae.BAL.Core.Models.Tag { Name = x });
+        var existedTagNames = ExistedTags.Select(x => x.Name);
+        Console.WriteLine(string.Join(", ", existedTagNames));
+        var newTags = Tags.Where(x => !existedTagNames.Contains(x));
+        Console.WriteLine(string.Join(", ", newTags));
+        var asModel = newTags.Select(x => new Memoriae.BAL.Core.Models.Tag { Name = x });
 
-        await PostManager.CreateAsync(new BAL.Core.Models.Post
+        var post = new BAL.Core.Models.Post
             {
-                Text = await Post.Text.GetHTML().ConfigureAwait(false),
-                PreviewText = GetPreview(await Post.Text.GetText().ConfigureAwait(false)),
+                Text = await PostText.GetHTML().ConfigureAwait(false),
+                PreviewText = GetPreview(await PostText.GetText().ConfigureAwait(false)),
                 Title = Post.Title,
                 ExistedTags = existedInDbTags,
-                NewTags = newTags
-            }).ConfigureAwait(false);
+                NewTags = asModel
+            };
+        if (Post.Id.HasValue)
+        {
+            post.Id = Post.Id.Value;
+            await PostManager.UpdateAsync(post).ConfigureAwait(false);
+        }
+        else await PostManager.CreateAsync(post).ConfigureAwait(false);
 
         nav.NavigateTo("");
     }

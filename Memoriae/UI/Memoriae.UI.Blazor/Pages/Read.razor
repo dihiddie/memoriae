@@ -12,7 +12,7 @@
             <div class="addContainer">
                 <DateTimeLine DateTimeValue="@post.CreateDateTime"></DateTimeLine>
                 <p class="inputTitle">@post.Title</p>
-                <TagLine Aligment="@Aligment.Top" Tags="@post.Tags"></TagLine>
+                <TagLine Aligment="@Aligment.Top" Tags="@post.Tags" OnTagClicked="@OnTagClicked"></TagLine>
                 <p style="text-align: justify; font-size: 14px">
                     @((MarkupString)post.Text)
                 </p>
@@ -32,6 +32,9 @@
 
     [Parameter]
     public string PostId { get; set; }
+
+    [Parameter]
+    public EventCallback<string> OnTagClicked { get; set; }
 
     public bool LoaderVisible { get; set; } = true;
 

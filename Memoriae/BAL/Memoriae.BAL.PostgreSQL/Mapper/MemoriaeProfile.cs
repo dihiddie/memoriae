@@ -17,7 +17,7 @@ namespace Memoriae.BAL.PostgreSQL.Mapper
 
         private void CreatePostMap()
         {
-            CreateMap<Post, DbPost>().ForMember(x => x.CreateDateTime, opt => opt.MapFrom(y => DateTime.Now));
+            CreateMap<Post, DbPost>().ForMember(x => x.CreateDateTime, opt => opt.Ignore());
             CreateMap<DbPost, Post>();
         }
 

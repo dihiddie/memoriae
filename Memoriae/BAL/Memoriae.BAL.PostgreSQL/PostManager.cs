@@ -39,6 +39,7 @@ namespace Memoriae.BAL.PostgreSQL
             logger.LogInformation($"Попытка создания поста с главой = {chapterNumber}");            
 
             var mapped = mapper.Map<DbPost>(post);
+            mapped.CreateDateTime = DateTime.Now;
             mapped.Title = $"Глава {chapterNumber}. {mapped.Title}";            
             await context.AddAsync(mapped).ConfigureAwait(false);
             await context.SaveChangesAsync().ConfigureAwait(false);
@@ -109,14 +110,15 @@ namespace Memoriae.BAL.PostgreSQL
             logger.LogInformation($"Обновление поста с id = {post.Id}");
             var postInDb = await context.Posts.FirstOrDefaultAsync(x => x.Id == post.Id).ConfigureAwait(false);
             mapper.Map(post, postInDb);
+            post.CreateDateTime = postInDb.CreateDateTime;
             context.Update(postInDb);
             await context.SaveChangesAsync(false);
 
             var postTags = new PostTags
             {
                 PostId = post.Id,
-                NewTags = post.Tags?.Where(x => x.Id == null).Select(x => x.Name),
-                ExistingTags = post.Tags?.Where(x => x.Id != null).Select(x => x.Id.Value)
+                NewTags = post.NewTags?.Select(x => x.Name),
+                ExistingTags = post.ExistedTags?.Select(x => x.Id.Value)
             };
             await CreateOrUpdatePostTagLinkAsync(postTags);
 

@@ -1,10 +1,22 @@
 ﻿<AuthorizeView>
     <Authorized>        
-        <div>
-            <a class="@mainMenuItemClassName" href="" @onclick="@(() => SaveState(1))">Главная</a>
-            <a class="@adminMenuItemClassName" href="/admin" @onclick="@(() => SaveState(2))">Админка</a>
-            <a class="@menuItem" href="" @onclick="@DoLogout">Выйти</a>
-        </div>
+
+<nav role='navigation'>
+  <div id="menuToggle">
+    <input type="checkbox" />
+    
+    <span></span>
+    <span></span>
+    <span></span>
+   
+    <ul id="menu">
+      <a class="menulink" href="#"><li>Главная</li></a>
+      <a class="menulink" href="#"><li>Календарь</li></a>
+      <a class="menulink" href="#"><li>Админка</li></a>
+      <a class="menulink" href="#"><li>Выйти</li></a>      
+    </ul>
+  </div>
+</nav>
     </Authorized>
 </AuthorizeView>
 
