@@ -1,22 +1,20 @@
 ﻿<AuthorizeView>
     <Authorized>        
 
-<nav role='navigation'>
-  <div id="menuToggle">
-    <input type="checkbox" />
-    
-    <span></span>
-    <span></span>
-    <span></span>
-   
-    <ul id="menu">
-      <a class="menulink" href="#"><li>Главная</li></a>
-      <a class="menulink" href="#"><li>Календарь</li></a>
-      <a class="menulink" href="#"><li>Админка</li></a>
-      <a class="menulink" href="#"><li>Выйти</li></a>      
-    </ul>
-  </div>
-</nav>
+<ul id="navigation" style="margin-right: 10px;">
+  <li class="menu_Li">    
+       <a id="menu_a" href="/" target="_blank" class="material-symbols-outlined">home</a>    
+  </li>
+  <li class="menu_Li">    
+       <a id="menu_a" href="/calendar" target="_blank" class="material-symbols-outlined">calendar_month</a>    
+  </li>
+  <li class="menu_Li">
+    <a id="menu_a" href="/admin" target="_blank" class="material-symbols-outlined">admin_panel_settings</a>    
+  </li>
+  <li class="menu_Li">
+    <a id="menu_a" href="/" @onclick="@DoLogout" target="_blank" class="material-symbols-outlined">logout</a>    
+  </li>
+</ul>
     </Authorized>
 </AuthorizeView>
 

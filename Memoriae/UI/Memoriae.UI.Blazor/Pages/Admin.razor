@@ -11,13 +11,32 @@
         }
         else
         {
-            <div class="leftpanel">
+            <div class="adminleftpanel">
                 <Logo Aligment=@Aligment.Top></Logo>
+
+                <ul>
+                    <li>Все записи</li>
+                    <li>Статистика</li>
+                </ul>
+
+                <button type="submit" class="addButton" style="position: fixed; bottom:0; margin-bottom: 10px;" @onclick="@(() => nav.NavigateTo("/addorupdate"))">Добавить запись</button>                  
             </div>
-            <div class="middlepanel">
-                Тут админка
+            <div class="adminmiddlepanel">
+                   @if (!postList.Any())
+                {
+                    <i class="nothingToSee">Пока ничего нет</i>
+                }
+                else
+                {
+                    @foreach (var post in postList)
+                    {
+                        <a class="clickablePost" href="addorupdate/@post.Id">
+                            <AdminPostPreview Post="post"></AdminPostPreview>
+                        </a>
+                    }
+                }
             </div>
-            <div class="rightpanel">
+            <div class="adminrightpanel">
                 <Menu></Menu>
             </div>           
 
