@@ -23,5 +23,7 @@ namespace Memoriae.DAL.PostgreSQL.EF.Models
         public DateTime CreateDateTime { get; set; }
 
         public virtual ICollection<PostTagLink> PostTagLink { get; set; }
+
+        public bool AutoSaved { get; set; }
     }
 }

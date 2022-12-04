@@ -1,8 +1,10 @@
 ﻿@page "/addorupdate"
 @page "/addorupdate/{PostId}"
 @using Blazored.TextEditor
+@using System.Threading
 @inject Microsoft.AspNetCore.Components.NavigationManager nav
 @inject IModalService modal
+@implements IDisposable
 
 <AuthorizeView>
     <Authorized>
@@ -40,7 +42,8 @@
                     </EditorContent>
                 </BlazoredTextEditor>            
             </div>
-            <button type="submit" class="saveBorderedButton" style="position: fixed; right:0; bottom:0; margin-bottom: 10px; margin-right: 10px; float: right" @onclick="SaveAsync">Сохранить</button>                  
+            <button type="submit" class="saveBorderedButton" style="position: fixed; right:0; bottom:0; margin-bottom: 10px; margin-right: 10px; float: right" @onclick="() => SaveAsync()">Сохранить</button>      
+            <p id="autosaveState">@AutosaveStateText</p>
     </Authorized>
     <NotAuthorized>
         <Login></Login>
@@ -73,28 +76,38 @@
 
     public string TagsInputVisibility => $"{(TagInputVisible ? "visible" : "collapse")}";
 
+    public string AutosaveStateText;   
+
+    private Timer timer;
+
+    public void Dispose() 
+    {
+        timer?.Dispose();
+    }
+
     protected override async Task OnInitializedAsync()
     {
         ExistedTags = (await TagManager.GetAsync()).Select(x => new Tag { Id = x.Id, Name = x.Name }).ToList();
         if (!string.IsNullOrEmpty(PostId))
-        {            
+        {
             var postInDb = await PostManager.GetAsync(Guid.Parse(PostId)).ConfigureAwait(false);
             await Task.Delay(1500);
             Post = new PostCreate { Id = postInDb.Id, Title = postInDb.Title };
             Tags = postInDb.Tags.Select(y => y.Name).ToList();
 
-            await this.PostText.LoadHTMLContent(postInDb.Text);         
-            StateHasChanged();                        
-        }
+            await this.PostText.LoadHTMLContent(postInDb.Text);
+            StateHasChanged();            
+        }       
+
+        timer = new Timer(_ => HandleAutoSaveAsync(), null, 30000, 60000);
+        await SetAutoSaveStateAsync().ConfigureAwait(false);
     }
 
-    protected async Task SaveAsync()
-    {
+    protected async Task SaveAsync(bool autosaved = false)
+    {        
         var existedInDbTags = ExistedTags.Where(x => Tags.Contains(x.Name)).Select(x => new Memoriae.BAL.Core.Models.Tag { Id = x.Id, Name = x.Name });
-        var existedTagNames = ExistedTags.Select(x => x.Name);
-        Console.WriteLine(string.Join(", ", existedTagNames));
-        var newTags = Tags.Where(x => !existedTagNames.Contains(x));
-        Console.WriteLine(string.Join(", ", newTags));
+        var existedTagNames = ExistedTags.Select(x => x.Name);        
+        var newTags = Tags.Where(x => !existedTagNames.Contains(x));        
         var asModel = newTags.Select(x => new Memoriae.BAL.Core.Models.Tag { Name = x });
 
         var post = new BAL.Core.Models.Post
@@ -103,21 +116,39 @@
                 PreviewText = GetPreview(await PostText.GetText().ConfigureAwait(false)),
                 Title = Post.Title,
                 ExistedTags = existedInDbTags,
-                NewTags = asModel
+                NewTags = asModel,
+                AutoSaved = autosaved
             };
         if (Post.Id.HasValue)
         {
             post.Id = Post.Id.Value;
             await PostManager.UpdateAsync(post).ConfigureAwait(false);
         }
-        else await PostManager.CreateAsync(post).ConfigureAwait(false);
+        else 
+        {
+            var savedPost = await PostManager.CreateAsync(post).ConfigureAwait(false);
+            Post.Id = savedPost.Id;
+        }
 
-        nav.NavigateTo("");
+        if(!autosaved) nav.NavigateTo("");
     }
 
     private string GetPreview(string text)
     {
         var split = text.Split('.');
         return string.Join(". ", split.Take(5));
+    }
+
+    private async void HandleAutoSaveAsync()
+    {
+        await SetAutoSaveStateAsync(false).ConfigureAwait(false);
+        await SaveAsync(true).ConfigureAwait(false);     
+        await SetAutoSaveStateAsync().ConfigureAwait(false);
+    }
+
+    private async Task SetAutoSaveStateAsync(bool defaultState = true) 
+    { 
+        AutosaveStateText = defaultState ? "Автосохранение включено" : "Сохранение...";
+        await InvokeAsync(StateHasChanged);
     }
 }

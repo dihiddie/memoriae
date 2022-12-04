@@ -20,5 +20,7 @@ namespace Memoriae.BAL.Core.Models
         public IEnumerable<Tag> ExistedTags { get; set; }
 
         public IEnumerable<Tag> NewTags { get; set; }
+
+        public bool AutoSaved { get; set; }
     }
 }

@@ -20,7 +20,13 @@
         </member>
         <member name="M:Memoriae.WebApi.Controllers.PostController.GetAsync">
             <summary>
-            Получение списка постов
+            Получение списка постов кроме черновиков
+            </summary>
+            <returns>Список постов</returns>
+        </member>
+        <member name="M:Memoriae.WebApi.Controllers.PostController.GetAllAsync">
+            <summary>
+            Получение списка всех постов
             </summary>
             <returns>Список постов</returns>
         </member>

@@ -66,12 +66,11 @@ namespace Memoriae.BAL.PostgreSQL
 
         public async Task<IEnumerable<Post>> GetAsync()
         {
-            logger.LogInformation("Получаем список постов");
+            logger.LogInformation("Получаем список постов кроме черновиков");
 
-            return await context.Posts.AsNoTracking().OrderByDescending(x => x.CreateDateTime).Select(x => new Post()
+            return await context.Posts.AsNoTracking().Where(x => !x.AutoSaved).OrderByDescending(x => x.CreateDateTime).Select(x => new Post()
             {
                 Id = x.Id,
-                //Text = x.Text,
                 Title = x.Title,
                 PreviewText = x.PreviewText,
                 CreateDateTime = x.CreateDateTime,  
@@ -95,6 +94,22 @@ namespace Memoriae.BAL.PostgreSQL
 
             }).FirstOrDefaultAsync(x => x.Id == id).ConfigureAwait(false);           
 
+        }
+
+        public async Task<IEnumerable<Post>> GetAllAsync()
+        {
+            logger.LogInformation("Получаем список всех постов");
+
+            return await context.Posts.AsNoTracking().OrderByDescending(x => x.CreateDateTime).Select(x => new Post()
+            {
+                Id = x.Id,                
+                Title = x.Title,
+                PreviewText = x.PreviewText,
+                CreateDateTime = x.CreateDateTime,
+                Tags = x.PostTagLink.Select(t => new Tag { Id = t.Tag.Id, Name = t.Tag.Name }),
+                AutoSaved = x.AutoSaved
+
+            }).ToListAsync().ConfigureAwait(false);
         }
 
         public async Task<IEnumerable<Post>> GetByTagsAsync(HashSet<Guid> tagIds)
@@ -230,6 +245,6 @@ namespace Memoriae.BAL.PostgreSQL
                 var notAddedPostsFromTagsIds = postsFromTags.Select(x => x.Id).Except(foundedPosts.Select(x => x.Id));
                 foundedPosts.AddRange(postsFromTags.Where(x => notAddedPostsFromTagsIds.Contains(x.Id)));
             }
-        }
+        }     
     }
 }

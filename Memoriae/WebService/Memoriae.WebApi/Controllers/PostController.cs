@@ -34,11 +34,18 @@ namespace Memoriae.WebApi.Controllers
             => postManager.CreateOrUpdatePostTagLinkAsync(postTags);
 
         /// <summary>
-        /// Получение списка постов
+        /// Получение списка постов кроме черновиков
         /// </summary>
         /// <returns>Список постов</returns>
         [HttpGet]
         public Task<IEnumerable<Post>> GetAsync() => postManager.GetAsync();
+
+        /// <summary>
+        /// Получение списка всех постов
+        /// </summary>
+        /// <returns>Список постов</returns>
+        [HttpGet("all")]
+        public Task<IEnumerable<Post>> GetAllAsync() => postManager.GetAllAsync();
 
         /// <summary>
         /// Получение поста по идентификатору
