@@ -43,7 +43,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Anlytics", "Anlytics", "{82
 		errors.txt = errors.txt
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Memoriae.Http.Managers", "HttpClients\Memoriae.Http\Memoriae.Http.Managers.csproj", "{6A5C2EA6-7D7F-45D9-B7F0-456AA6FF3F5A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Memoriae.Http.Managers", "HttpClients\Memoriae.Http\Memoriae.Http.Managers.csproj", "{6A5C2EA6-7D7F-45D9-B7F0-456AA6FF3F5A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

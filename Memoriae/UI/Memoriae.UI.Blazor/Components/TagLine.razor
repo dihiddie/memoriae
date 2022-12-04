@@ -1,11 +1,46 @@
-﻿<div class="tagContainer">
+﻿@if (Aligment == Aligment.Left)
+{
     @foreach (var tag in Tags)
     {
-        <a id="tag" href="">@($"{tag.Name} ")</a>
+        if (!IsReadOnly)
+        {
+            <a id="tag" href="/" @onclick="@(() => OnTagClicked.InvokeAsync(tag.Name))">@((MarkupString)$"{tag.Name} ")</a>
+        }
+        else
+        {
+            <a id="tag" class="not-active" href="/">@((MarkupString)$"{tag.Name} ")</a>
+        }
+
+    }
+}
+
+@if (Aligment == Aligment.Top)
+{
+<div class="tagContainer">
+    @foreach (var tag in Tags)
+        {
+            if (!IsReadOnly)
+            {
+                <a id="tag" href="/" @onclick="@(() => OnTagClicked.InvokeAsync(tag.Name))">@((MarkupString)$"{tag.Name} ")</a>
+            }
+            else
+            {
+                <a id="tag" class="not-active" href="/">@((MarkupString)$"{tag.Name} ")</a>
+            }
     }
 </div>
+}
 
 @code{
     [Parameter]
     public IEnumerable<Tag> Tags { get; set; }
+
+    [Parameter]
+    public Aligment Aligment { get; set; }
+
+    [Parameter]
+    public bool IsReadOnly { get; set; }
+
+    [Parameter]
+    public EventCallback<string> OnTagClicked { get; set; }
 }

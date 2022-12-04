@@ -1,4 +1,5 @@
 using Blazored.LocalStorage;
+using Blazored.Modal;
 using Memoriae.BAL.Core.Interfaces;
 using Memoriae.Http.AuthentificationService;
 using Memoriae.Http.AuthentificationService.Providers;
@@ -22,10 +23,11 @@ namespace Memoriae.UI.Blazor
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://localhost:5001/api/") });            
             builder.Services.AddScoped<IAuthentificationService, AuthentificationService>();
             builder.Services.AddScoped<IPostManager, PostManager>();
-            builder.Services.AddScoped<ITagManager, TagManager>();
+            builder.Services.AddScoped<ITagManager, TagManager>();            
             builder.Services.AddBlazoredLocalStorage();
             builder.Services.AddAuthorizationCore();
             builder.Services.AddScoped<AuthenticationStateProvider, AuthStateProvider>();
+            builder.Services.AddBlazoredModal();
 
             await builder.Build().RunAsync();
         }

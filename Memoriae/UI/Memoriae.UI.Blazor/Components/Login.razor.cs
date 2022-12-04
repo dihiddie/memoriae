@@ -58,7 +58,7 @@ namespace Memoriae.UI.Blazor.Components
         {
             SetLoader();
             var result = await AuthentificationService.Register(new BAL.User.Core.User { Login = user.Login, Password = user.Password });
-            if (!result.Success) Error = result.Errors.Any() ? string.Join(", ", result.Errors) : "Произошла ошибка при регистрации";
+            if (!result.Success) Error = result.Errors.Any() ? string.Join(", ", result.Errors) : "Ошибка регистрации";
 
             RegistrationIsOn = false;
             user.Password = null;
@@ -67,7 +67,7 @@ namespace Memoriae.UI.Blazor.Components
 
         private bool ValidateForm(EditContext formContext)
         {
-            Error = null;
+            Error = null;    
             return formContext.Validate();            
         }
 

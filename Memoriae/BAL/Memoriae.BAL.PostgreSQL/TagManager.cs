@@ -54,7 +54,7 @@ namespace Memoriae.BAL.PostgreSQL
             await context.SaveChangesAsync().ConfigureAwait(false);
 
             return mapper.Map<Tag>(dbTag);
-        }
+        }       
 
         public async Task<IEnumerable<Tag>> GetAsync()
         {

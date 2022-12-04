@@ -12,6 +12,7 @@ namespace Memoriae.WebApi.Controllers
     public class PostController : ControllerBase
     {
         private readonly IPostManager postManager;
+        
 
         public PostController(IPostManager postManager) => this.postManager = postManager;
 
@@ -62,5 +63,12 @@ namespace Memoriae.WebApi.Controllers
         /// <returns>Обновляемый пост</returns>
         [HttpPut]
         public Task<Post> UpdateAsync(Post post) => postManager.UpdateAsync(post);
+
+        /// <summary>
+        /// Получение списка постов по искомой фразе
+        /// </summary>
+        /// <returns>Список постов</returns>
+        [HttpGet("search")]
+        public Task<IEnumerable<Post>> GetBySearchAsync(string searchText) => postManager.SearchAsync(searchText);
     }
 }

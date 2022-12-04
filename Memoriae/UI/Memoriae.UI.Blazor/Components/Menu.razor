@@ -1,0 +1,57 @@
+﻿<AuthorizeView>
+    <Authorized>        
+
+<ul id="navigation" style="margin-right: 10px;">
+  <li class="menu_Li">    
+       <a id="menu_a" href="/" target="_blank" class="material-symbols-outlined">home</a>    
+  </li>
+  <li class="menu_Li">    
+       <a id="menu_a" href="/calendar" target="_blank" class="material-symbols-outlined">calendar_month</a>    
+  </li>
+  <li class="menu_Li">
+    <a id="menu_a" href="/admin" target="_blank" class="material-symbols-outlined">admin_panel_settings</a>    
+  </li>
+  <li class="menu_Li">
+    <a id="menu_a" href="/" @onclick="@DoLogout" target="_blank" class="material-symbols-outlined">logout</a>    
+  </li>
+</ul>
+    </Authorized>
+</AuthorizeView>
+
+
+@code{
+
+    [Inject]
+    public IAuthentificationService AuthentificationService { get; set; }
+
+    private string menuItem = "menuItem";
+
+    private string mainMenuItemClassName = "menuItem";
+
+    private string adminMenuItemClassName = "menuItem";
+
+    protected override void OnInitialized()
+    {
+        // SaveState(1);
+    }    
+
+    private async Task DoLogout()
+    {
+        await AuthentificationService.Logout();
+    }
+
+    private void SaveState(int order)
+    {
+        if (order == 1)
+        {
+            mainMenuItemClassName = $"{mainMenuItemClassName} menuItemWithUnderline";
+            adminMenuItemClassName = menuItem;
+        }
+        if (order == 2)
+        {
+            adminMenuItemClassName = $"{adminMenuItemClassName} menuItemWithUnderline";
+            mainMenuItemClassName = menuItem;
+        }
+    }
+
+}

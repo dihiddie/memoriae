@@ -1,18 +1,19 @@
 ﻿using AutoMapper;
 using Memoriae.BAL.Core.Interfaces;
+using Memoriae.BAL.Core.Models;
+using Memoriae.BAL.PostgreSQL.Extensions;
 using Memoriae.DAL.PostgreSQL.EF.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Post = Memoriae.BAL.Core.Models.Post;
-using Tag = Memoriae.BAL.Core.Models.Tag;
 using DbPost = Memoriae.DAL.PostgreSQL.EF.Models.Post;
 using DbTag = Memoriae.DAL.PostgreSQL.EF.Models.Tag;
-
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using Memoriae.BAL.Core.Models;
+using Post = Memoriae.BAL.Core.Models.Post;
+using Tag = Memoriae.BAL.Core.Models.Tag;
 
 namespace Memoriae.BAL.PostgreSQL
 {
@@ -38,15 +39,16 @@ namespace Memoriae.BAL.PostgreSQL
             logger.LogInformation($"Попытка создания поста с главой = {chapterNumber}");            
 
             var mapped = mapper.Map<DbPost>(post);
-            mapped.Title = $"Глава {chapterNumber}. {mapped.Title}";          
+            mapped.CreateDateTime = DateTime.Now;
+            mapped.Title = $"Глава {chapterNumber}. {mapped.Title}";            
             await context.AddAsync(mapped).ConfigureAwait(false);
             await context.SaveChangesAsync().ConfigureAwait(false);
 
             var postTags = new PostTags
             {
                 PostId = mapped.Id,
-                NewTags = post.Tags?.Where(x => x.Id == null).Select(x => x.Name),
-                ExistingTags = post.Tags?.Where(x => x.Id != null).Select(x => x.Id.Value)
+                NewTags = post.NewTags?.Select(x => x.Name),
+                ExistingTags = post.ExistedTags?.Select(x => x.Id.Value)
             };
             await CreateOrUpdatePostTagLinkAsync(postTags);            
 
@@ -66,11 +68,12 @@ namespace Memoriae.BAL.PostgreSQL
         {
             logger.LogInformation("Получаем список постов");
 
-            return await context.Posts.AsNoTracking().Select(x => new Post()
+            return await context.Posts.AsNoTracking().OrderByDescending(x => x.CreateDateTime).Select(x => new Post()
             {
                 Id = x.Id,
-                Text = x.Text,
+                //Text = x.Text,
                 Title = x.Title,
+                PreviewText = x.PreviewText,
                 CreateDateTime = x.CreateDateTime,  
                 Tags = x.PostTagLink.Select(t => new Tag { Id = t.Tag.Id, Name = t.Tag.Name })
 
@@ -86,6 +89,7 @@ namespace Memoriae.BAL.PostgreSQL
                 Id = x.Id,
                 Text = x.Text,
                 Title = x.Title,
+                PreviewText = x.PreviewText,
                 CreateDateTime = x.CreateDateTime,
                 Tags = x.PostTagLink.Select(t => new Tag { Id = t.Tag.Id, Name = t.Tag.Name })
 
@@ -106,14 +110,15 @@ namespace Memoriae.BAL.PostgreSQL
             logger.LogInformation($"Обновление поста с id = {post.Id}");
             var postInDb = await context.Posts.FirstOrDefaultAsync(x => x.Id == post.Id).ConfigureAwait(false);
             mapper.Map(post, postInDb);
+            post.CreateDateTime = postInDb.CreateDateTime;
             context.Update(postInDb);
             await context.SaveChangesAsync(false);
 
             var postTags = new PostTags
             {
                 PostId = post.Id,
-                NewTags = post.Tags?.Where(x => x.Id == null).Select(x => x.Name),
-                ExistingTags = post.Tags?.Where(x => x.Id != null).Select(x => x.Id.Value)
+                NewTags = post.NewTags?.Select(x => x.Name),
+                ExistingTags = post.ExistedTags?.Select(x => x.Id.Value)
             };
             await CreateOrUpdatePostTagLinkAsync(postTags);
 
@@ -131,7 +136,6 @@ namespace Memoriae.BAL.PostgreSQL
 
         private async Task SaveNewTagsAndLinksAsync(Guid postId, IEnumerable<string> newTags)
         {
-
             if (newTags?.Any() == true)
             {
                 var newTagsInDb = new List<DbTag>();
@@ -169,6 +173,63 @@ namespace Memoriae.BAL.PostgreSQL
 
             }).Where(x => ids.Contains(x.Id)).ToListAsync().ConfigureAwait(false);
 
+        }      
+
+        public async Task<IEnumerable<Post>> SearchAsync(string searchText)
+        {
+            List<Post> foundedPosts = new List<Post>();
+
+            if (string.IsNullOrEmpty(searchText)) return await GetAsync().ConfigureAwait(false);
+
+            var splittedText = searchText.Split(" ", StringSplitOptions.RemoveEmptyEntries).ToList();
+            await AddFoundedPosts(foundedPosts, splittedText).ConfigureAwait(false);
+            await AddFoundedPostsInTags(foundedPosts, splittedText).ConfigureAwait(false);
+
+            return foundedPosts.OrderByDescending(i => i.CreateDateTime);
+        }
+
+        private async Task AddFoundedPosts(List<Post> foundedPosts, List<string> splittedText)
+        {
+            foreach (var searchPattern in splittedText.Select(word => $"(?=.*{word})"))
+            {
+                var postsQuery = context.Posts.Where(
+                    i => Regex.IsMatch(i.Text, searchPattern, RegexOptions.IgnoreCase)
+                    || Regex.IsMatch(i.Title, searchPattern, RegexOptions.IgnoreCase));
+
+                var posts = await postsQuery.Select(x => new Post()
+                {
+                    Id = x.Id,
+                    Title = x.Title.WrapWordsInTag(splittedText),
+                    PreviewText = x.PreviewText.WrapWordsInTag(splittedText),
+                    CreateDateTime = x.CreateDateTime,
+                    Tags = x.PostTagLink.Select(t => new Tag { Id = t.Tag.Id, Name = t.Tag.Name.WrapWordsInTag(splittedText) })
+
+                }).AsNoTracking().ToListAsync().ConfigureAwait(false);
+
+                var notAddedPostsIds = posts.Select(x => x.Id).Except(foundedPosts.Select(x => x.Id));
+                foundedPosts.AddRange(posts.Where(x => notAddedPostsIds.Contains(x.Id)));
+            }
+        }
+
+        private async Task AddFoundedPostsInTags(List<Post> foundedPosts, List<string> splittedText)
+        {
+            foreach (var searchPattern in splittedText.Select(word => $"(?=.*{word})"))
+            {
+                var tagsQuery = context.Tags.Where(i => Regex.IsMatch(i.Name, searchPattern, RegexOptions.IgnoreCase));
+                var postsFromTagsQuery = tagsQuery.SelectMany(x => x.PostTagLink.Select(y => y.Post));
+                var postsFromTags = await postsFromTagsQuery.Select(x => new Post()
+                {
+                    Id = x.Id,
+                    Title = x.Title.WrapWordsInTag(splittedText),
+                    PreviewText = x.PreviewText.WrapWordsInTag(splittedText),
+                    CreateDateTime = x.CreateDateTime,
+                    Tags = x.PostTagLink.Select(t => new Tag { Id = t.Tag.Id, Name = t.Tag.Name.WrapWordsInTag(splittedText) })
+
+                }).AsNoTracking().ToListAsync().ConfigureAwait(false);
+
+                var notAddedPostsFromTagsIds = postsFromTags.Select(x => x.Id).Except(foundedPosts.Select(x => x.Id));
+                foundedPosts.AddRange(postsFromTags.Where(x => notAddedPostsFromTagsIds.Contains(x.Id)));
+            }
         }
     }
 }

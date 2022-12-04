@@ -1,21 +1,28 @@
-﻿@page "/read"
+﻿@page "/read/{PostId}"
 
-@if (LoaderVisible)
-{
-    <Loader></Loader>
 
-}
-else
-{
-    <div class="addContainer">
-        <DateTimeLine DateTimeValue="@post.CreateDateTime"></DateTimeLine>
-        <p id="inputTitle">@post.Title</p>
-        <TagLine Tags="@post.Tags"></TagLine>
-        <p style="text-align: justify; font-size: 14px">
-            @((MarkupString)post.Text)
-        </p>
-    </div>
-}
+<AuthorizeView>
+    <Authorized>
+        @if (LoaderVisible)
+        {
+            <Loader></Loader>
+        }
+        else
+        {
+            <div class="addContainer">
+                <DateTimeLine DateTimeValue="@post.CreateDateTime"></DateTimeLine>
+                <p class="inputTitle">@post.Title</p>
+                <TagLine Aligment="@Aligment.Top" Tags="@post.Tags" OnTagClicked="@OnTagClicked"></TagLine>
+                <p style="text-align: justify; font-size: 14px">
+                    @((MarkupString)post.Text)
+                </p>
+            </div>
+        }
+    </Authorized>    
+    <NotAuthorized>
+        <Login></Login>
+    </NotAuthorized>
+</AuthorizeView>
 
 
 @code{
@@ -24,16 +31,18 @@ else
     public IPostManager PostManager { get; set; }
 
     [Parameter]
-    public Guid PostId { get; set; }
+    public string PostId { get; set; }
+
+    [Parameter]
+    public EventCallback<string> OnTagClicked { get; set; }
 
     public bool LoaderVisible { get; set; } = true;
 
     private PostRead post = new PostRead();
 
     protected override async Task OnInitializedAsync()
-    {
-        PostId = new Guid("6a332554-0fc2-4dfe-85f7-888631f27419");
-        var postInDb = await PostManager.GetAsync(PostId).ConfigureAwait(false);
+    {        
+        var postInDb = await PostManager.GetAsync(Guid.Parse(PostId)).ConfigureAwait(false);
         post = new PostRead
         {
             Title = postInDb.Title,

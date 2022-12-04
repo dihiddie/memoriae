@@ -59,5 +59,11 @@ namespace Memoriae.Http.Managers
             var data = await responseMessage.Content.ReadAsStringAsync().ConfigureAwait(false);
             return JsonConvert.DeserializeObject<Post>(data);
         }
+
+        public async Task<IEnumerable<Post>> SearchAsync(string searchText)
+        {
+            var data = await httpClient.GetStringAsync($"post/search?searchText={searchText}").ConfigureAwait(false);
+            return JsonConvert.DeserializeObject<IEnumerable<Post>>(data);
+        }
     }
 }
