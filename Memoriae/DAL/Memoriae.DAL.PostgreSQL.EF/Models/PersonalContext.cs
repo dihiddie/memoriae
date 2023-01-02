@@ -40,8 +40,7 @@ namespace Memoriae.DAL.PostgreSQL.EF.Models
                     .IsRequired()
                     .HasColumnType("character varying");
 
-                entity.Property(e => e.Title)
-                    .IsRequired()
+                entity.Property(e => e.Title)                  
                     .HasMaxLength(512);                
             });
 

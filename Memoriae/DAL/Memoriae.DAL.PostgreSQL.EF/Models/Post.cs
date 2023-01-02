@@ -20,6 +20,8 @@ namespace Memoriae.DAL.PostgreSQL.EF.Models
 
         public string PreviewText { get; set; }
 
+        public int ChapterNumber { get; set; }
+
         public DateTime CreateDateTime { get; set; }
 
         public virtual ICollection<PostTagLink> PostTagLink { get; set; }

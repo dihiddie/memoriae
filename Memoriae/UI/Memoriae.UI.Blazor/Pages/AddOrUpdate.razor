@@ -104,15 +104,18 @@
     }
 
     protected async Task SaveAsync(bool autosaved = false)
-    {        
+    {
+        var text = await PostText.GetHTML().ConfigureAwait(false);
+        if (autosaved && (string.IsNullOrEmpty(text) || text == "<p><br></p>")) return;
+
         var existedInDbTags = ExistedTags.Where(x => Tags.Contains(x.Name)).Select(x => new Memoriae.BAL.Core.Models.Tag { Id = x.Id, Name = x.Name });
         var existedTagNames = ExistedTags.Select(x => x.Name);        
         var newTags = Tags.Where(x => !existedTagNames.Contains(x));        
-        var asModel = newTags.Select(x => new Memoriae.BAL.Core.Models.Tag { Name = x });
+        var asModel = newTags.Select(x => new Memoriae.BAL.Core.Models.Tag { Name = x });        
 
         var post = new BAL.Core.Models.Post
             {
-                Text = await PostText.GetHTML().ConfigureAwait(false),
+                Text = text,
                 PreviewText = GetPreview(await PostText.GetText().ConfigureAwait(false)),
                 Title = Post.Title,
                 ExistedTags = existedInDbTags,
@@ -130,6 +133,7 @@
             Post.Id = savedPost.Id;
         }
 
+        if (autosaved && newTags.Any()) ExistedTags = (await TagManager.GetAsync()).Select(x => new Tag { Id = x.Id, Name = x.Name }).ToList();
         if(!autosaved) nav.NavigateTo("");
     }
 
@@ -140,7 +144,7 @@
     }
 
     private async void HandleAutoSaveAsync()
-    {
+    {        
         await SetAutoSaveStateAsync(false).ConfigureAwait(false);
         await SaveAsync(true).ConfigureAwait(false);     
         await SetAutoSaveStateAsync().ConfigureAwait(false);

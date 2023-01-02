@@ -3,15 +3,17 @@ using System;
 using Memoriae.DAL.PostgreSQL.EF.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Memoriae.DAL.PostgreSQL.EF.Migrations
 {
     [DbContext(typeof(PersonalContext))]
-    partial class PersonalContextModelSnapshot : ModelSnapshot
+    [Migration("20230102113927_AddChapterNumberColumnMigration")]
+    partial class AddChapterNumberColumnMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,6 +47,7 @@ namespace Memoriae.DAL.PostgreSQL.EF.Migrations
                         .HasColumnType("character varying");
 
                     b.Property<string>("Title")
+                        .IsRequired()
                         .HasMaxLength(512)
                         .HasColumnType("character varying(512)");
 

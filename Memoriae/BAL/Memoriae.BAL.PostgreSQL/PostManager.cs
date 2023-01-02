@@ -40,7 +40,9 @@ namespace Memoriae.BAL.PostgreSQL
 
             var mapped = mapper.Map<DbPost>(post);
             mapped.CreateDateTime = DateTime.Now;
-            mapped.Title = $"Глава {chapterNumber}. {mapped.Title}";            
+            mapped.ChapterNumber = chapterNumber;
+            // mapped.Title = $"Глава {chapterNumber}. {mapped.Title}";
+            // mapped.Title = mapped.Title;
             await context.AddAsync(mapped).ConfigureAwait(false);
             await context.SaveChangesAsync().ConfigureAwait(false);
 
@@ -71,7 +73,7 @@ namespace Memoriae.BAL.PostgreSQL
             return await context.Posts.AsNoTracking().Where(x => !x.AutoSaved).OrderByDescending(x => x.CreateDateTime).Select(x => new Post()
             {
                 Id = x.Id,
-                Title = x.Title,
+                Title = $"Глава {x.ChapterNumber}. {x.Title}",
                 PreviewText = x.PreviewText,
                 CreateDateTime = x.CreateDateTime,  
                 Tags = x.PostTagLink.Select(t => new Tag { Id = t.Tag.Id, Name = t.Tag.Name })
@@ -103,7 +105,7 @@ namespace Memoriae.BAL.PostgreSQL
             return await context.Posts.AsNoTracking().OrderByDescending(x => x.CreateDateTime).Select(x => new Post()
             {
                 Id = x.Id,                
-                Title = x.Title,
+                Title = $"Глава {x.ChapterNumber}. {x.Title}",
                 PreviewText = x.PreviewText,
                 CreateDateTime = x.CreateDateTime,
                 Tags = x.PostTagLink.Select(t => new Tag { Id = t.Tag.Id, Name = t.Tag.Name }),
@@ -182,7 +184,7 @@ namespace Memoriae.BAL.PostgreSQL
             {
                 Id = x.Id,
                 Text = x.Text,
-                Title = x.Title,
+                Title = $"Глава {x.ChapterNumber}. {x.Title}",
                 CreateDateTime = x.CreateDateTime,
                 Tags = x.PostTagLink.Select(t => new Tag { Id = t.Tag.Id, Name = t.Tag.Name })
 
