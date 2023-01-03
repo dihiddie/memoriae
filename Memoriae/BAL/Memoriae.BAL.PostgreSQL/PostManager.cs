@@ -194,6 +194,7 @@ namespace Memoriae.BAL.PostgreSQL
 
         public async Task<IEnumerable<Post>> SearchAsync(string searchText)
         {
+            logger.LogInformation($"Фильтрация постов по искомому тексту: {searchText}");
             List<Post> foundedPosts = new List<Post>();
 
             if (string.IsNullOrEmpty(searchText)) return await GetAsync().ConfigureAwait(false);

@@ -1,4 +1,5 @@
-﻿@using Microsoft.AspNetCore.Components;
+﻿@page "/mainPage/{SearchText}"
+@using Microsoft.AspNetCore.Components;
 @inject Microsoft.AspNetCore.Components.NavigationManager nav
 
 <AuthorizeView>
@@ -55,6 +56,7 @@
     [Inject]
     public IPostManager PostManager { get; set; }
 
+    [Parameter]
     public string SearchText { get; set; }
 
     public bool LoaderVisible { get; set; } = true;
@@ -72,6 +74,7 @@
             CreateDateTime = postInDb.CreateDateTime.GetValueOrDefault(),
             Tags = postInDb.Tags.Select(x => new Tag { Id = x.Id, Name = x.Name })
         });
+        if (!string.IsNullOrEmpty(SearchText)) await SearchAsync().ConfigureAwait(false); 
         CancelLoader();
     }
 
@@ -95,7 +98,7 @@
     }
 
     private async Task SearchAsync()
-    {
+    {        
         StartLoader();
         var foundedPosts = await PostManager.SearchAsync(SearchText).ConfigureAwait(false);
         postList = foundedPosts.Select(postInDb => new PostRead
@@ -106,12 +109,11 @@
             CreateDateTime = postInDb.CreateDateTime.GetValueOrDefault(),
             Tags = postInDb.Tags.Select(x => new Tag { Id = x.Id, Name = x.Name })
         });
-        CancelLoader();
+        CancelLoader();        
     }
 
     private async Task TriggerTagSearch(string tagName)
     {
-        SearchText = tagName;
-        await SearchAsync().ConfigureAwait(false);
+        nav.NavigateTo($"/mainPage/{tagName}", true);
     }
 }

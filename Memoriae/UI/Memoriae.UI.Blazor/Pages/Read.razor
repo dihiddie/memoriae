@@ -1,5 +1,5 @@
 ﻿@page "/read/{PostId}"
-
+@inject Microsoft.AspNetCore.Components.NavigationManager nav
 
 <AuthorizeView>
     <Authorized>
@@ -12,7 +12,7 @@
             <div class="addContainer">
                 <DateTimeLine DateTimeValue="@post.CreateDateTime"></DateTimeLine>
                 <p class="inputTitle">@post.Title</p>
-                <TagLine Aligment="@Aligment.Top" Tags="@post.Tags" OnTagClicked="@OnTagClicked"></TagLine>
+                <TagLine Aligment="@Aligment.Top" Tags="@post.Tags" OnTagClicked="@TriggerTagSearch"></TagLine>
                 <p style="text-align: justify; font-size: 14px">
                     @((MarkupString)post.Text)
                 </p>
@@ -54,4 +54,9 @@
     }
 
     protected void CancelLoader() => LoaderVisible = false;
+
+    private void TriggerTagSearch(string tagName)
+    {
+         nav.NavigateTo($"/mainPage/{tagName}", true);
+    }
 }
