@@ -23,3 +23,12 @@
 #outer {    
     width: 100%
 }
+
+#logo_a {
+    color: black;
+}
+
+    #logo_a:hover {
+        color: black;
+        text-decoration: none;
+    }

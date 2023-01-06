@@ -112,7 +112,7 @@
         CancelLoader();        
     }
 
-    private async Task TriggerTagSearch(string tagName)
+    private void TriggerTagSearch(string tagName)
     {
         nav.NavigateTo($"/mainPage/{tagName}", true);
     }
