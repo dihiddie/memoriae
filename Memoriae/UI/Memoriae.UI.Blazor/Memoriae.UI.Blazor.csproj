@@ -7,11 +7,6 @@
   <ItemGroup>
     <None Remove="Components\Loader.razor.css" />
     <None Remove="Components\Logo - Copy.razor.css" />
-    <None Remove="Components\Logo.razor.css" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Components\Logo.razor.css" />
   </ItemGroup>
 
   <ItemGroup>

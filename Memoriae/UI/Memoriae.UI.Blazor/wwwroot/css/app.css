@@ -779,20 +779,22 @@ input::-webkit-calendar-picker-indicator {
 /* ==================== AdminPage ==================== */
 
 .adminleftpanel {
-    width: 15%;    
+    width: 10%;
     float: left;
+    height: 100%;
     border-collapse: collapse;
     border-right-color: gray;
+    background-color: #D9D9D9;
 }
 
 .adminmiddlepanel {    
-    width: 70%;    
+    width: 60%;    
     float: left;
     border-collapse: collapse;
 }
 
 .adminrightpanel {
-    width: 15%;
+    width: 25%;
     position: relative;
     float: right;
     border-collapse: collapse;
@@ -824,4 +826,40 @@ input::-webkit-calendar-picker-indicator {
     margin-bottom: 0rem;
 }
 
-/*/* ============================================= */
+/* ============================================= */
+/* ==================== Logo ==================== */
+.hr {
+    display: inline-block;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 22px;
+    line-height: 30px;
+}
+
+    .hr:after {
+        content: '';
+        display: block;
+        border-top: 1px solid black;
+        margin-top: 0.3em;
+        margin-left: -20px;
+        margin-right: -20px;
+    }
+
+#inner {
+    display: table;
+    margin: 0 auto;
+}
+
+#outer {
+    width: 100%
+}
+
+#logo_a {
+    color: black;
+}
+
+    #logo_a:hover {
+        color: black;
+        text-decoration: none;
+    }
+/* ============================================= */

@@ -1,7 +1,9 @@
 ﻿@page "/admin"
 
 @using Microsoft.AspNetCore.Components;
-@inject Microsoft.AspNetCore.Components.NavigationManager nav
+@inject Microsoft.AspNetCore.Components.NavigationManager nav;
+
+
 
 <AuthorizeView>
     <Authorized>
@@ -11,42 +13,24 @@
         }
         else
         {
-            <div class="adminleftpanel">
-                <Logo Aligment=@Aligment.Top></Logo>
-
-                <ul>
-                    <li>Все записи</li>
-                    <li>Статистика</li>
-                </ul>
-
-                <button type="submit" class="addButton" style="position: fixed; bottom:0; margin-bottom: 10px;" @onclick="@(() => nav.NavigateTo("/addorupdate"))">Добавить запись</button>                  
+             <Logo Aligment=@Aligment.Top></Logo>
+             <div class="addContainer">
+                <Virtualize Items="@postList" Context="item" TItem="PostRead">
+                    <ItemContent>
+                        <AdminPostPreview Post="@item"></AdminPostPreview>
+                    </ItemContent>
+                    <Placeholder>
+                        <p>Loading..</p>
+                    </Placeholder>
+                </Virtualize>
             </div>
-            <div class="adminmiddlepanel">
-                   @if (!postList.Any())
-                {
-                    <i class="nothingToSee">Пока ничего нет</i>
-                }
-                else
-                {
-                    @foreach (var post in postList)
-                    {
-                        <a class="clickablePost" href="addorupdate/@post.Id">
-                            <AdminPostPreview Post="post"></AdminPostPreview>
-                        </a>
-                    }
-                }
-            </div>
-            <div class="adminrightpanel">
-                <Menu></Menu>
-            </div>           
-
-        }
+            <button type="submit" class="addButton" style="position: fixed; right:0; bottom:0; margin-bottom: 10px; margin-right: 10px; float: right" @onclick="@(() => nav.NavigateTo("/addorupdate"))">Добавить запись</button>
+        }       
     </Authorized>
     <NotAuthorized>
         <Login></Login>
     </NotAuthorized>
 </AuthorizeView>
-
 
 @code{
 
@@ -57,19 +41,20 @@
 
     public bool LoaderVisible { get; set; } = true;
 
-    private IEnumerable<PostRead> postList = new List<PostRead>();
+    private ICollection<PostRead> postList = new List<PostRead>();
 
     protected override async Task OnInitializedAsync()
     {
-        var postsInDb = await PostManager.GetAsync().ConfigureAwait(false);
+        var postsInDb = await PostManager.GetAllAsync().ConfigureAwait(false);
         postList = postsInDb.Select(postInDb => new PostRead
         {
             Id = postInDb.Id,
             Title = postInDb.Title,
             PreviewText = postInDb.PreviewText,
             CreateDateTime = postInDb.CreateDateTime.GetValueOrDefault(),
-            Tags = postInDb.Tags.Select(x => new Tag { Id = x.Id, Name = x.Name })
-        });
+            Tags = postInDb.Tags.Select(x => new Tag { Id = x.Id, Name = x.Name }),
+            AutoSaved = postInDb.AutoSaved
+        }).ToList();
         CancelLoader();
     }
 

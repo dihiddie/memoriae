@@ -16,5 +16,7 @@ namespace Memoriae.UI.Blazor.Models
         public string PreviewText { get; set; }
 
         public IEnumerable<Tag> Tags { get; set; }
+
+        public bool AutoSaved { get; set; }
     }
 }
